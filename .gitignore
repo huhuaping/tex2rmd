@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Rproj
+*.Rmd
+*.tex
+*.bbl
+*.aux
+*.docx
+*.Rproj
