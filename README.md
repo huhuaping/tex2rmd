@@ -12,13 +12,15 @@ From there, one can edit the markdown document and compile to PDF or Word or wha
 * Converts \\section, \\subsection, and \\subsubsection to the markdown equivalent
 * If a .aux and .bbl file are present in the same directory, `tex2rmd` works out all 
 the citations and inserts them.  They are not live references anymore, they are text.  Re-run Latex (to get new .aux and .bbl files) and re-run tex2rmd if references change. 
-* All tables in \\tabular environments are converted to markdown equivalents. 
+* **Tables:** Tables in \\tabular environments are converted to markdown equivalents. 
 Some functionality is lost here.  For example, multiline headers are not allowed (by markdown). Column spanning is not allowed (by markdown). 
-
-## What is left
-
-* Figures
-* Cross references to Tables and Figures (i.e. work out the \\ref and \\label mapping)
+* **Figures:** Figures in \\includegraphics commands are included as `![img](img.ext)` 
+tags in markdown.  If there is a caption, the caption goes along.  Multiple \\includegraphics commands in the same figure environment are all included, one 
+per row of markdown. This approach looses much of the nice formating of Latex, but it 
+reduces the reformatting work needed in Word.  Anything in the optional argument 
+of the \\includegraphics command goes along. For example, size will be preserved in Word
+if the Latex command is \\includegraphics[width=3in,height=5in]{image.jpg}. 
+* **Cross references** All cross-references to Tables and Figures reported in the .aux file are worked out and substituted.  (i.e. \\ref and \\label mapping is worked out)
 
 ## How to use
 
