@@ -18,6 +18,8 @@
 #' @export
 processOneTable <- function(x, begin, end, tabNum){
 
+  # cat(paste("in processOneTable.r",begin,end,"\n"))
+
   x <- x[begin:end]
 
   cap <- regexpr("\\\\caption\\{", x)
@@ -26,7 +28,7 @@ processOneTable <- function(x, begin, end, tabNum){
     tmp <- x[which(cap>0):length(x)]
     tmp <- paste(tmp, collapse = " ")
     caption <- parseTex(tmp, 1)
-    caption <- paste0("**Table ", tabNum, "**: ", caption)
+    caption <- paste0("_**Table ", tabNum, "**: ", caption,"_")
   } else {
     caption <- ""
   }
@@ -39,7 +41,14 @@ processOneTable <- function(x, begin, end, tabNum){
   # assume only one tabular environment in each table
   x <- x[which(beginTable>0):which(endTable>0)]
 
+  # print(x)
+  # cat("=========\n")
+
   just <- parseTex(x[1],2)
+  # cat("-----\n")
+  # print(x)
+  just <- gsub("\\|","",just)
+  # Figure out how to handle other column designators, like p{1.5in}
   just <- substring(just, 1:nchar(just), 1:nchar(just))
 
   # find min line with & using grep
@@ -82,7 +91,8 @@ processOneTable <- function(x, begin, end, tabNum){
 
   hasMultiCol <- which(regexpr("\\\\multicolumn\\{",x)>0)
   if(length(hasMultiCol)>0){
-    warning("multicolumns not implemented. Row with them deleted. Fix in processOneTable.")
+    warning(paste("multicolumns not implemented.", length(hasMultiCol), "row(s) in Table",
+                  tabNum, "have been deleted."))
     x <- x[-hasMultiCol]
   }
 
@@ -96,8 +106,13 @@ processOneTable <- function(x, begin, end, tabNum){
 
 
   # put in the separators and header line. In markdown, header is only 1 row always
+  # print(just)
+
   rmdTab <- rep("|",nrow(rmdMat)+1)
   for(j in 1:ncol(rmdMat)){
+    if( !(just[j] %in% c("l","r","c") )){
+      just[j] <- "none"
+    }
     colj <- format(rmdMat[,j], justify=just[j])
     hline <- paste0(rep("-",nchar(colj[1])), collapse = "")
     if(just[j]=="l"){

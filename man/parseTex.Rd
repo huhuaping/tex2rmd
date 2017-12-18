@@ -4,7 +4,7 @@
 \alias{parseTex}
 \title{parseTex}
 \usage{
-parseTex(x, argNum, delims = "{}")
+parseTex(x, argNum, delims = "{}", warn = FALSE)
 }
 \arguments{
 \item{x}{A latex command, like "\\bibcite{text}{text}"}
@@ -14,10 +14,15 @@ parseTex(x, argNum, delims = "{}")
 \item{delims}{The delimiters to use.  This must be a single
 string, and only the first two characters are used.  First character
 is the opening delimiter, second character is closing delimiter.}
+
+\item{warn}{Logical scaler.  If TRUE, issue a warning if the
+requested argument is not found. Careful here: if \code{warn} is FALSE,
+the calling procedure will not be able to distinguish between
+an argument not found and the empty argumen (i.e., "{}").}
 }
 \value{
 A string, the desired argument. If the argument is not found,
-the empty string is returned and a warning is fired.
+the empty string is returned and a warning is fired if \code{warn==TRUE}.
 }
 \description{
 Parse a Tex command and return a specified argument.

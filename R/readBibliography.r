@@ -5,7 +5,8 @@
 #'
 #' @param bblFile The bbl file to read and format
 #'
-#' @return A data frame
+#' @return A vector of character strings containing the
+#' formatted bibliography
 #'
 #' @export
 readBibliography <- function(bblFile){

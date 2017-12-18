@@ -31,7 +31,15 @@
 #'  }
 #' @export
 
+
 tex2rmd <- function(infile){
+
+  # Images can also be included using either raw HTML with img
+  # tags (<img src = "" />) or using markdown directly (![image](imagepath)).
+  #
+  # For differencing text files, try online tools or suggestions here:
+  #https://stackoverflow.com/questions/4078933/find-difference-between-two-text-files-with-one-item-per-line
+
 
   fileRoot <- sub("\\..+$","",infile)
   tex <- readLines(infile)
@@ -56,32 +64,41 @@ tex2rmd <- function(infile){
   tex <- tex[(headPos+1):length(tex)]
 
   # extract title
-  title <- header[grep("\\\\title\\{",header)]
-  title <- sub("\\\\title\\{","", title)
-  title <- sub("\\}","",title)
+  title <- returnCommandArg(header, "title")
+  if(nchar(title) == 0){
+    title <- paste("Contents of", fileRoot)
+  }
 
   # extract author(s)
-  auth <- header[grep("\\\\author", header)]
-  tmp3 <- regexpr("\\{.+\\}",auth)
-  auth <- substring(auth,tmp3+1, tmp3 + attr(tmp3,"match.length") - 2)
-  auth <- auth[nchar(auth)>0]
-  if( length(auth) > 1 ){
-    auth[length(auth)] <- paste0("and ", auth[length(auth)])
+  auth <- returnCommandArg(header, "author")
+  if(nchar(auth) == 0){
+    auth <- Sys.info()["user"]
   }
-  auth <- paste(auth, collapse = ", ")
+  # if there's a comma between authors, replace last with ", and"
+  commas <- gregexpr(",", auth)[[1]]
+  if( commas[1] > 0 ){
+    if(length(commas) > 1){
+      harvardComma <- ","
+    } else {
+      harvardComma <- ""
+    }
+    lastComma <- commas[length(commas)]
+    auth <- paste0( substring(auth,1,lastComma-1), harvardComma,
+                    " and", substring(auth,lastComma+1))
+  }
 
   # extract date
-  dt <- header[grep("\\\\date\\{",header)]
-  if(length(dt) == 0){
+  dt <- returnCommandArg(header, "date")
+  if(nchar(dt) == 0){
     dt <- format(Sys.time(), "%d-%b-%Y")
-  } else {
-    tmp3 <- regexpr("\\{.+\\}",dt)
-    dt <- substring(dt,tmp3+1, tmp3 + attr(tmp3,"match.length") - 2)
   }
 
 
   # ---- Remove maketitle
   tex <- sub("\\\\maketitle","",tex)
+
+  # ---- Remove end{document}
+  tex <- sub("\\\\end\\{document\\}","",tex)
 
   # ---- Keywords
   keyw <- tex[grep("\\\\keywords\\{",tex)]
@@ -94,28 +111,24 @@ tex2rmd <- function(infile){
 
   # ---- Fix up Abstract
   begline <- grep("\\\\begin\\{abstract\\}",tex)
-  endline <- grep("\\\\end\\{abstract\\}",tex)
-  abst <- paste(tex[begline:endline], collapse=" ")
-  tmp3 <- regexpr("\\\\begin\\{abstract\\}.+\\\\end\\{abstract\\}", abst)
-  abst <- substring(abst,tmp3+16, tmp3 + 16 + attr(tmp3,"match.length") - (16+15))
-  abst <- paste("**Abstract:**", abst)
-  tex[begline] <- abst
-  tex <- tex[-((begline+1):endline)]
+  if( length(begline) >0){
+    endline <- grep("\\\\end\\{abstract\\}",tex)
+    abst <- paste(tex[begline:endline], collapse=" ")
+    tmp3 <- regexpr("\\\\begin\\{abstract\\}.+\\\\end\\{abstract\\}", abst)
+    abst <- substring(abst,tmp3+16, tmp3 + 16 + attr(tmp3,"match.length") - (16+15))
+    abst <- paste("**Abstract:**", abst)
+    tex[begline] <- abst
+    tex <- tex[-((begline+1):endline)]
+  }
 
   if(length(keyw) > 0){
     tex <- c(tex[1:begline], " ", paste("*Keywords:*", keyw)," ", tex[(begline+1):length(tex)])
   }
 
 
-  # ---- Add bibliography (now, so texttt and textbf get changed)
-  bibLoc <- grep("\\\\bibliography\\{",tex)
-  if( length(bibLoc) > 0 ){
-    bbl <- readBibliography(paste0(fileRoot, ".bbl"))
-    bbl <- c(rbind(bbl," "))
-    bbl <- c("# Refernces"," ", bbl)
-    tex <- c(tex[1:(bibLoc-1)], bbl, tex[(bibLoc+1):length(tex)])
-  }
-
+  # ---- Fix up bibliography and citations
+  #      Do this here so that textbf and texttt get changed below.
+  tex <- processBibliography(tex, fileRoot)
 
   # ---- Sections
   # Sections must be on a line by themselves.  Can't have "\section{A} more text"
@@ -150,51 +163,24 @@ tex2rmd <- function(infile){
   # ---- Textbf
   tex <- convertTexTag(tex, "textbf", "**")
 
-  # ---- Fix up citations
-  cite.df <- readCitations( paste0(fileRoot, ".aux") )
-
-  tmp2 <- gregexpr( "\\\\cite(t|p)\\{[^\\}]*\\}", tex)
-  linesWithRefs <- unlist(lapply(tmp2, function(x){sum(x!=-1)}))
-
-  for(i in which(linesWithRefs > 0)){
-    for(j in 1:linesWithRefs[i]){
-      # must re-compute position because when j>1, position could have changed
-      citePos <- regexpr( "\\\\cite(t|p)\\{[^\\}]*\\}", tex[i])
-      keys <- substring(tex[i],
-                        citePos+7,
-                        citePos+7+attr(citePos,"match.length")-9)
-      citeType <- substring(tex[i], citePos+1, citePos+5)
-      Keys <- strsplit(keys, ",")[[1]]
-
-      if( citeType == "citet" ){
-        # only one key allowed in each citet, could say Keys[1]
-        citeStr <- paste0(cite.df$citeAuth[ cite.df$key == keys ], " (",
-                        cite.df$year[ cite.df$key == keys], ")")
-      } else {
-        citeStr <- "("
-        for( k in 1:length(Keys)){
-          if( k > 1 ){
-            citeStr <- paste0(citeStr, "; ")
-          }
-          citeStr <- paste0(citeStr,
-                          cite.df$citeAuth[ cite.df$key == Keys[k] ], ", ",
-                          cite.df$year[ cite.df$key == Keys[k]])
-        }
-        citeStr <- paste0(citeStr, ")")
-      }
-      strBeg <- substring(tex[i], 1, citePos-1)
-      strEnd <- substring(tex[i], citePos+attr(citePos,"match.length"), nchar(tex[i]))
-      tex[i] <- paste0(strBeg, citeStr, strEnd)
-    }
-  }
-
-  # Process tables
+  # ---- Process tables
   tex <- processTables(tex)
 
-  # process display equations
+  # ---- Process Figures
+  tex <- processFigures(tex)
+
+  # ---- Process display equations
   tex <- processDisplayEqns(tex)
 
-  # add header info to tex lines
+  # ---- Process crossRefs
+  tex <- processCrossRefs(tex, fileRoot)
+
+  # ---- Process labels
+  #      Just need to remove labels. All Table and Fig labels are taken care
+  #      of, and other labels should just be deleted.
+  tex <- gsub("\\\\label\\{[^\\}]+\\}", "", tex)
+
+  # ---- add header info to tex lines
   header <- c("---",
               paste0('title: "',title,'"'),
               paste0('author: "',auth,'"'),

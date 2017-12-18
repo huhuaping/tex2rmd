@@ -17,17 +17,19 @@ processDisplayEqns <- function(tex){
   eqnPosBegin <- which(eqnPosBegin>0)
   eqnPosEnd <- which(eqnPosEnd>0)
 
-  for( i in 1:length(eqnPosBegin)){
-    eqn <- tex[eqnPosBegin[i]:eqnPosEnd[i]]
-    eqn <- gsub("\\\\(begin|end)\\{(equation|equation\\*|gather)\\}","",eqn)
-    eqn <- gsub("\\\\label\\{[^\\}]*\\}","",eqn)
-    eqn <- gsub("\\\\nonumber","",eqn)
-    eqn[1] <- paste0("$$", eqn[1])
-    eqn[length(eqn)] <- paste0(eqn[length(eqn)], "$$")
-    eqn <- gsub("\\\\\\\\","\n$$\n$$",eqn)
-    eqn <- eqn[nchar(eqn)>0]
+  if( length(eqnPosBegin) > 0 ){
+    for( i in 1:length(eqnPosBegin)){
+      eqn <- tex[eqnPosBegin[i]:eqnPosEnd[i]]
+      eqn <- gsub("\\\\(begin|end)\\{(equation|equation\\*|gather)\\}","",eqn)
+      eqn <- gsub("\\\\label\\{[^\\}]*\\}","",eqn)
+      eqn <- gsub("\\\\nonumber","",eqn)
+      eqn[1] <- paste0("$$", eqn[1])
+      eqn[length(eqn)] <- paste0(eqn[length(eqn)], "$$")
+      eqn <- gsub("\\\\\\\\","\n$$\n$$",eqn)
+      eqn <- eqn[nchar(eqn)>0]
 
-    tex <- c(tex[1:(eqnPosBegin[i]-1)], eqn, tex[(eqnPosEnd[i]+1):length(tex)])
+      tex <- c(tex[1:(eqnPosBegin[i]-1)], eqn, tex[(eqnPosEnd[i]+1):length(tex)])
+    }
   }
 
   tex

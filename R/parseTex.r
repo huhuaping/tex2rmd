@@ -10,8 +10,13 @@
 #' string, and only the first two characters are used.  First character
 #' is the opening delimiter, second character is closing delimiter.
 #'
+#' @param warn Logical scaler.  If TRUE, issue a warning if the
+#' requested argument is not found. Careful here: if \code{warn} is FALSE,
+#' the calling procedure will not be able to distinguish between
+#' an argument not found and the empty argumen (i.e., "{}").
+#'
 #' @return A string, the desired argument. If the argument is not found,
-#' the empty string is returned and a warning is fired.
+#' the empty string is returned and a warning is fired if \code{warn==TRUE}.
 #'
 #' @author Trent McDonald
 #'
@@ -22,7 +27,7 @@
 #'
 #' @export
 
-parseTex <- function(x, argNum, delims="{}"){
+parseTex <- function(x, argNum, delims="{}", warn=FALSE){
 
   delims <- substring(delims, 1:2, 1:2)
   openDelim <- delims[1]
@@ -30,10 +35,20 @@ parseTex <- function(x, argNum, delims="{}"){
 
   # Make sure openDelim is first character of string
   if( substring(x,1,1) != openDelim){
-    # another reg expr that may work "^\\W?\\W?\\w*"
-    RegE <- paste0("^\\W?\\W?[^\\", openDelim, "]*")
-    x <- sub(RegE,"",x)
+    # remove begining white space
+    #x <- sub("^\\s+","",x)
+    # Get rid of everything up to first openDelim
+    RegE <- paste0("^[^\\",openDelim, "]+")
+    x <- sub(RegE,"",x, perl = TRUE)
   }
+
+  # Make sure endDelim is last character of string
+  if( substring(x, nchar(x), nchar(x)) != endDelim){
+    RegE <- paste0("[^\\",endDelim,"]+$")
+    x <- sub(RegE, "", x, perl=TRUE)
+  }
+
+  # burst string, one char per vector element
   xchars <- substring(x, 1:nchar(x), 1:nchar(x))
 
   nbrace <- 0
@@ -54,6 +69,8 @@ parseTex <- function(x, argNum, delims="{}"){
     if(nbrace == 0 & xchars[pos] == endDelim){
       end <- pos - 1
     }
+
+    # cat(paste(xchars[pos],'nbrace=',nbrace, "narg=", narg, "argNum=",argNum, "\n"))
 
     if( nbrace == 0 & narg == argNum ){
       break

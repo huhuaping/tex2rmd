@@ -10,7 +10,8 @@ readBibliography(bblFile)
 \item{bblFile}{The bbl file to read and format}
 }
 \value{
-A data frame
+A vector of character strings containing the
+formatted bibliography
 }
 \description{
 Reads the .bbl file from a tex document and
