@@ -67,6 +67,8 @@ tex2rmd <- function(infile){
   title <- returnCommandArg(header, "title")
   if(nchar(title) == 0){
     title <- paste("Contents of", fileRoot)
+  } else {
+    title <- convertTexTag(title, "textbf", "")
   }
 
   # extract author(s)
@@ -86,6 +88,8 @@ tex2rmd <- function(infile){
     auth <- paste0( substring(auth,1,lastComma-1), harvardComma,
                     " and", substring(auth,lastComma+1))
   }
+  # Remove any textbf from author string
+  auth <- convertTexTag(auth, "textbf", "")
 
   # extract date
   dt <- returnCommandArg(header, "date")
@@ -179,6 +183,12 @@ tex2rmd <- function(infile){
   #      Just need to remove labels. All Table and Fig labels are taken care
   #      of, and other labels should just be deleted.
   tex <- gsub("\\\\label\\{[^\\}]+\\}", "", tex)
+
+  # ---- Process List environments
+  tex <- processLists(tex)
+
+  # ---- Remove double blanks at end of lines
+  tex <- processNewLines(tex)
 
   # ---- add header info to tex lines
   header <- c("---",

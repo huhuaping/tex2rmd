@@ -4,10 +4,14 @@
 \alias{readBibliography}
 \title{readBibliography}
 \usage{
-readBibliography(bblFile)
+readBibliography(bblFile, style)
 }
 \arguments{
 \item{bblFile}{The bbl file to read and format}
+
+\item{style}{A text string specifying the style of the bibliography.
+Only difference this makes is that for style == "plain", the '[n]'
+numbers are added at the beginning.}
 }
 \value{
 A vector of character strings containing the

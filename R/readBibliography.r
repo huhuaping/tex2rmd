@@ -5,11 +5,15 @@
 #'
 #' @param bblFile The bbl file to read and format
 #'
+#' @param style A text string specifying the style of the bibliography.
+#' Only difference this makes is that for style == "plain", the '[n]'
+#' numbers are added at the beginning.
+#'
 #' @return A vector of character strings containing the
 #' formatted bibliography
 #'
 #' @export
-readBibliography <- function(bblFile){
+readBibliography <- function(bblFile,style){
 
   bbl <- readLines(bblFile)
   bibLines <- c(grep("\\\\bibitem",bbl),length(bbl))
@@ -21,6 +25,9 @@ readBibliography <- function(bblFile){
     curItem <- paste(curItem, collapse = " ")
     curItem <- parseBib(curItem)
 
+    if(style == "plain"){
+      curItem <- paste0("[",i,"] ",curItem)
+    }
     bib <- c(bib,curItem)
   }
 

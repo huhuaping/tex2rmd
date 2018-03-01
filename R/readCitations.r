@@ -34,17 +34,28 @@ readCitations <- function(auxFile){
     lab <- parseTex(cites[i], 1)
 
     secondArg <- parseTex(cites[i], 2)
+
+    # The following is where we distiguish citation styles
     ord <- parseTex(secondArg, 1)
-    yr <- parseTex(secondArg, 2)
-    auth <- parseTex(secondArg, 3)
-    lst <- parseTex(secondArg, 4)
+    if( nchar(ord) > 0){
+      # AuthorYear format
+      yr <- parseTex(secondArg, 2)
+      auth <- parseTex(secondArg, 3)
+      lst <- parseTex(secondArg, 4)
 
-    auth <- sub("^\\{","",auth)
-    auth <- sub("\\}$","",auth)
-    lst  <- sub("^\\{","",lst)
-    lst  <- sub("\\}$","",lst)
+      auth <- sub("^\\{","",auth)
+      auth <- sub("\\}$","",auth)
+      lst  <- sub("^\\{","",lst)
+      lst  <- sub("\\}$","",lst)
 
-    auth <- sub("et~","et ", auth)
+      auth <- sub("et~","et ", auth)
+    } else {
+      # Plain style
+      ord <- i
+      yr <- NA
+      auth <- secondArg
+      lst <- ""
+    }
 
     cite.df <- rbind( cite.df, data.frame(
                   key  = lab,

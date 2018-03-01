@@ -18,7 +18,7 @@ is the opening delimiter, second character is closing delimiter.}
 \item{warn}{Logical scaler.  If TRUE, issue a warning if the
 requested argument is not found. Careful here: if \code{warn} is FALSE,
 the calling procedure will not be able to distinguish between
-an argument not found and the empty argumen (i.e., "{}").}
+an argument not found and the empty argument (i.e., "{}").}
 }
 \value{
 A string, the desired argument. If the argument is not found,

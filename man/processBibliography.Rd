@@ -27,4 +27,9 @@ A <fileRoot>.aux and a <fileRoot>.bbl file must both be
 present and in the same
 directory as the <fileRoot>.tex file. Hence, one must compile the Latex
 document first to generate these files.
+
+Citation styles allowed here are \code{citet} (cite text,
+e.g., McDonald (2018)) and \code{citep} (cite paratheses,
+e.g., (McDonald, 2018)).
+The plain \code{cite} style is treated exactly like \code{citep}.
 }

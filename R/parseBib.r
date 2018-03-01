@@ -31,6 +31,7 @@ parseBib <- function(x){
   x <- sub("\\[","\\{",x)
   x <- sub("\\]","\\}",x)
 
+  # remove anything before first {
   RegE <- paste0("^\\W?\\W?[^\\", openDelim, "]*")
   x <- sub(RegE,"",x)
 
@@ -76,22 +77,26 @@ parseBib <- function(x){
   x <- gsub("\\\\newblock","",x)
 
   # put title of article in quotes
+  # Title is right after year in authoryear format e.g., Mcdonald (2018) Title.
+  # But other styles are different, e.g., plain style.
   tmp <- regexpr("\\) +\\{", x)
   if( tmp > 0 ){
     tmp <- tmp + attr(tmp,"match.length") - 1
     substring(x, tmp, tmp) <- '"'
-  }
 
-  tmp <- regexpr("\\}\\. ", x)
-  if(tmp > 0){
-    substring(x, tmp, tmp) <- '"'
+
+    tmp <- regexpr("\\}\\. ", x)
+    if(tmp > 0){
+      substring(x, tmp, tmp) <- '"'
+    }
   }
 
   # special case of a book with \textit{} surrounding title
-  tmp <- regexpr("\\\\textit\\{\\{", x)
-  if(tmp > 0){
-    substring(x, tmp, tmp+attr(tmp,"match.length")) <- '"\\textit{'
-  }
+  # Don't need this -- textit replaced after this
+  # tmp <- regexpr("\\\\textit\\{\\{", x)
+  # if(tmp > 0){
+  #   substring(x, tmp, tmp+attr(tmp,"match.length")) <- '"\\textit{'
+  # }
 
   # remove squiggle
   x <- gsub("~"," ", x)
@@ -99,6 +104,20 @@ parseBib <- function(x){
   # remove url stuff
   x <- sub("\\\\url.+$","",x)
 
+  # Must deal with {\em Text} here because \textit processing will zap it later.
+  tmp <- regexpr("\\{\\\\em[^\\}]+\\}", x)
+  if( any(tmp > 0) ){
+    for(i in 1:length(tmp)){
+      x <- paste0(substring(x,1,tmp[i]-1),
+                  "*",
+                  substring(x,tmp[i]+5,tmp[i]+attr(tmp,"match.length")[i]-2),
+                  "*",
+                  substring(x,tmp[i]+attr(tmp,"match.length")[i]))
+    }
+  }
+
+  # remove any remaining { and }
+  x <- gsub("(\\{|\\})","", x)
 
   x
 }
