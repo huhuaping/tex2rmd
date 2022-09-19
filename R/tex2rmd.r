@@ -8,6 +8,7 @@
 #' @param dir_img parent directory path of images
 #' @param ext_img the extension of image, default "ext_img='.jpg'"
 #' @param head2_only whether contains only heading 1 and 2 only, default "head2_only = TRUE"
+#' @param keep_yml whether use yml header, default "keep_yml =TRUE"
 #'
 #' @return The markdown code is written to a file named <root>.Rmd,
 #' where \code{inFile} is <root>.tex.  The markdown code in the
@@ -35,7 +36,8 @@
 #' dir.img <- "data-raw/images/"
 #' tex2rmd(infile = input_md, ext_out = ".qmd",
 #'   dir_img = dir.img,
-#'   ext_img = ".jpg", head2_only = TRUE)
+#'   ext_img = ".jpg", 
+#'   head2_only = TRUE,keep_yml =FALSE)
 #'  }
 #'  
 #' @export
@@ -44,7 +46,7 @@
 tex2rmd <- function(infile, ext_out = ".Rmd",
                     dir_img, 
                     ext_img=".jpg", 
-                    head2_only=TRUE){
+                    head2_only=TRUE, keep_yml =TRUE){
 
   # Images can also be included using either raw HTML with img
   # tags (<img src = "" />) or using markdown directly (![image](imagepath)).
@@ -159,18 +161,36 @@ tex2rmd <- function(infile, ext_out = ".Rmd",
   tex[seclines] <- secs
   ## search again
   seclines <- grep("\\\\section\\*?\\{", tex)
+  ## add newline after by using custom function
+  tex <- add_newline(          #
+    x = tex,  grep_ptn = "\\\\section\\*?\\{",
+    paired = "none",
+    pos = "after")
+  ## search again
+  seclines <- grep("\\\\section\\*?\\{", tex)
+  ## get secs 
   secs <- tex[seclines]
+  ## subtitude
   secs <- sub("\\\\section\\*?\\{","",secs)
-  secs <- sub("\\}","", secs)
+  secs <- sub("\\}","", secs)  # add newline
   tex[seclines] <- paste("#", secs)
 
 
   # ---- SubSections
   # Subsections must be on a line by themselves.
   seclines <- grep("\\\\subsection\\*?\\{", tex)
+  ## add newline after by using custom function
+  tex <- add_newline(          #
+    x = tex,  grep_ptn = "\\\\subsection\\*?\\{",
+    paired = "none",
+    pos = "after")
+  ## search again
+  seclines <- grep("\\\\subsection\\*?\\{", tex)
+  ## get secs
   secs <- tex[seclines]
+  ## subtitude
   secs <- sub("\\\\subsection\\*?\\{","",secs)
-  secs <- sub("\\}","", secs)
+  secs <- sub("\\}","", secs) # add newline
   ## clean subsection number "$9.2$ " dollar with blank space
   secs <- stringr::str_replace_all(secs, "(\\$.+\\$\\s+)","") 
   ## clean subsection number "9 " with blank space
@@ -193,6 +213,21 @@ tex2rmd <- function(infile, ext_out = ".Rmd",
 
   # ---- Textbf
   tex <- convertTexTag(tex, "textbf", "**")
+  
+  # ---- double dollar for math equation
+  ## we assumed that must exactly paired 
+  ## with start "$$" and end "$$"
+  ddolarlines <- grep("\\$\\$", tex)
+  ## add newline before "$$" by using custom function
+  tex <- add_newline(          #
+    x = tex,  grep_ptn = "\\$\\$",
+    paired = "start",
+    pos = "before")
+  ## add newline after "$$" by using custom function
+  tex <- add_newline(          #
+    x = tex,  grep_ptn = "\\$\\$",
+    paired = "end",
+    pos = "after")
 
   # ---- Process tables
   tex <- processTables(tex)
@@ -241,7 +276,10 @@ tex2rmd <- function(infile, ext_out = ".Rmd",
               paste0('date: "',dt,'"'),
               "output: word_document",
               "---")
-  tex <- c(header, tex)
+  # whether use the yml header
+  if (isTRUE(keep_yml)){
+    tex <- c(header, tex)
+  } 
 
   # Make outfile name
   outfile <- paste0(sub("\\..+$","",infile), ext_out)
