@@ -9,6 +9,8 @@
 #'
 #' @param end The ending line number in the overall Latex file
 #' of the figure to process
+#' 
+#' @param figNum integer for figure numbering.
 #'
 #' @details The \\begin{Figure} and \\end{Figure} command must be
 #' on lines by themselves.

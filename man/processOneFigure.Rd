@@ -14,6 +14,8 @@ file of the figure to process}
 
 \item{end}{The ending line number in the overall Latex file
 of the figure to process}
+
+\item{figNum}{integer for figure numbering.}
 }
 \description{
 Process one latex Figure into Rmd format

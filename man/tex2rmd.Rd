@@ -4,10 +4,18 @@
 \alias{tex2rmd}
 \title{tex2rmd}
 \usage{
-tex2rmd(infile)
+tex2rmd(infile, ext_out = ".Rmd", dir_img, ext_img = ".jpg", head2_only = TRUE)
 }
 \arguments{
 \item{infile}{Full path to the input Latex file.}
+
+\item{ext_out}{final output file extension, defualt "ext_out = '.Rmd'"}
+
+\item{dir_img}{parent directory path of images}
+
+\item{ext_img}{the extension of image, default "ext_img='.jpg'"}
+
+\item{head2_only}{whether contains only heading 1 and 2 only, default "head2_only = TRUE"}
 }
 \value{
 The markdown code is written to a file named <root>.Rmd,
@@ -33,9 +41,14 @@ and eventually Word, is as follows:
 }
 }
 \examples{
-\\notrun{
-tex2rmd("main.tex")
+\dontrun{
+input_md <- "data-raw/main.tex"
+dir.img <- "data-raw/images/"
+tex2rmd(infile = input_md, ext_out = ".qmd",
+  dir_img = dir.img,
+  ext_img = ".jpg", head2_only = TRUE)
  }
+ 
 }
 \author{
 Trent McDonald

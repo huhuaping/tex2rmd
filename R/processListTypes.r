@@ -5,7 +5,7 @@
 #'
 #' @param tex a vector of Latex file lines
 #'
-#' @param listType A vector containing the types lists to process.
+#' @param listTypes A vector containing the types lists to process.
 #' For example, c("itemize", "enumerate").  Note that all list types
 #' must be process-able in function \code{processOneList}.
 #'

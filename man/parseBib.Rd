@@ -15,6 +15,18 @@ A string containing the bibitem
 \description{
 Parse a bibitem and return the bibliography item
 }
+\examples{
+bibItem <- "\\\\bibitem[{Bai et~al.(2011)Bai, L{\\\\\"{u}},
+Wang, Zhou and Ding}]{Bai2011a} Bai, S., L{\\\\\"{u}}, G.,
+Wang, J., Zhou, P. and Ding, L. (2011)
+{GIS-based rare   events logistic regression for
+landslide-susceptibility mapping of   Lianyungang, China}.
+\\\\newblock \\\\textit{Environmental Earth Sciences},
+\\\\textbf{62}, 139--149. "
+
+parseBib(bibItem)
+
+}
 \author{
 Trent McDonald
 }

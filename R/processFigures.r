@@ -14,6 +14,7 @@ processFigures <- function(x){
   # First process any includegraphics in Figure environments
   figNum <- 1
   repeat{
+    
     beginFigure <- grep("\\\\begin\\{figure\\}", x)
     endFigure <- grep("\\\\end\\{figure\\}", x)
 

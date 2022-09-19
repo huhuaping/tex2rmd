@@ -4,6 +4,10 @@
 #' format.  Can optionally convert to any format supported by RMarkdown
 #'
 #' @param infile Full path to the input Latex file.
+#' @param ext_out final output file extension, defualt "ext_out = '.Rmd'"
+#' @param dir_img parent directory path of images
+#' @param ext_img the extension of image, default "ext_img='.jpg'"
+#' @param head2_only whether contains only heading 1 and 2 only, default "head2_only = TRUE"
 #'
 #' @return The markdown code is written to a file named <root>.Rmd,
 #' where \code{inFile} is <root>.tex.  The markdown code in the
@@ -26,13 +30,21 @@
 #' @author Trent McDonald
 #'
 #' @examples
-#' \notrun{
-#' tex2rmd("main.tex")
+#' \dontrun{
+#' input_md <- "data-raw/main.tex"
+#' dir.img <- "data-raw/images/"
+#' tex2rmd(infile = input_md, ext_out = ".qmd",
+#'   dir_img = dir.img,
+#'   ext_img = ".jpg", head2_only = TRUE)
 #'  }
+#'  
 #' @export
 
 
-tex2rmd <- function(infile){
+tex2rmd <- function(infile, ext_out = ".Rmd",
+                    dir_img, 
+                    ext_img=".jpg", 
+                    head2_only=TRUE){
 
   # Images can also be included using either raw HTML with img
   # tags (<img src = "" />) or using markdown directly (![image](imagepath)).
@@ -138,9 +150,20 @@ tex2rmd <- function(infile){
   # Sections must be on a line by themselves.  Can't have "\section{A} more text"
   seclines <- grep("\\\\section\\*?\\{", tex)
   secs <- tex[seclines]
+  ## case when mathsnap error
+  if (isTRUE(head2_only)){
+    secs[-1] <- stringr::str_replace_all(
+      secs[-1], "\\\\section", "\\\\subsection")
+    } 
+  ## pipe to tex
+  tex[seclines] <- secs
+  ## search again
+  seclines <- grep("\\\\section\\*?\\{", tex)
+  secs <- tex[seclines]
   secs <- sub("\\\\section\\*?\\{","",secs)
   secs <- sub("\\}","", secs)
   tex[seclines] <- paste("#", secs)
+
 
   # ---- SubSections
   # Subsections must be on a line by themselves.
@@ -148,6 +171,10 @@ tex2rmd <- function(infile){
   secs <- tex[seclines]
   secs <- sub("\\\\subsection\\*?\\{","",secs)
   secs <- sub("\\}","", secs)
+  ## clean subsection number "$9.2$ " dollar with blank space
+  secs <- stringr::str_replace_all(secs, "(\\$.+\\$\\s+)","") 
+  ## clean subsection number "9 " with blank space
+  secs <- stringr::str_replace_all(secs, "(^[\\d]\\s+)","") 
   tex[seclines] <- paste("##", secs)
 
   # ---- SubSubSections
@@ -170,9 +197,26 @@ tex2rmd <- function(infile){
   # ---- Process tables
   tex <- processTables(tex)
 
+  # ---- Process includegraphics
+  graphlines <- grep("\\includegraphics", tex)
+  graphs <- tex[graphlines]
+  # remove any graph pars, such as [max width=\textwidth]
+  graphs <- stringr::str_replace_all( 
+    graphs, "(?<=includegraphics)(.+)(?=\\{)", "") 
+  # correct image path
+  graphs <- stringr::str_replace_all( 
+    graphs, "\\{", paste0("\\{",dir_img,"/") ) 
+  # fix image extension
+  graphs <- stringr::str_replace_all( 
+    graphs, "\\}", paste0(ext_img,"\\)" )) 
+  # fix markdown format
+  graphs <- stringr::str_replace_all( 
+    graphs, "\\\\includegraphics\\{", "!\\[\\]\\(")
+  tex[graphlines] <- graphs
+  
   # ---- Process Figures
   tex <- processFigures(tex)
-
+  
   # ---- Process display equations
   tex <- processDisplayEqns(tex)
 
@@ -200,7 +244,7 @@ tex2rmd <- function(infile){
   tex <- c(header, tex)
 
   # Make outfile name
-  outfile <- paste0(sub("\\..+$","",infile), ".Rmd")
+  outfile <- paste0(sub("\\..+$","",infile), ext_out)
 
   # write out all modified text
   writeLines(tex, outfile)

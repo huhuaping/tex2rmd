@@ -12,6 +12,8 @@ processOneTable(x, begin, end, tabNum)
 \item{begin}{The beginning line number of the latex table to process}
 
 \item{end}{The ending line number of the latex table to process}
+
+\item{tabNum}{integer for table numbering.}
 }
 \description{
 Process one latex table into Rmd format

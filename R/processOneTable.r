@@ -7,6 +7,8 @@
 #' @param begin The beginning line number of the latex table to process
 #'
 #' @param end The ending line number of the latex table to process
+#' 
+#' @param tabNum integer for table numbering.
 #'
 #' @details The \\begin{table} and \\end{table} command must be on lines by themselves.
 #'

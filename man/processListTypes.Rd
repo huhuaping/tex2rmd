@@ -9,7 +9,7 @@ processListTypes(tex, listTypes)
 \arguments{
 \item{tex}{a vector of Latex file lines}
 
-\item{listType}{A vector containing the types lists to process.
+\item{listTypes}{A vector containing the types lists to process.
 For example, c("itemize", "enumerate").  Note that all list types
 must be process-able in function \code{processOneList}.}
 }
