@@ -1,10 +1,8 @@
 ---
-title: "Untitled"
-format: 
-  html:
-    toc: true
-    toc-depth: 2
-  
+title: "Chapter 4 "
+author: "huhua"
+date: "20-9月-2022"
+output: html_document
 ---
 
 # Least Squares Regression
@@ -33,7 +31,7 @@ We start with the simplest setting of the intercept-only model
 
 $$
 \begin{aligned}
-Y &=\mu+e   
+Y &=\mu+e \\
 \mathbb{E}[e] &=0 .
 \end{aligned}
 $$
@@ -60,10 +58,10 @@ Then
 
 $$
 \begin{aligned}
-\operatorname{var}[\bar{Y}] &=\mathbb{E}\left[(\bar{Y}-\mu)^{2}\right]   
-&=\mathbb{E}\left[\left(\frac{1}{n} \sum_{i=1}^{n} e_{i}\right)\left(\frac{1}{n} \sum_{j=1}^{n} e_{j}\right)\right]   
-&=\frac{1}{n^{2}} \sum_{i=1}^{n} \sum_{j=1}^{n} \mathbb{E}\left[e_{i} e_{j}\right]   
-&=\frac{1}{n^{2}} \sum_{i=1}^{n} \sigma^{2}   
+\operatorname{var}[\bar{Y}] &=\mathbb{E}\left[(\bar{Y}-\mu)^{2}\right] \\
+&=\mathbb{E}\left[\left(\frac{1}{n} \sum_{i=1}^{n} e_{i}\right)\left(\frac{1}{n} \sum_{j=1}^{n} e_{j}\right)\right] \\
+&=\frac{1}{n^{2}} \sum_{i=1}^{n} \sum_{j=1}^{n} \mathbb{E}\left[e_{i} e_{j}\right] \\
+&=\frac{1}{n^{2}} \sum_{i=1}^{n} \sigma^{2} \\
 &=\frac{1}{n} \sigma^{2} .
 \end{aligned}
 $$
@@ -82,7 +80,7 @@ The variables $(Y, X)$ satisfy the linear regression equation
 
 $$
 \begin{aligned}
-Y &=X^{\prime} \beta+e   
+Y &=X^{\prime} \beta+e \\
 \mathbb{E}[e \mid X] &=0 .
 \end{aligned}
 $$
@@ -91,7 +89,7 @@ The variables have finite second moments
 
 $$
 \begin{aligned}
-&\mathbb{E}\left[Y^{2}\right]<\infty   
+&\mathbb{E}\left[Y^{2}\right]<\infty \\
 &\mathbb{E}\|X\|^{2}<\infty
 \end{aligned}
 $$
@@ -128,11 +126,11 @@ The first equality states that the conditional expectation of $Y_{i}$ given $\le
 
 $$
 \begin{aligned}
-\mathbb{E}\left[\widehat{\beta} \mid X_{1}, \ldots, X_{n}\right] &=\mathbb{E}\left[\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} Y_{i}\right) \mid X_{1}, \ldots, X_{n}\right]   
-&=\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1} \mathbb{E}\left[\left(\sum_{i=1}^{n} X_{i} Y_{i}\right) \mid X_{1}, \ldots, X_{n}\right]   
-&=\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1} \sum_{i=1}^{n} \mathbb{E}\left[X_{i} Y_{i} \mid X_{1}, \ldots, X_{n}\right]   
-&=\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1} \sum_{i=1}^{n} X_{i} \mathbb{E}\left[Y_{i} \mid X_{i}\right]   
-&=\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1} \sum_{i=1}^{n} X_{i} X_{i}^{\prime} \beta   
+\mathbb{E}\left[\widehat{\beta} \mid X_{1}, \ldots, X_{n}\right] &=\mathbb{E}\left[\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} Y_{i}\right) \mid X_{1}, \ldots, X_{n}\right] \\
+&=\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1} \mathbb{E}\left[\left(\sum_{i=1}^{n} X_{i} Y_{i}\right) \mid X_{1}, \ldots, X_{n}\right] \\
+&=\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1} \sum_{i=1}^{n} \mathbb{E}\left[X_{i} Y_{i} \mid X_{1}, \ldots, X_{n}\right] \\
+&=\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1} \sum_{i=1}^{n} X_{i} \mathbb{E}\left[Y_{i} \mid X_{i}\right] \\
+&=\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1} \sum_{i=1}^{n} X_{i} X_{i}^{\prime} \beta \\
 &=\beta .
 \end{aligned}
 $$
@@ -141,12 +139,12 @@ Now let's show the same result using matrix notation. (4.4) implies
 
 $$
 \mathbb{E}[\boldsymbol{Y} \mid \boldsymbol{X}]=\left(\begin{array}{c}
-\vdots   
-\mathbb{E}\left[Y_{i} \mid \boldsymbol{X}\right]   
+\vdots \\
+\mathbb{E}\left[Y_{i} \mid \boldsymbol{X}\right] \\
 \vdots
 \end{array}\right)=\left(\begin{array}{c}
-\vdots   
-X_{i}^{\prime} \beta   
+\vdots \\
+X_{i}^{\prime} \beta \\
 \vdots
 \end{array}\right)=\boldsymbol{X} \beta .
 $$
@@ -155,12 +153,12 @@ Similarly
 
 $$
 \mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}]=\left(\begin{array}{c}
-\vdots   
-\mathbb{E}\left[e_{i} \mid \boldsymbol{X}\right]   
+\vdots \\
+\mathbb{E}\left[e_{i} \mid \boldsymbol{X}\right] \\
 \vdots
 \end{array}\right)=\left(\begin{array}{c}
-\vdots   
-\mathbb{E}\left[e_{i} \mid X_{i}\right]   
+\vdots \\
+\mathbb{E}\left[e_{i} \mid X_{i}\right] \\
 \vdots
 \end{array}\right)=0 .
 $$
@@ -169,9 +167,9 @@ Using $\widehat{\beta}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\
 
 $$
 \begin{aligned}
-\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}] &=\mathbb{E}\left[\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{Y} \mid \boldsymbol{X}\right]   
-&=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \mathbb{E}[\boldsymbol{Y} \mid \boldsymbol{X}]   
-&=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{X} \beta   
+\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}] &=\mathbb{E}\left[\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{Y} \mid \boldsymbol{X}\right] \\
+&=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \mathbb{E}[\boldsymbol{Y} \mid \boldsymbol{X}] \\
+&=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{X} \beta \\
 &=\beta .
 \end{aligned}
 $$
@@ -180,8 +178,8 @@ At the risk of belaboring the derivation, another way to calculate the same resu
 
 $$
 \begin{aligned}
-\widehat{\beta} &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime}(\boldsymbol{X} \beta+\boldsymbol{e})\right)   
-&=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{X} \beta+\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{e}\right)   
+\widehat{\beta} &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime}(\boldsymbol{X} \beta+\boldsymbol{e})\right) \\
+&=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{X} \beta+\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{e}\right) \\
 &=\beta+\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{e} .
 \end{aligned}
 $$
@@ -190,7 +188,7 @@ This is a useful linear decomposition of the estimator $\widehat{\beta}$ into th
 
 $$
 \begin{aligned}
-\mathbb{E}[\widehat{\beta}-\beta \mid \boldsymbol{X}] &=\mathbb{E}\left[\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{e} \mid \boldsymbol{X}\right]   
+\mathbb{E}[\widehat{\beta}-\beta \mid \boldsymbol{X}] &=\mathbb{E}\left[\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{e} \mid \boldsymbol{X}\right] \\
 &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}]=0 .
 \end{aligned}
 $$
@@ -249,9 +247,9 @@ where the first equality uses independence of the observations (Assumption 4.1) 
 
 $$
 \boldsymbol{D}=\operatorname{diag}\left(\sigma_{1}^{2}, \ldots, \sigma_{n}^{2}\right)=\left(\begin{array}{cccc}
-\sigma_{1}^{2} & 0 & \cdots & 0   
-0 & \sigma_{2}^{2} & \cdots & 0   
-\vdots & \vdots & \ddots & \vdots   
+\sigma_{1}^{2} & 0 & \cdots & 0 \\
+0 & \sigma_{2}^{2} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
 0 & 0 & \cdots & \sigma_{n}^{2}
 \end{array}\right)
 $$
@@ -338,8 +336,8 @@ Write the homoskedastic linear regression model in vector format as
 
 $$
 \begin{aligned}
-\boldsymbol{Y} &=\boldsymbol{X} \beta+\boldsymbol{e}   
-\mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}] &=0   
+\boldsymbol{Y} &=\boldsymbol{X} \beta+\boldsymbol{e} \\
+\mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}] &=0 \\
 \operatorname{var}[\boldsymbol{e} \mid \boldsymbol{X}] &=\boldsymbol{I}_{n} \sigma^{2} .
 \end{aligned}
 $$
@@ -384,9 +382,9 @@ Set $\boldsymbol{C}=\boldsymbol{A}-\boldsymbol{X}\left(\boldsymbol{X}^{\prime} \
 
 $$
 \begin{aligned}
-\boldsymbol{A}^{\prime} \boldsymbol{A}-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} &=\left(\boldsymbol{C}+\boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\right)^{\prime}\left(\boldsymbol{C}+\boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\right)-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
-&=\boldsymbol{C}^{\prime} \boldsymbol{C}+\boldsymbol{C}^{\prime} \boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}+\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{C}   
-&+\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+\boldsymbol{A}^{\prime} \boldsymbol{A}-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} &=\left(\boldsymbol{C}+\boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\right)^{\prime}\left(\boldsymbol{C}+\boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\right)-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
+&=\boldsymbol{C}^{\prime} \boldsymbol{C}+\boldsymbol{C}^{\prime} \boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}+\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{C} \\
+&+\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
 &=\boldsymbol{C}^{\prime} \boldsymbol{C} \geq 0
 \end{aligned}
 $$
@@ -461,7 +459,7 @@ Consider a generalized situation where the observation errors are possibly corre
 
 $$
 \begin{gathered}
-\mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}]=0   
+\mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}]=0 \\
 \operatorname{var}[\boldsymbol{e} \mid \boldsymbol{X}]=\Sigma \sigma^{2}
 \end{gathered}
 $$
@@ -472,7 +470,7 @@ Under these assumptions, by arguments similar to the previous sections we can ca
 
 $$
 \begin{gathered}
-\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}]=\beta   
+\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}]=\beta \\
 \operatorname{var}[\widehat{\beta} \mid \boldsymbol{X}]=\sigma^{2}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \Sigma \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}
 \end{gathered}
 $$
@@ -493,8 +491,8 @@ When $\Sigma$ is known, Aitken (1935) constructed an estimator which achieves th
 
 $$
 \begin{aligned}
-\widetilde{\beta}_{\text {gls }} &=\left(\widetilde{\boldsymbol{X}}^{\prime} \widetilde{\boldsymbol{X}}\right)^{-1} \widetilde{\boldsymbol{X}}^{\prime} \widetilde{\boldsymbol{Y}}   
-&=\left(\left(\Sigma^{-1 / 2} \boldsymbol{X}\right)^{\prime}\left(\Sigma^{-1 / 2} \boldsymbol{X}\right)\right)^{-1}\left(\Sigma^{-1 / 2} \boldsymbol{X}\right)^{\prime}\left(\Sigma^{-1 / 2} \boldsymbol{Y}\right)   
+\widetilde{\beta}_{\text {gls }} &=\left(\widetilde{\boldsymbol{X}}^{\prime} \widetilde{\boldsymbol{X}}\right)^{-1} \widetilde{\boldsymbol{X}}^{\prime} \widetilde{\boldsymbol{Y}} \\
+&=\left(\left(\Sigma^{-1 / 2} \boldsymbol{X}\right)^{\prime}\left(\Sigma^{-1 / 2} \boldsymbol{X}\right)\right)^{-1}\left(\Sigma^{-1 / 2} \boldsymbol{X}\right)^{\prime}\left(\Sigma^{-1 / 2} \boldsymbol{Y}\right) \\
 &=\left(\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{Y} .
 \end{aligned}
 $$
@@ -505,7 +503,7 @@ You can calculate that
 
 $$
 \begin{gathered}
-\mathbb{E}\left[\widetilde{\beta}_{\text {gls }} \mid \boldsymbol{X}\right]=\beta   
+\mathbb{E}\left[\widetilde{\beta}_{\text {gls }} \mid \boldsymbol{X}\right]=\beta \\
 \operatorname{var}\left[\widetilde{\beta}_{\text {gls }} \mid \boldsymbol{X}\right]=\sigma^{2}\left(\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{X}\right)^{-1} .
 \end{gathered}
 $$
@@ -516,7 +514,7 @@ In the linear regression model with independent observations and known condition
 
 $$
 \begin{aligned}
-\widetilde{\beta}_{\mathrm{gls}} &=\left(\boldsymbol{X}^{\prime} \boldsymbol{D}^{-1} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{D}^{-1} \boldsymbol{Y}   
+\widetilde{\beta}_{\mathrm{gls}} &=\left(\boldsymbol{X}^{\prime} \boldsymbol{D}^{-1} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{D}^{-1} \boldsymbol{Y} \\
 &=\left(\sum_{i=1}^{n} \sigma_{i}^{-2} X_{i} X_{i}^{\prime}\right)^{-1}\left(\sum_{i=1}^{n} \sigma_{i}^{-2} X_{i} Y_{i}\right) .
 \end{aligned}
 $$
@@ -585,8 +583,8 @@ The variance of the $i^{t h}$ prediction error is then
 
 $$
 \begin{aligned}
-\operatorname{var}\left[\widetilde{e}_{i} \mid \boldsymbol{X}\right] &=\mathbb{E}\left[\widetilde{e}_{i}^{2} \mid \boldsymbol{X}\right]   
-&=\left(1-h_{i i}\right)^{-1}\left(1-h_{i i}\right)\left(1-h_{i i}\right)^{-1} \sigma^{2}   
+\operatorname{var}\left[\widetilde{e}_{i} \mid \boldsymbol{X}\right] &=\mathbb{E}\left[\widetilde{e}_{i}^{2} \mid \boldsymbol{X}\right] \\
+&=\left(1-h_{i i}\right)^{-1}\left(1-h_{i i}\right)\left(1-h_{i i}\right)^{-1} \sigma^{2} \\
 &=\left(1-h_{i i}\right)^{-1} \sigma^{2} .
 \end{aligned}
 $$
@@ -635,9 +633,9 @@ Then
 
 $$
 \begin{aligned}
-\mathbb{E}\left[\widehat{\sigma}^{2} \mid \boldsymbol{X}\right] &=\frac{1}{n} \operatorname{tr}\left(\mathbb{E}\left[\boldsymbol{M e e}^{\prime} \mid \boldsymbol{X}\right]\right)   
-&=\frac{1}{n} \operatorname{tr}\left(\boldsymbol{M}\left[\boldsymbol{e} \boldsymbol{e}^{\prime} \mid \boldsymbol{X}\right]\right)   
-&=\frac{1}{n} \operatorname{tr}(\boldsymbol{M D})   
+\mathbb{E}\left[\widehat{\sigma}^{2} \mid \boldsymbol{X}\right] &=\frac{1}{n} \operatorname{tr}\left(\mathbb{E}\left[\boldsymbol{M e e}^{\prime} \mid \boldsymbol{X}\right]\right) \\
+&=\frac{1}{n} \operatorname{tr}\left(\boldsymbol{M}\left[\boldsymbol{e} \boldsymbol{e}^{\prime} \mid \boldsymbol{X}\right]\right) \\
+&=\frac{1}{n} \operatorname{tr}(\boldsymbol{M D}) \\
 &=\frac{1}{n} \sum_{i=1}^{n}\left(1-h_{i i}\right) \sigma_{i}^{2}
 \end{aligned}
 $$
@@ -694,10 +692,10 @@ The first term in (4.33) is $\sigma^{2}$. The second term in (4.33) is zero beca
 
 $$
 \begin{aligned}
-&\operatorname{tr}\left(\mathbb{E}\left[X_{n+1} X_{n+1}^{\prime}\right] \mathbb{E}\left[(\widehat{\beta}-\beta)(\widehat{\beta}-\beta)^{\prime}\right]\right)   
-&=\operatorname{tr}\left(\mathbb{E}\left[X_{n+1} X_{n+1}^{\prime}\right] \mathbb{E}\left[\mathbb{E}\left[(\widehat{\beta}-\beta)(\widehat{\beta}-\beta)^{\prime} \mid \boldsymbol{X}\right]\right]\right)   
-&=\operatorname{tr}\left(\mathbb{E}\left[X_{n+1} X_{n+1}^{\prime}\right] \mathbb{E}\left[\boldsymbol{V}_{\widehat{\beta}}\right]\right)   
-&=\mathbb{E}\left[\operatorname{tr}\left(\left(X_{n+1} X_{n+1}^{\prime}\right) \boldsymbol{V}_{\widehat{\beta}}\right)\right]   
+&\operatorname{tr}\left(\mathbb{E}\left[X_{n+1} X_{n+1}^{\prime}\right] \mathbb{E}\left[(\widehat{\beta}-\beta)(\widehat{\beta}-\beta)^{\prime}\right]\right) \\
+&=\operatorname{tr}\left(\mathbb{E}\left[X_{n+1} X_{n+1}^{\prime}\right] \mathbb{E}\left[\mathbb{E}\left[(\widehat{\beta}-\beta)(\widehat{\beta}-\beta)^{\prime} \mid \boldsymbol{X}\right]\right]\right) \\
+&=\operatorname{tr}\left(\mathbb{E}\left[X_{n+1} X_{n+1}^{\prime}\right] \mathbb{E}\left[\boldsymbol{V}_{\widehat{\beta}}\right]\right) \\
+&=\mathbb{E}\left[\operatorname{tr}\left(\left(X_{n+1} X_{n+1}^{\prime}\right) \boldsymbol{V}_{\widehat{\beta}}\right)\right] \\
 &=\mathbb{E}\left[X_{n+1}^{\prime} \boldsymbol{V}_{\widehat{\beta}} X_{n+1}\right]
 \end{aligned}
 $$
@@ -724,8 +722,8 @@ where $\widetilde{e}_{i}=Y_{i}-X_{i}^{\prime} \widehat{\beta}_{(-i)}=\widehat{e}
 
 $$
 \begin{aligned}
-\mathbb{E}\left[\widetilde{\sigma}^{2}\right] &=\mathbb{E}\left[\widetilde{e}_{i}^{2}\right]   
-&=\mathbb{E}\left[\left(e_{i}-X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)\right)^{2}\right]   
+\mathbb{E}\left[\widetilde{\sigma}^{2}\right] &=\mathbb{E}\left[\widetilde{e}_{i}^{2}\right] \\
+&=\mathbb{E}\left[\left(e_{i}-X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)\right)^{2}\right] \\
 &=\sigma^{2}+\mathbb{E}\left[X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)\left(\widehat{\beta}_{(-i)}-\beta\right)^{\prime} X_{i}\right] .
 \end{aligned}
 $$
@@ -798,7 +796,7 @@ where $\widetilde{\boldsymbol{D}}=\operatorname{diag}\left(e_{1}^{2}, \ldots, e_
 
 $$
 \begin{aligned}
-\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\text {ideal }} &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \widetilde{\boldsymbol{D}} \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\text {ideal }} &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \widetilde{\boldsymbol{D}} \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
 &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} e_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}
 \end{aligned}
 $$
@@ -807,8 +805,8 @@ Indeed,
 
 $$
 \begin{aligned}
-\mathbb{E}\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\text {ideal }} \mid \boldsymbol{X}\right] &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \mathbb{E}\left[e_{i}^{2} \mid \boldsymbol{X}\right]\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
-&=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \sigma_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+\mathbb{E}\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\text {ideal }} \mid \boldsymbol{X}\right] &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \mathbb{E}\left[e_{i}^{2} \mid \boldsymbol{X}\right]\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
+&=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \sigma_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
 &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{D} \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}=\boldsymbol{V}_{\widehat{\beta}}
 \end{aligned}
 $$
@@ -833,7 +831,7 @@ Alternatively, we could use the standardized residuals $\bar{e}_{i}$ or the pred
 
 $$
 \begin{aligned}
-\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 2} &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \bar{e}_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 2} &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \bar{e}_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
 &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n}\left(1-h_{i i}\right)^{-1} X_{i} X_{i}^{\prime} \widehat{e}_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}
 \end{aligned}
 $$
@@ -842,7 +840,7 @@ and
 
 $$
 \begin{aligned}
-\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 3} &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \tilde{e}_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 3} &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \tilde{e}_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
 &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n}\left(1-h_{i i}\right)^{-2} X_{i} X_{i}^{\prime} \widehat{e}_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} .
 \end{aligned}
 $$
@@ -859,9 +857,9 @@ $$
 
 $$
 \begin{aligned}
-\mathbb{E}\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 0} \mid \boldsymbol{X}\right] &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \mathbb{E}\left[\widehat{e}_{i}^{2} \mid \boldsymbol{X}\right]\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
-&=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\left(1-h_{i i}\right) \sigma^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
-&=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2}-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} h_{i i}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2}   
+\mathbb{E}\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 0} \mid \boldsymbol{X}\right] &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \mathbb{E}\left[\widehat{e}_{i}^{2} \mid \boldsymbol{X}\right]\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
+&=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\left(1-h_{i i}\right) \sigma^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
+&=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2}-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} h_{i i}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2} \\
 &<\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2}=\boldsymbol{V}_{\widehat{\beta}}
 \end{aligned}
 $$
@@ -894,8 +892,8 @@ Note that $e_{i}$ and $\widehat{\beta}_{(-i)}$ are functions of non-overlapping 
 
 $$
 \begin{aligned}
-\mathbb{E}\left[\widetilde{e}_{i}^{2} \mid \boldsymbol{X}\right] &=\mathbb{E}\left[e_{i}^{2} \mid \boldsymbol{X}\right]-2 X_{i}^{\prime} \mathbb{E}\left[\left(\widehat{\beta}_{(-i)}-\beta\right) e_{i} \mid \boldsymbol{X}\right]+\mathbb{E}\left[\left(X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)\right)^{2} \mid \boldsymbol{X}\right]   
-&=\sigma_{i}^{2}+\mathbb{E}\left[\left(X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)\right)^{2} \mid \boldsymbol{X}\right]   
+\mathbb{E}\left[\widetilde{e}_{i}^{2} \mid \boldsymbol{X}\right] &=\mathbb{E}\left[e_{i}^{2} \mid \boldsymbol{X}\right]-2 X_{i}^{\prime} \mathbb{E}\left[\left(\widehat{\beta}_{(-i)}-\beta\right) e_{i} \mid \boldsymbol{X}\right]+\mathbb{E}\left[\left(X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)\right)^{2} \mid \boldsymbol{X}\right] \\
+&=\sigma_{i}^{2}+\mathbb{E}\left[\left(X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)\right)^{2} \mid \boldsymbol{X}\right] \\
 & \geq \sigma_{i}^{2} .
 \end{aligned}
 $$
@@ -904,7 +902,7 @@ It follows that
 
 $$
 \begin{aligned}
-\mathbb{E}\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 3} \mid \boldsymbol{X}\right] &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \mathbb{E}\left[\tilde{e}_{i}^{2} \mid \boldsymbol{X}\right]\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+\mathbb{E}\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 3} \mid \boldsymbol{X}\right] &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \mathbb{E}\left[\tilde{e}_{i}^{2} \mid \boldsymbol{X}\right]\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
 & \geq\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \sigma_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}=\boldsymbol{V}_{\widehat{\beta}}
 \end{aligned}
 $$
@@ -941,10 +939,10 @@ To illustrate, we return to the log wage regression (3.12) of Section 3.7. We ca
 
 $$
 \widehat{\boldsymbol{V}}_{\widehat{\beta}}^{0}=\left(\begin{array}{cc}
-5010 & 314   
+5010 & 314 \\
 314 & 20
 \end{array}\right)^{-1} 0.160=\left(\begin{array}{cc}
-0.002 & -0.031   
+0.002 & -0.031 \\
 -0.031 & 0.499
 \end{array}\right)
 $$
@@ -953,7 +951,7 @@ We also calculate that
 
 $$
 \sum_{i=1}^{n}\left(1-h_{i i}\right)^{-1} X_{i} X_{i}^{\prime} \widehat{e}_{i}^{2}=\left(\begin{array}{cc}
-763.26 & 48.513   
+763.26 & 48.513 \\
 48.513 & 3.1078
 \end{array}\right) .
 $$
@@ -963,17 +961,17 @@ Therefore the HC2 covariance matrix estimate is
 $$
 \begin{aligned}
 \widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 2} &=\left(\begin{array}{cc}
-5010 & 314   
+5010 & 314 \\
 314 & 20
 \end{array}\right)^{-1}\left(\begin{array}{cc}
-763.26 & 48.513   
+763.26 & 48.513 \\
 48.513 & 3.1078
 \end{array}\right)\left(\begin{array}{cc}
-5010 & 314   
+5010 & 314 \\
 314 & 20
-\end{array}\right)^{-1}   
+\end{array}\right)^{-1} \\
 &=\left(\begin{array}{cc}
-0.001 & -0.015   
+0.001 & -0.015 \\
 -0.015 & 0.243
 \end{array}\right) .
 \end{aligned}
@@ -1015,10 +1013,10 @@ In the regression model (4.45) we can calculate that the true covariance matrix 
 
 $$
 \boldsymbol{V}_{\widehat{\beta}}=\sigma^{2}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}=\sigma^{2}\left(\begin{array}{ll}
-1 & 1   
+1 & 1 \\
 1 & n
 \end{array}\right)^{-1}=\frac{\sigma^{2}}{n-1}\left(\begin{array}{cc}
-n & -1   
+n & -1 \\
 -1 & 1
 \end{array}\right)
 $$
@@ -1035,10 +1033,10 @@ Now let's examine the standard HC1 covariance matrix estimator (4.37). The regre
 
 $$
 \sum_{i=1}^{n} X_{i} X_{i}^{\prime} \hat{e}_{i}^{2}=\left(\begin{array}{cc}
-0 & 0   
+0 & 0 \\
 0 & \sum_{i=1}^{n} \widehat{e}_{i}^{2}
 \end{array}\right)=\left(\begin{array}{cc}
-0 & 0   
+0 & 0 \\
 0 & (n-2) s^{2}
 \end{array}\right)
 $$
@@ -1048,17 +1046,17 @@ where $s^{2}=(n-2)^{-1} \sum_{i=1}^{n} \widehat{e}_{i}^{2}$ is the bias-correcte
 $$
 \begin{aligned}
 \widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC1}} &=\left(\frac{n}{n-2}\right) \frac{1}{(n-1)^{2}}\left(\begin{array}{cc}
-n & -1   
+n & -1 \\
 -1 & 1
 \end{array}\right)\left(\begin{array}{cc}
-0 & 0   
+0 & 0 \\
 0 & (n-2) s^{2}
 \end{array}\right)\left(\begin{array}{cc}
-n & -1   
+n & -1 \\
 -1 & 1
-\end{array}\right)   
+\end{array}\right) \\
 &=s^{2} \frac{n}{(n-1)^{2}}\left(\begin{array}{cc}
-1 & -1   
+1 & -1 \\
 -1 & 1
 \end{array}\right) .
 \end{aligned}
@@ -1086,10 +1084,10 @@ $$
 h_{i i}=\frac{1}{n-1}\left(\begin{array}{ll}
 1 & 1
 \end{array}\right)\left(\begin{array}{cc}
-n & -1   
+n & -1 \\
 -1 & 1
 \end{array}\right)\left(\begin{array}{l}
-1   
+1 \\
 1
 \end{array}\right)=1 .
 $$
@@ -1225,7 +1223,7 @@ and
 
 $$
 \frac{1}{n} \boldsymbol{X}^{\prime} \boldsymbol{X}=\left(\begin{array}{ll}
-1 & \rho   
+1 & \rho \\
 \rho & 1
 \end{array}\right) .
 $$
@@ -1234,10 +1232,10 @@ In this case
 
 $$
 \operatorname{var}[\widehat{\beta} \mid \boldsymbol{X}]=\frac{\sigma^{2}}{n}\left(\begin{array}{ll}
-1 & \rho   
+1 & \rho \\
 \rho & 1
 \end{array}\right)^{-1}=\frac{\sigma^{2}}{n\left(1-\rho^{2}\right)}\left(\begin{array}{cc}
-1 & -\rho   
+1 & -\rho \\
 -\rho & 1
 \end{array}\right) .
 $$
@@ -1318,8 +1316,8 @@ Using this notation we can write the sums over the observations using the double
 
 $$
 \begin{aligned}
-\widehat{\beta} &=\left(\sum_{g=1}^{G} \sum_{i=1}^{n_{g}} X_{i g} X_{i g}^{\prime}\right)^{-1}\left(\sum_{g=1}^{G} \sum_{i=1}^{n_{g}} X_{i g} Y_{i g}\right)   
-&=\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{X}_{g}\right)^{-1}\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{Y}_{g}\right)   
+\widehat{\beta} &=\left(\sum_{g=1}^{G} \sum_{i=1}^{n_{g}} X_{i g} X_{i g}^{\prime}\right)^{-1}\left(\sum_{g=1}^{G} \sum_{i=1}^{n_{g}} X_{i g} Y_{i g}\right) \\
+&=\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{X}_{g}\right)^{-1}\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{Y}_{g}\right) \\
 &=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{Y}\right)
 \end{aligned}
 $$
@@ -1346,7 +1344,7 @@ or that the conditional expectation of $\boldsymbol{Y}_{g}$ given $\boldsymbol{X
 
 In the regression (4.46) the conditional expectation is necessarily linear and satisfies (4.50) since the
 
-![](data-raw/images//2022_09_17_46fafb30295495354ae2g-29.jpg)  
+![](data-raw/images//2022_09_17_46fafb30295495354ae2g-29.jpg)\\
 controls, (4.50) requires that the achievement of any student is unaffected by the individual controls (e.g. age, gender, and initial test score) of other students within the same school.
 
 Given (4.50) we can calculate the expectation of the OLS estimator. Substituting (4.48) into (4.49) we find
@@ -1359,8 +1357,8 @@ The mean of $\widehat{\beta}-\beta$ conditioning on all the regressors is
 
 $$
 \begin{aligned}
-\mathbb{E}[\widehat{\beta}-\beta \mid \boldsymbol{X}] &=\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{X}_{g}\right)^{-1}\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \mathbb{E}\left[\boldsymbol{e}_{g} \mid \boldsymbol{X}\right]\right)   
-&=\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{X}_{g}\right)^{-1}\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \mathbb{E}\left[\boldsymbol{e}_{g} \mid \boldsymbol{X}_{g}\right]\right)   
+\mathbb{E}[\widehat{\beta}-\beta \mid \boldsymbol{X}] &=\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{X}_{g}\right)^{-1}\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \mathbb{E}\left[\boldsymbol{e}_{g} \mid \boldsymbol{X}\right]\right) \\
+&=\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{X}_{g}\right)^{-1}\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \mathbb{E}\left[\boldsymbol{e}_{g} \mid \boldsymbol{X}_{g}\right]\right) \\
 &=0 .
 \end{aligned}
 $$
@@ -1375,9 +1373,9 @@ Now consider the covariance matrix of $\widehat{\beta}$. Let $\Sigma_{g}=\mathbb
 
 $$
 \begin{aligned}
-\operatorname{var}\left[\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{e}_{g}\right) \mid \boldsymbol{X}\right] &=\sum_{g=1}^{G} \operatorname{var}\left[\boldsymbol{X}_{g}^{\prime} \boldsymbol{e}_{g} \mid \boldsymbol{X}_{g}\right]   
-&=\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \mathbb{E}\left[\boldsymbol{e}_{g} \boldsymbol{e}_{g}^{\prime} \mid \boldsymbol{X}_{g}\right] \boldsymbol{X}_{g}   
-&=\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \Sigma_{g} \boldsymbol{X}_{g}   
+\operatorname{var}\left[\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{e}_{g}\right) \mid \boldsymbol{X}\right] &=\sum_{g=1}^{G} \operatorname{var}\left[\boldsymbol{X}_{g}^{\prime} \boldsymbol{e}_{g} \mid \boldsymbol{X}_{g}\right] \\
+&=\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \mathbb{E}\left[\boldsymbol{e}_{g} \boldsymbol{e}_{g}^{\prime} \mid \boldsymbol{X}_{g}\right] \boldsymbol{X}_{g} \\
+&=\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \Sigma_{g} \boldsymbol{X}_{g} \\
 & \stackrel{\text { def }}{=} \Omega_{n}
 \end{aligned}
 $$
@@ -1400,8 +1398,8 @@ Arellano (1987) proposed a cluster-robust covariance matrix estimator which is a
 
 $$
 \begin{aligned}
-\widehat{\Omega}_{n} &=\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \widehat{\boldsymbol{e}}_{g} \widehat{\boldsymbol{e}}_{g}^{\prime} \boldsymbol{X}_{g}   
-&=\sum_{g=1}^{G} \sum_{i=1}^{n_{g}} \sum_{\ell=1}^{n_{g}} X_{i g} X_{\ell g}^{\prime} \widehat{e}_{i g} \widehat{e}_{\ell g}   
+\widehat{\Omega}_{n} &=\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \widehat{\boldsymbol{e}}_{g} \widehat{\boldsymbol{e}}_{g}^{\prime} \boldsymbol{X}_{g} \\
+&=\sum_{g=1}^{G} \sum_{i=1}^{n_{g}} \sum_{\ell=1}^{n_{g}} X_{i g} X_{\ell g}^{\prime} \widehat{e}_{i g} \widehat{e}_{\ell g} \\
 &=\sum_{g=1}^{G}\left(\sum_{i=1}^{n_{g}} X_{i g} \widehat{e}_{i g}\right)\left(\sum_{\ell=1}^{n_{g}} X_{\ell g} \widehat{e}_{\ell g}\right)^{\prime} .
 \end{aligned}
 $$
@@ -1540,8 +1538,8 @@ We calculate that
 
 $$
 \begin{aligned}
-\int f_{\beta}(\boldsymbol{y}) d \boldsymbol{y} &=\int f(\boldsymbol{y}) d \boldsymbol{y}+\int \psi_{c}(\boldsymbol{y})^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta f_{\beta}(\boldsymbol{y}) d \boldsymbol{y}   
-&=1+\mathbb{E}\left[\psi_{c}(\boldsymbol{Y})\right]^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta   
+\int f_{\beta}(\boldsymbol{y}) d \boldsymbol{y} &=\int f(\boldsymbol{y}) d \boldsymbol{y}+\int \psi_{c}(\boldsymbol{y})^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta f_{\beta}(\boldsymbol{y}) d \boldsymbol{y} \\
+&=1+\mathbb{E}\left[\psi_{c}(\boldsymbol{Y})\right]^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta \\
 &=1
 \end{aligned}
 $$
@@ -1552,9 +1550,9 @@ Let $\mathbb{E}_{\beta}$ denote expectation under the density $f_{\beta}$. The e
 
 $$
 \begin{aligned}
-\mathbb{E}_{\beta}[\boldsymbol{Y}] &=\int \boldsymbol{y} f_{\beta}(\boldsymbol{y}) d \boldsymbol{y}   
-&=\int \boldsymbol{y} f(\boldsymbol{y}) d \boldsymbol{y}+\int \boldsymbol{y} \psi_{c}(\boldsymbol{y})^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta f_{\beta}(\boldsymbol{y}) d \boldsymbol{y}   
-&=\mathbb{E}[\boldsymbol{Y}]+\mathbb{E}\left[\boldsymbol{Y} \psi_{c}(\boldsymbol{Y})^{\prime}\right] \Sigma_{c}^{-1} \boldsymbol{X} \beta   
+\mathbb{E}_{\beta}[\boldsymbol{Y}] &=\int \boldsymbol{y} f_{\beta}(\boldsymbol{y}) d \boldsymbol{y} \\
+&=\int \boldsymbol{y} f(\boldsymbol{y}) d \boldsymbol{y}+\int \boldsymbol{y} \psi_{c}(\boldsymbol{y})^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta f_{\beta}(\boldsymbol{y}) d \boldsymbol{y} \\
+&=\mathbb{E}[\boldsymbol{Y}]+\mathbb{E}\left[\boldsymbol{Y} \psi_{c}(\boldsymbol{Y})^{\prime}\right] \Sigma_{c}^{-1} \boldsymbol{X} \beta \\
 &=\boldsymbol{X} \beta
 \end{aligned}
 $$
@@ -1573,8 +1571,8 @@ The likelihood score for $f_{\beta}$ is
 
 $$
 \begin{aligned}
-S &=\left.\frac{\partial}{\partial \beta} \log f_{\beta}(\boldsymbol{Y})\right|_{\beta=0}   
-&=\left.\frac{\partial}{\partial \beta} \log \left(1+\psi_{c}(\boldsymbol{Y})^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta\right)\right|_{\beta=0}   
+S &=\left.\frac{\partial}{\partial \beta} \log f_{\beta}(\boldsymbol{Y})\right|_{\beta=0} \\
+&=\left.\frac{\partial}{\partial \beta} \log \left(1+\psi_{c}(\boldsymbol{Y})^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta\right)\right|_{\beta=0} \\
 &=\boldsymbol{X}^{\prime} \Sigma_{c}^{-1} \psi_{c}(\boldsymbol{Y}) .
 \end{aligned}
 $$
@@ -1583,8 +1581,8 @@ The information matrix is
 
 $$
 \begin{aligned}
-\mathscr{I}_{c} &=\mathbb{E}\left[S S^{\prime}\right]   
-&=\boldsymbol{X}^{\prime} \Sigma_{c}^{-1} \mathbb{E}\left[\psi_{c}(\boldsymbol{Y}) \psi_{c}(\boldsymbol{Y})^{\prime}\right] \Sigma_{c}^{-1} \boldsymbol{X}   
+\mathscr{I}_{c} &=\mathbb{E}\left[S S^{\prime}\right] \\
+&=\boldsymbol{X}^{\prime} \Sigma_{c}^{-1} \mathbb{E}\left[\psi_{c}(\boldsymbol{Y}) \psi_{c}(\boldsymbol{Y})^{\prime}\right] \Sigma_{c}^{-1} \boldsymbol{X} \\
 & \leq \boldsymbol{X}^{\prime} \Sigma_{c}^{-1} \boldsymbol{X},
 \end{aligned}
 $$
@@ -1685,8 +1683,8 @@ Exercise 4.16 Take the linear homoskedastic CEF
 
 $$
 \begin{aligned}
-Y^{*} &=X^{\prime} \beta+e   
-\mathbb{E}[e \mid X] &=0   
+Y^{*} &=X^{\prime} \beta+e \\
+\mathbb{E}[e \mid X] &=0 \\
 \mathbb{E}\left[e^{2} \mid X\right] &=\sigma^{2}
 \end{aligned}
 $$
@@ -1695,7 +1693,7 @@ and suppose that $Y^{*}$ is measured with error. Instead of $Y^{*}$, we observe 
 
 $$
 \begin{aligned}
-\mathbb{E}[u \mid X] &=0   
+\mathbb{E}[u \mid X] &=0 \\
 \mathbb{E}\left[u^{2} \mid X\right] &=\sigma_{u}^{2}(X)
 \end{aligned}
 $$
@@ -1730,8 +1728,8 @@ Exercise 4.18 Take the model
 
 $$
 \begin{aligned}
-Y &=X_{1}^{\prime} \beta_{1}+X_{2}^{\prime} \beta_{2}+e   
-\mathbb{E}[e \mid X] &=0   
+Y &=X_{1}^{\prime} \beta_{1}+X_{2}^{\prime} \beta_{2}+e \\
+\mathbb{E}[e \mid X] &=0 \\
 \mathbb{E}\left[e^{2} \mid X\right] &=\sigma^{2}
 \end{aligned}
 $$
@@ -1744,8 +1742,8 @@ Exercise 4.20 Take the model in vector notation
 
 $$
 \begin{aligned}
-\boldsymbol{Y} &=\boldsymbol{X} \beta+\boldsymbol{e}   
-\mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}] &=0   
+\boldsymbol{Y} &=\boldsymbol{X} \beta+\boldsymbol{e} \\
+\mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}] &=0 \\
 \mathbb{E}\left[\boldsymbol{e} \boldsymbol{e}^{\prime} \mid \boldsymbol{X}\right] &=\Sigma .
 \end{aligned}
 $$
@@ -1766,9 +1764,9 @@ Exercise 4.21 The model is
 
 $$
 \begin{aligned}
-Y_{i} &=X_{i}^{\prime} \beta+e_{i}   
-\mathbb{E}\left[e_{i} \mid X_{i}\right] &=0   
-\mathbb{E}\left[e_{i}^{2} \mid X_{i}\right] &=\sigma_{i}^{2}   
+Y_{i} &=X_{i}^{\prime} \beta+e_{i} \\
+\mathbb{E}\left[e_{i} \mid X_{i}\right] &=0 \\
+\mathbb{E}\left[e_{i}^{2} \mid X_{i}\right] &=\sigma_{i}^{2} \\
 \Sigma &=\operatorname{diag}\left\{\sigma_{1}^{2}, \ldots, \sigma_{n}^{2}\right\} .
 \end{aligned}
 $$
