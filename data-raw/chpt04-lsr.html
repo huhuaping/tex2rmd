@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Untitled</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="chpt04-lsr_files/libs/clipboard/clipboard.min.js"></script>
+<script src="chpt04-lsr_files/libs/quarto-html/quarto.js"></script>
+<script src="chpt04-lsr_files/libs/quarto-html/popper.min.js"></script>
+<script src="chpt04-lsr_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="chpt04-lsr_files/libs/quarto-html/anchor.min.js"></script>
+<link href="chpt04-lsr_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="chpt04-lsr_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="chpt04-lsr_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="chpt04-lsr_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="chpt04-lsr_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#least-squares-regression" id="toc-least-squares-regression" class="nav-link active" data-scroll-target="#least-squares-regression">Least Squares Regression</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#random-sampling" id="toc-random-sampling" class="nav-link" data-scroll-target="#random-sampling">Random Sampling</a></li>
+  <li><a href="#sample-mean" id="toc-sample-mean" class="nav-link" data-scroll-target="#sample-mean">Sample Mean</a></li>
+  <li><a href="#linear-regression-model" id="toc-linear-regression-model" class="nav-link" data-scroll-target="#linear-regression-model">Linear Regression Model</a></li>
+  <li><a href="#assumption-linear-regression-model" id="toc-assumption-linear-regression-model" class="nav-link" data-scroll-target="#assumption-linear-regression-model">Assumption Linear Regression Model</a></li>
+  <li><a href="#assumption-4.3-homoskedastic-linear-regression-model" id="toc-assumption-4.3-homoskedastic-linear-regression-model" class="nav-link" data-scroll-target="#assumption-4.3-homoskedastic-linear-regression-model">Assumption 4.3 Homoskedastic Linear Regression Model</a></li>
+  <li><a href="#expectation-of-least-squares-estimator" id="toc-expectation-of-least-squares-estimator" class="nav-link" data-scroll-target="#expectation-of-least-squares-estimator">Expectation of Least Squares Estimator</a></li>
+  <li><a href="#theorem-4.1-expectation-of-least-squares-estimator" id="toc-theorem-4.1-expectation-of-least-squares-estimator" class="nav-link" data-scroll-target="#theorem-4.1-expectation-of-least-squares-estimator">Theorem 4.1 Expectation of Least Squares Estimator</a></li>
+  <li><a href="#variance-of-least-squares-estimator" id="toc-variance-of-least-squares-estimator" class="nav-link" data-scroll-target="#variance-of-least-squares-estimator">Variance of Least Squares Estimator</a></li>
+  <li><a href="#theorem-4.2-variance-of-least-squares-estimator" id="toc-theorem-4.2-variance-of-least-squares-estimator" class="nav-link" data-scroll-target="#theorem-4.2-variance-of-least-squares-estimator">Theorem 4.2 Variance of Least Squares Estimator</a></li>
+  <li><a href="#unconditional-moments" id="toc-unconditional-moments" class="nav-link" data-scroll-target="#unconditional-moments">Unconditional Moments</a></li>
+  <li><a href="#gauss-markov-theorem" id="toc-gauss-markov-theorem" class="nav-link" data-scroll-target="#gauss-markov-theorem">Gauss-Markov Theorem</a></li>
+  <li><a href="#theorem-4.4-gauss-markov" id="toc-theorem-4.4-gauss-markov" class="nav-link" data-scroll-target="#theorem-4.4-gauss-markov">Theorem 4.4 Gauss-Markov</a></li>
+  <li><a href="#generalized-least-squares" id="toc-generalized-least-squares" class="nav-link" data-scroll-target="#generalized-least-squares">Generalized Least Squares</a></li>
+  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals">Residuals</a></li>
+  <li><a href="#estimation-of-error-variance" id="toc-estimation-of-error-variance" class="nav-link" data-scroll-target="#estimation-of-error-variance">Estimation of Error Variance</a></li>
+  <li><a href="#mean-square-forecast-error" id="toc-mean-square-forecast-error" class="nav-link" data-scroll-target="#mean-square-forecast-error">Mean-Square Forecast Error</a></li>
+  <li><a href="#theorem-4.6-msfe" id="toc-theorem-4.6-msfe" class="nav-link" data-scroll-target="#theorem-4.6-msfe">Theorem 4.6 MSFE</a></li>
+  <li><a href="#covariance-matrix-estimation-under-homoskedasticity" id="toc-covariance-matrix-estimation-under-homoskedasticity" class="nav-link" data-scroll-target="#covariance-matrix-estimation-under-homoskedasticity">Covariance Matrix Estimation Under Homoskedasticity</a></li>
+  <li><a href="#covariance-matrix-estimation-under-heteroskedasticity" id="toc-covariance-matrix-estimation-under-heteroskedasticity" class="nav-link" data-scroll-target="#covariance-matrix-estimation-under-heteroskedasticity">Covariance Matrix Estimation Under Heteroskedasticity</a></li>
+  <li><a href="#standard-errors" id="toc-standard-errors" class="nav-link" data-scroll-target="#standard-errors">Standard Errors</a></li>
+  <li><a href="#estimation-with-sparse-dummy-variables" id="toc-estimation-with-sparse-dummy-variables" class="nav-link" data-scroll-target="#estimation-with-sparse-dummy-variables">Estimation with Sparse Dummy Variables</a></li>
+  <li><a href="#computation" id="toc-computation" class="nav-link" data-scroll-target="#computation">Computation</a></li>
+  <li><a href="#stata-do-file-continued" id="toc-stata-do-file-continued" class="nav-link" data-scroll-target="#stata-do-file-continued">Stata do File (continued)</a></li>
+  <li><a href="#measures-of-fit" id="toc-measures-of-fit" class="nav-link" data-scroll-target="#measures-of-fit">Measures of Fit</a></li>
+  <li><a href="#empirical-example" id="toc-empirical-example" class="nav-link" data-scroll-target="#empirical-example">Empirical Example</a></li>
+  <li><a href="#multicollinearity" id="toc-multicollinearity" class="nav-link" data-scroll-target="#multicollinearity">Multicollinearity</a></li>
+  <li><a href="#clustered-sampling" id="toc-clustered-sampling" class="nav-link" data-scroll-target="#clustered-sampling">Clustered Sampling</a></li>
+  <li><a href="#inference-with-clustered-samples" id="toc-inference-with-clustered-samples" class="nav-link" data-scroll-target="#inference-with-clustered-samples">Inference with Clustered Samples</a></li>
+  <li><a href="#at-what-level-to-cluster" id="toc-at-what-level-to-cluster" class="nav-link" data-scroll-target="#at-what-level-to-cluster">At What Level to Cluster?</a></li>
+  <li><a href="#technical-proofs" id="toc-technical-proofs" class="nav-link" data-scroll-target="#technical-proofs">Technical Proofs*</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Untitled</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="least-squares-regression" class="level1">
+<h1>Least Squares Regression</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>In this chapter we investigate some finite-sample properties of the least squares estimator in the linear regression model. In particular we calculate its finite-sample expectation and covariance matrix and propose standard errors for the coefficient estimators.</p>
+</section>
+<section id="random-sampling" class="level2">
+<h2 class="anchored" data-anchor-id="random-sampling">Random Sampling</h2>
+<p>Assumption <span class="math inline">\(3.1\)</span> specified that the observations have identical distributions. To derive the finitesample properties of the estimators we will need to additionally specify the dependence structure across the observations.</p>
+<p>The simplest context is when the observations are mutually independent in which case we say that they are independent and identically distributed or i.i.d. It is also common to describe i.i.d. observations as a random sample. Traditionally, random sampling has been the default assumption in crosssection (e.g.&nbsp;survey) contexts. It is quite convenient as i.i.d. sampling leads to straightforward expressions for estimation variance. The assumption seems appropriate (meaning that it should be approximately valid) when samples are small and relatively dispersed. That is, if you randomly sample 1000 people from a large country such as the United States it seems reasonable to model their responses as mutually independent.</p>
+<p>Assumption 4.1 The random variables <span class="math inline">\(\left\{\left(Y_{1}, X_{1}\right), \ldots,\left(Y_{i}, X_{i}\right), \ldots,\left(Y_{n}, X_{n}\right)\right\}\)</span> are independent and identically distributed.</p>
+<p>For most of this chapter we will use Assumption <span class="math inline">\(4.1\)</span> to derive properties of the OLS estimator.</p>
+<p>Assumption <span class="math inline">\(4.1\)</span> means that if you take any two individuals <span class="math inline">\(i \neq j\)</span> in a sample, the values <span class="math inline">\(\left(Y_{i}, X_{i}\right)\)</span> are independent of the values <span class="math inline">\(\left(Y_{j}, X_{j}\right)\)</span> yet have the same distribution. Independence means that the decisions and choices of individual <span class="math inline">\(i\)</span> do not affect the decisions of individual <span class="math inline">\(j\)</span> and conversely.</p>
+<p>This assumption may be violated if individuals in the sample are connected in some way, for example if they are neighbors, members of the same village, classmates at a school, or even firms within a specific industry. In this case it seems plausible that decisions may be inter-connected and thus mutually dependent rather than independent. Allowing for such interactions complicates inference and requires specialized treatment. A currently popular approach which allows for mutual dependence is known as clustered dependence which assumes that that observations are grouped into “clusters” (for example, schools). We will discuss clustering in more detail in Section 4.21.</p>
+</section>
+<section id="sample-mean" class="level2">
+<h2 class="anchored" data-anchor-id="sample-mean">Sample Mean</h2>
+<p>We start with the simplest setting of the intercept-only model</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y &amp;=\mu+e   
+\mathbb{E}[e] &amp;=0 .
+\end{aligned}
+\]</span></p>
+<p>which is equivalent to the regression model with <span class="math inline">\(k=1\)</span> and <span class="math inline">\(X=1\)</span>. In the intercept model <span class="math inline">\(\mu=\mathbb{E}[Y]\)</span> is the expectation of <span class="math inline">\(Y\)</span>. (See Exercise 2.15.) The least squares estimator <span class="math inline">\(\widehat{\mu}=\bar{Y}\)</span> equals the sample mean as shown in equation (3.8).</p>
+<p>We now calculate the expectation and variance of the estimator <span class="math inline">\(\bar{Y}\)</span>. Since the sample mean is a linear function of the observations its expectation is simple to calculate</p>
+<p><span class="math display">\[
+\mathbb{E}[\bar{Y}]=\mathbb{E}\left[\frac{1}{n} \sum_{i=1}^{n} Y_{i}\right]=\frac{1}{n} \sum_{i=1}^{n} \mathbb{E}\left[Y_{i}\right]=\mu .
+\]</span></p>
+<p>This shows that the expected value of the least squares estimator (the sample mean) equals the projection coefficient (the population expectation). An estimator with the property that its expectation equals the parameter it is estimating is called unbiased.</p>
+<p>Definition <span class="math inline">\(4.1\)</span> An estimator <span class="math inline">\(\widehat{\theta}\)</span> for <span class="math inline">\(\theta\)</span> is unbiased if <span class="math inline">\(\mathbb{E}[\widehat{\theta}]=\theta\)</span></p>
+<p>We next calculate the variance of the estimator <span class="math inline">\(\bar{Y}\)</span> under Assumption 4.1. Making the substitution <span class="math inline">\(Y_{i}=\mu+e_{i}\)</span> we find</p>
+<p><span class="math display">\[
+\bar{Y}-\mu=\frac{1}{n} \sum_{i=1}^{n} e_{i} .
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{var}[\bar{Y}] &amp;=\mathbb{E}\left[(\bar{Y}-\mu)^{2}\right]   
+&amp;=\mathbb{E}\left[\left(\frac{1}{n} \sum_{i=1}^{n} e_{i}\right)\left(\frac{1}{n} \sum_{j=1}^{n} e_{j}\right)\right]   
+&amp;=\frac{1}{n^{2}} \sum_{i=1}^{n} \sum_{j=1}^{n} \mathbb{E}\left[e_{i} e_{j}\right]   
+&amp;=\frac{1}{n^{2}} \sum_{i=1}^{n} \sigma^{2}   
+&amp;=\frac{1}{n} \sigma^{2} .
+\end{aligned}
+\]</span></p>
+<p>The second-to-last inequality is because <span class="math inline">\(\mathbb{E}\left[e_{i} e_{j}\right]=\sigma^{2}\)</span> for <span class="math inline">\(i=j\)</span> yet <span class="math inline">\(\mathbb{E}\left[e_{i} e_{j}\right]=0\)</span> for <span class="math inline">\(i \neq j\)</span> due to independence.</p>
+<p>We have shown that <span class="math inline">\(\operatorname{var}[\bar{Y}]=\frac{1}{n} \sigma^{2}\)</span>. This is the familiar formula for the variance of the sample mean.</p>
+</section>
+<section id="linear-regression-model" class="level2">
+<h2 class="anchored" data-anchor-id="linear-regression-model">Linear Regression Model</h2>
+<p>We now consider the linear regression model. Throughout this chapter we maintain the following.</p>
+</section>
+<section id="assumption-linear-regression-model" class="level2">
+<h2 class="anchored" data-anchor-id="assumption-linear-regression-model">Assumption Linear Regression Model</h2>
+<p>The variables <span class="math inline">\((Y, X)\)</span> satisfy the linear regression equation</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y &amp;=X^{\prime} \beta+e   
+\mathbb{E}[e \mid X] &amp;=0 .
+\end{aligned}
+\]</span></p>
+<p>The variables have finite second moments</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;\mathbb{E}\left[Y^{2}\right]&lt;\infty   
+&amp;\mathbb{E}\|X\|^{2}&lt;\infty
+\end{aligned}
+\]</span></p>
+<p>and an invertible design matrix</p>
+<p><span class="math display">\[
+\boldsymbol{Q}_{X X}=\mathbb{E}\left[X X^{\prime}\right]&gt;0 .
+\]</span></p>
+<p>We will consider both the general case of heteroskedastic regression where the conditional variance <span class="math inline">\(\mathbb{E}\left[e^{2} \mid X\right]=\sigma^{2}(X)\)</span> is unrestricted, and the specialized case of homoskedastic regression where the conditional variance is constant. In the latter case we add the following assumption.</p>
+</section>
+<section id="assumption-4.3-homoskedastic-linear-regression-model" class="level2">
+<h2 class="anchored" data-anchor-id="assumption-4.3-homoskedastic-linear-regression-model">Assumption 4.3 Homoskedastic Linear Regression Model</h2>
+<p>In addition to Assumption <span class="math inline">\(4.2\)</span></p>
+<p><span class="math display">\[
+\mathbb{E}\left[e^{2} \mid X\right]=\sigma^{2}(X)=\sigma^{2}
+\]</span></p>
+<p>is independent of <span class="math inline">\(X\)</span>.</p>
+</section>
+<section id="expectation-of-least-squares-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="expectation-of-least-squares-estimator">Expectation of Least Squares Estimator</h2>
+<p>In this section we show that the OLS estimator is unbiased in the linear regression model. This calculation can be done using either summation notation or matrix notation. We will use both.</p>
+<p>First take summation notation. Observe that under (4.1)-(4.2)</p>
+<p><span class="math display">\[
+\mathbb{E}\left[Y_{i} \mid X_{1}, \ldots, X_{n}\right]=\mathbb{E}\left[Y_{i} \mid X_{i}\right]=X_{i}^{\prime} \beta .
+\]</span></p>
+<p>The first equality states that the conditional expectation of <span class="math inline">\(Y_{i}\)</span> given <span class="math inline">\(\left\{X_{1}, \ldots, X_{n}\right\}\)</span> only depends on <span class="math inline">\(X_{i}\)</span> because the observations are independent across <span class="math inline">\(i\)</span>. The second equality is the assumption of a linear conditional expectation. Using definition (3.11), the conditioning theorem (Theorem 2.3), the linearity of expectations, (4.4), and properties of the matrix inverse,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[\widehat{\beta} \mid X_{1}, \ldots, X_{n}\right] &amp;=\mathbb{E}\left[\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} Y_{i}\right) \mid X_{1}, \ldots, X_{n}\right]   
+&amp;=\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1} \mathbb{E}\left[\left(\sum_{i=1}^{n} X_{i} Y_{i}\right) \mid X_{1}, \ldots, X_{n}\right]   
+&amp;=\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1} \sum_{i=1}^{n} \mathbb{E}\left[X_{i} Y_{i} \mid X_{1}, \ldots, X_{n}\right]   
+&amp;=\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1} \sum_{i=1}^{n} X_{i} \mathbb{E}\left[Y_{i} \mid X_{i}\right]   
+&amp;=\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\right)^{-1} \sum_{i=1}^{n} X_{i} X_{i}^{\prime} \beta   
+&amp;=\beta .
+\end{aligned}
+\]</span></p>
+<p>Now let’s show the same result using matrix notation. (4.4) implies</p>
+<p><span class="math display">\[
+\mathbb{E}[\boldsymbol{Y} \mid \boldsymbol{X}]=\left(\begin{array}{c}
+\vdots   
+\mathbb{E}\left[Y_{i} \mid \boldsymbol{X}\right]   
+\vdots
+\end{array}\right)=\left(\begin{array}{c}
+\vdots   
+X_{i}^{\prime} \beta   
+\vdots
+\end{array}\right)=\boldsymbol{X} \beta .
+\]</span></p>
+<p>Similarly</p>
+<p><span class="math display">\[
+\mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}]=\left(\begin{array}{c}
+\vdots   
+\mathbb{E}\left[e_{i} \mid \boldsymbol{X}\right]   
+\vdots
+\end{array}\right)=\left(\begin{array}{c}
+\vdots   
+\mathbb{E}\left[e_{i} \mid X_{i}\right]   
+\vdots
+\end{array}\right)=0 .
+\]</span></p>
+<p>Using <span class="math inline">\(\widehat{\beta}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{Y}\right)\)</span>, the conditioning theorem, the linearity of expectations, (4.5), and the properties of the matrix inverse,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}] &amp;=\mathbb{E}\left[\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{Y} \mid \boldsymbol{X}\right]   
+&amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \mathbb{E}[\boldsymbol{Y} \mid \boldsymbol{X}]   
+&amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{X} \beta   
+&amp;=\beta .
+\end{aligned}
+\]</span></p>
+<p>At the risk of belaboring the derivation, another way to calculate the same result is as follows. Insert <span class="math inline">\(\boldsymbol{Y}=\boldsymbol{X} \beta+\boldsymbol{e}\)</span> into the formula for <span class="math inline">\(\widehat{\beta}\)</span> to obtain</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\beta} &amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime}(\boldsymbol{X} \beta+\boldsymbol{e})\right)   
+&amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{X} \beta+\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{e}\right)   
+&amp;=\beta+\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{e} .
+\end{aligned}
+\]</span></p>
+<p>This is a useful linear decomposition of the estimator <span class="math inline">\(\widehat{\beta}\)</span> into the true parameter <span class="math inline">\(\beta\)</span> and the stochastic component <span class="math inline">\(\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{e}\)</span>. Once again, we can calculate that</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}[\widehat{\beta}-\beta \mid \boldsymbol{X}] &amp;=\mathbb{E}\left[\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{e} \mid \boldsymbol{X}\right]   
+&amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}]=0 .
+\end{aligned}
+\]</span></p>
+<p>Regardless of the method we have shown that <span class="math inline">\(\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}]=\beta\)</span>. We have shown the following theorem.</p>
+</section>
+<section id="theorem-4.1-expectation-of-least-squares-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="theorem-4.1-expectation-of-least-squares-estimator">Theorem 4.1 Expectation of Least Squares Estimator</h2>
+<p>In the linear regression model (Assumption 4.2) with i.i.d. sampling (Assumption 4.1)</p>
+<p><span class="math display">\[
+\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}]=\beta .
+\]</span></p>
+<p>Equation (4.7) says that the estimator <span class="math inline">\(\widehat{\beta}\)</span> is unbiased for <span class="math inline">\(\beta\)</span>, conditional on <span class="math inline">\(\boldsymbol{X}\)</span>. This means that the conditional distribution of <span class="math inline">\(\widehat{\beta}\)</span> is centered at <span class="math inline">\(\beta\)</span>. By “conditional on <span class="math inline">\(X\)</span>” this means that the distribution is unbiased for any realization of the regressor matrix <span class="math inline">\(\boldsymbol{X}\)</span>. In conditional models we simply refer to this as saying <span class="math inline">\(" \widehat{\beta}\)</span> is unbiased for <span class="math inline">\(\beta\)</span> “.</p>
+<p>It is worth mentioning that Theorem 4.1, and all finite sample results in this chapter, make the implicit assumption that <span class="math inline">\(\boldsymbol{X}^{\prime} \boldsymbol{X}\)</span> is full rank with probability one.</p>
+</section>
+<section id="variance-of-least-squares-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="variance-of-least-squares-estimator">Variance of Least Squares Estimator</h2>
+<p>In this section we calculate the conditional variance of the OLS estimator.</p>
+<p>For any <span class="math inline">\(r \times 1\)</span> random vector <span class="math inline">\(Z\)</span> define the <span class="math inline">\(r \times r\)</span> covariance matrix</p>
+<p><span class="math display">\[
+\operatorname{var}[Z]=\mathbb{E}\left[(Z-\mathbb{E}[Z])(Z-\mathbb{E}[Z])^{\prime}\right]=\mathbb{E}\left[Z Z^{\prime}\right]-(\mathbb{E}[Z])(\mathbb{E}[Z])^{\prime}
+\]</span></p>
+<p>and for any pair <span class="math inline">\((Z, X)\)</span> define the conditional covariance matrix</p>
+<p><span class="math display">\[
+\operatorname{var}[Z \mid X]=\mathbb{E}\left[(Z-\mathbb{E}[Z \mid X])(Z-\mathbb{E}[Z \mid X])^{\prime} \mid X\right] .
+\]</span></p>
+<p>We define <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}} \stackrel{\text { def }}{=} \operatorname{var}[\widehat{\beta} \mid \boldsymbol{X}]\)</span> as the conditional covariance matrix of the regression coefficient estimators. We now derive its form.</p>
+<p>The conditional covariance matrix of the <span class="math inline">\(n \times 1\)</span> regression error <span class="math inline">\(\boldsymbol{e}\)</span> is the <span class="math inline">\(n \times n\)</span> matrix</p>
+<p><span class="math display">\[
+\operatorname{var}[\boldsymbol{e} \mid \boldsymbol{X}]=\mathbb{E}\left[\boldsymbol{e} \boldsymbol{e}^{\prime} \mid \boldsymbol{X}\right] \stackrel{\text { def }}{=} \boldsymbol{D} .
+\]</span></p>
+<p>The <span class="math inline">\(i^{t h}\)</span> diagonal element of <span class="math inline">\(\boldsymbol{D}\)</span> is</p>
+<p><span class="math display">\[
+\mathbb{E}\left[e_{i}^{2} \mid \boldsymbol{X}\right]=\mathbb{E}\left[e_{i}^{2} \mid X_{i}\right]=\sigma_{i}^{2}
+\]</span></p>
+<p>while the <span class="math inline">\(i j^{t h}\)</span> off-diagonal element of <span class="math inline">\(\boldsymbol{D}\)</span> is</p>
+<p><span class="math display">\[
+\mathbb{E}\left[e_{i} e_{j} \mid \boldsymbol{X}\right]=\mathbb{E}\left(e_{i} \mid X_{i}\right) \mathbb{E}\left[e_{j} \mid X_{j}\right]=0
+\]</span></p>
+<p>where the first equality uses independence of the observations (Assumption 4.1) and the second is (4.2). Thus <span class="math inline">\(\boldsymbol{D}\)</span> is a diagonal matrix with <span class="math inline">\(i^{t h}\)</span> diagonal element <span class="math inline">\(\sigma_{i}^{2}\)</span> :</p>
+<p><span class="math display">\[
+\boldsymbol{D}=\operatorname{diag}\left(\sigma_{1}^{2}, \ldots, \sigma_{n}^{2}\right)=\left(\begin{array}{cccc}
+\sigma_{1}^{2} &amp; 0 &amp; \cdots &amp; 0   
+0 &amp; \sigma_{2}^{2} &amp; \cdots &amp; 0   
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots   
+0 &amp; 0 &amp; \cdots &amp; \sigma_{n}^{2}
+\end{array}\right)
+\]</span></p>
+<p>In the special case of the linear homoskedastic regression model (4.3), then <span class="math inline">\(\mathbb{E}\left[e_{i}^{2} \mid X_{i}\right]=\sigma_{i}^{2}=\sigma^{2}\)</span> and we have the simplification <span class="math inline">\(\boldsymbol{D}=\boldsymbol{I}_{n} \sigma^{2}\)</span>. In general, however, <span class="math inline">\(\boldsymbol{D}\)</span> need not necessarily take this simplified form.</p>
+<p>For any <span class="math inline">\(n \times r\)</span> matrix <span class="math inline">\(\boldsymbol{A}=\boldsymbol{A}(\boldsymbol{X})\)</span>,</p>
+<p><span class="math display">\[
+\operatorname{var}\left[\boldsymbol{A}^{\prime} \boldsymbol{Y} \mid \boldsymbol{X}\right]=\operatorname{var}\left[\boldsymbol{A}^{\prime} \boldsymbol{e} \mid \boldsymbol{X}\right]=\boldsymbol{A}^{\prime} \boldsymbol{D} \boldsymbol{A} .
+\]</span></p>
+<p>In particular, we can write <span class="math inline">\(\widehat{\beta}=\boldsymbol{A}^{\prime} \boldsymbol{Y}\)</span> where <span class="math inline">\(\boldsymbol{A}=\boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\)</span> and thus</p>
+<p><span class="math display">\[
+\boldsymbol{V}_{\widehat{\beta}}=\operatorname{var}[\widehat{\beta} \mid \boldsymbol{X}]=\boldsymbol{A}^{\prime} \boldsymbol{D} \boldsymbol{A}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{D} \boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} .
+\]</span></p>
+<p>It is useful to note that</p>
+<p><span class="math display">\[
+\boldsymbol{X}^{\prime} \boldsymbol{D} \boldsymbol{X}=\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \sigma_{i}^{2},
+\]</span></p>
+<p>a weighted version of <span class="math inline">\(\boldsymbol{X}^{\prime} \boldsymbol{X}\)</span>.</p>
+<p>In the special case of the linear homoskedastic regression model, <span class="math inline">\(\boldsymbol{D}=\boldsymbol{I}_{n} \sigma^{2}\)</span>, so <span class="math inline">\(\boldsymbol{X}^{\prime} \boldsymbol{D} \boldsymbol{X}=\boldsymbol{X}^{\prime} \boldsymbol{X} \sigma^{2}\)</span>, and the covariance matrix simplifies to <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2}\)</span>.</p>
+</section>
+<section id="theorem-4.2-variance-of-least-squares-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="theorem-4.2-variance-of-least-squares-estimator">Theorem 4.2 Variance of Least Squares Estimator</h2>
+<p>In the linear regression model (Assumption 4.2) with i.i.d. sampling (Assumption 4.1)</p>
+<p><span class="math display">\[
+\boldsymbol{V}_{\widehat{\beta}}=\operatorname{var}[\widehat{\beta} \mid \boldsymbol{X}]=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{D} \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}
+\]</span></p>
+<p>where <span class="math inline">\(\boldsymbol{D}\)</span> is defined in (4.8). If in addition the error is homoskedastic (Assumption 4.3) then (4.10) simplifies to <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}=\sigma^{2}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\)</span>.</p>
+</section>
+<section id="unconditional-moments" class="level2">
+<h2 class="anchored" data-anchor-id="unconditional-moments">Unconditional Moments</h2>
+<p>The previous sections derived the form of the conditional expectation and variance of the least squares estimator where we conditioned on the regressor matrix <span class="math inline">\(\boldsymbol{X}\)</span>. What about the unconditional expectation and variance?</p>
+<p>Indeed, it is not obvious if <span class="math inline">\(\widehat{\beta}\)</span> has a finite expectation or variance. Take the case of a single dummy variable regressor <span class="math inline">\(D_{i}\)</span> with no intercept. Assume <span class="math inline">\(\mathbb{P}\left[D_{i}=1\right]=p&lt;1\)</span>. Then</p>
+<p><span class="math display">\[
+\widehat{\beta}=\frac{\sum_{i=1}^{n} D_{i} Y_{i}}{\sum_{i=1}^{n} D_{i}}
+\]</span></p>
+<p>is well defined if <span class="math inline">\(\sum_{i=1}^{n} D_{i}&gt;0\)</span>. However, <span class="math inline">\(\mathbb{P}\left[\sum_{i=1}^{n} D_{i}=0\right]=(1-p)^{n}&gt;0\)</span>. This means that with positive (but small) probability <span class="math inline">\(\widehat{\beta}\)</span> does not exist. Consequently <span class="math inline">\(\widehat{\beta}\)</span> has no finite moments! We ignore this complication in practice but it does pose a conundrum for theory. This existence problem arises whenever there are discrete regressors.</p>
+<p>This dilemma is avoided when the regressors have continuous distributions. A clean statement was obtained by Kinal (1980) under the assumption of normal regressors and errors. Theorem 4.3 Kinal (1980)</p>
+<p>In the linear regression model with i.i.d. sampling, if in addition <span class="math inline">\((X, e)\)</span> have a joint normal distribution, then for any <span class="math inline">\(r, \mathbb{E}\|\widehat{\beta}\|^{r}&lt;\infty\)</span> if and only if <span class="math inline">\(r&lt;n-k+1\)</span>.</p>
+<p>This shows that when the errors and regressors are normally distributed that the least squares estimator possesses all moments up to <span class="math inline">\(n-k\)</span> which includes all moments of practical interest. The normality assumption is not critical for this result. What is key is the assumption that the regressors are continuously distributed.</p>
+<p>The law of iterated expectations (Theorem 2.1) combined with Theorems <span class="math inline">\(4.1\)</span> and <span class="math inline">\(4.3\)</span> allow us to deduce that the least squares estimator is unconditionally unbiased. Under the normality assumption Theorem <span class="math inline">\(4.3\)</span> allows us to apply the law of iterated expectations, and thus using Theorems <span class="math inline">\(4.1\)</span> we deduce that if <span class="math inline">\(n&gt;k\)</span></p>
+<p><span class="math display">\[
+\mathbb{E}[\widehat{\beta}]=\mathbb{E}[\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}]]=\beta .
+\]</span></p>
+<p>Hence <span class="math inline">\(\widehat{\beta}\)</span> is unconditionally unbiased as asserted.</p>
+<p>Furthermore, if <span class="math inline">\(n-k&gt;1\)</span> then <span class="math inline">\(\mathbb{E}\|\widehat{\beta}\|^{2}&lt;\infty\)</span> and <span class="math inline">\(\widehat{\beta}\)</span> has a finite unconditional variance. Using Theorem <span class="math inline">\(2.8\)</span> we can calculate explicitly that</p>
+<p><span class="math display">\[
+\operatorname{var}[\widehat{\beta}]=\mathbb{E}[\operatorname{var}[\widehat{\beta} \mid \boldsymbol{X}]]+\operatorname{var}[\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}]]=\mathbb{E}\left[\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{D} \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\right]
+\]</span></p>
+<p>the second equality because <span class="math inline">\(\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}]=\beta\)</span> has zero variance. In the homoskedastic case this simplifies to</p>
+<p><span class="math display">\[
+\operatorname{var}[\widehat{\beta}]=\sigma^{2} \mathbb{E}\left[\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\right] .
+\]</span></p>
+<p>In both cases the expectation cannot pass through the matrix inverse because this is a nonlinear function. Thus there is not a simple expression for the unconditional variance, other than stating that is it the expectation of the conditional variance.</p>
+</section>
+<section id="gauss-markov-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="gauss-markov-theorem">Gauss-Markov Theorem</h2>
+<p>The Gauss-Markov Theorem is one of the most celebrated results in econometric theory. It provides a classical justification for the least squares estimator, showing that it is lowest variance among unbiased estimators.</p>
+<p>Write the homoskedastic linear regression model in vector format as</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{Y} &amp;=\boldsymbol{X} \beta+\boldsymbol{e}   
+\mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}] &amp;=0   
+\operatorname{var}[\boldsymbol{e} \mid \boldsymbol{X}] &amp;=\boldsymbol{I}_{n} \sigma^{2} .
+\end{aligned}
+\]</span></p>
+<p>In this model we know that the least squares estimator is unbiased for <span class="math inline">\(\beta\)</span> and has covariance matrix <span class="math inline">\(\sigma^{2}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\)</span>. The question raised in this section is if there exists an alternative unbiased estimator <span class="math inline">\(\widetilde{\beta}\)</span> which has a smaller covariance matrix.</p>
+<p>The following version of the theorem is due to B. E. Hansen (2021).</p>
+</section>
+<section id="theorem-4.4-gauss-markov" class="level2">
+<h2 class="anchored" data-anchor-id="theorem-4.4-gauss-markov">Theorem 4.4 Gauss-Markov</h2>
+<p>Take the homoskedastic linear regression model (4.11)-(4.13). If <span class="math inline">\(\widetilde{\beta}\)</span> is an unbiased estimator of <span class="math inline">\(\beta\)</span> then</p>
+<p><span class="math display">\[
+\operatorname{var}[\widetilde{\beta} \mid \boldsymbol{X}] \geq \sigma^{2}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}
+\]</span></p>
+<p>Theorem <span class="math inline">\(4.4\)</span> provides a lower bound on the covariance matrix of unbiased estimators under the assumption of homoskedasticity. It says that no unbiased estimator can have a variance matrix smaller (in the positive definite sense) than <span class="math inline">\(\sigma^{2}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\)</span>. Since the variance of the OLS estimator is exactly equal to this bound this means that no unbiased estimator has a lower variance than OLS. Consequently we describe OLS as efficient in the class of unbiased estimators.</p>
+<p>This earliest version of Theorem <span class="math inline">\(4.4\)</span> was articulated by Carl Friedrich Gauss in 1823. Andreı̆ Andreevich Markov provided a textbook treatment of the theorem in 1912, and clarified the central role of unbiasedness, which Gauss had only assumed implicitly.</p>
+<p>Their versions of the Theorem restricted attention to linear estimators of <span class="math inline">\(\beta\)</span>, which are estimators that can be written as <span class="math inline">\(\widetilde{\beta}=\boldsymbol{A}^{\prime} \boldsymbol{Y}\)</span>, where <span class="math inline">\(\boldsymbol{A}=\boldsymbol{A}(\boldsymbol{X})\)</span> is an <span class="math inline">\(m \times n\)</span> function of the regressors <span class="math inline">\(\boldsymbol{X}\)</span>. Linearity in this context means “linear in <span class="math inline">\(\boldsymbol{Y}\)</span>”. This restriction simplifies variance calculations, but greatly limits the class of estimators.This classical version of the Theorem gave rise to the description of OLS as the best linear unbiased estimator (BLUE). However, Theorem <span class="math inline">\(4.4\)</span> as stated above shows that OLS is the best unbiased estimator (BUE).</p>
+<p>The derivation of the Gauss-Markov Theorem under the restriction to linear estimators is straightforward, so we now provide this demonstration. For <span class="math inline">\(\widetilde{\beta}=\boldsymbol{A}^{\prime} \boldsymbol{Y}\)</span> we have</p>
+<p><span class="math display">\[
+\mathbb{E}[\widetilde{\beta} \mid \boldsymbol{X}]=\boldsymbol{A}^{\prime} \mathbb{E}[\boldsymbol{Y} \mid \boldsymbol{X}]=\boldsymbol{A}^{\prime} \boldsymbol{X} \beta,
+\]</span></p>
+<p>the second equality because <span class="math inline">\(\mathbb{E}[\boldsymbol{Y} \mid \boldsymbol{X}]=\boldsymbol{X} \beta\)</span>. Then <span class="math inline">\(\widetilde{\beta}\)</span> is unbiased for all <span class="math inline">\(\beta\)</span> if (and only if) <span class="math inline">\(\boldsymbol{A}^{\prime} \boldsymbol{X}=\boldsymbol{I}_{k}\)</span>. Furthermore, we saw in (4.9) that</p>
+<p><span class="math display">\[
+\operatorname{var}[\widetilde{\beta} \mid \boldsymbol{X}]=\operatorname{var}\left[\boldsymbol{A}^{\prime} \boldsymbol{Y} \mid \boldsymbol{X}\right]=\boldsymbol{A}^{\prime} \boldsymbol{D} \boldsymbol{A}=\boldsymbol{A}^{\prime} \boldsymbol{A} \boldsymbol{\sigma}^{2}
+\]</span></p>
+<p>the last equality using the homoskedasticity assumption (4.13). To establish the Theorem we need to show that for any such matrix <span class="math inline">\(\boldsymbol{A}\)</span>,</p>
+<p><span class="math display">\[
+\boldsymbol{A}^{\prime} \boldsymbol{A} \geq\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \text {. }
+\]</span></p>
+<p>Set <span class="math inline">\(\boldsymbol{C}=\boldsymbol{A}-\boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\)</span>. Note that <span class="math inline">\(\boldsymbol{X}^{\prime} \boldsymbol{C}=0\)</span>. We calculate that</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{A}^{\prime} \boldsymbol{A}-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} &amp;=\left(\boldsymbol{C}+\boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\right)^{\prime}\left(\boldsymbol{C}+\boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\right)-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+&amp;=\boldsymbol{C}^{\prime} \boldsymbol{C}+\boldsymbol{C}^{\prime} \boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}+\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{C}   
+&amp;+\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+&amp;=\boldsymbol{C}^{\prime} \boldsymbol{C} \geq 0
+\end{aligned}
+\]</span></p>
+<p>The final inequality states that the matrix <span class="math inline">\(\boldsymbol{C}^{\prime} \boldsymbol{C}\)</span> is positive semi-definite which is a property of quadratic forms (see Appendix A.10). We have shown (4.14) as required.</p>
+<p>The above derivation imposed the restriction that the estimator <span class="math inline">\(\widetilde{\beta}\)</span> is linear in <span class="math inline">\(\boldsymbol{Y}\)</span>. The proof of Theorem <span class="math inline">\(4.4\)</span> in the general case is considerably more advanced. Here, we provide a simplified sketch of the argument for interested readers, with a complete proof in Section 4.24. For simplicity, treat the regressors <span class="math inline">\(X\)</span> as fixed, and suppose that <span class="math inline">\(Y\)</span> has a density <span class="math inline">\(f(y)\)</span> with bounded support <span class="math inline">\(\mathscr{Y}\)</span>. Without loss of generality assume that the true coefficient equals <span class="math inline">\(\beta_{0}=0\)</span>.</p>
+<p>Since <span class="math inline">\(Y\)</span> has bounded support <span class="math inline">\(\mathscr{Y}\)</span> there is a set <span class="math inline">\(B \subset \mathbb{R}^{m}\)</span> such that <span class="math inline">\(\left|y X^{\prime} \beta / \sigma^{2}\right|&lt;1\)</span> for all <span class="math inline">\(\beta \in B\)</span> and <span class="math inline">\(y \in \mathscr{Y}\)</span>. For such values of <span class="math inline">\(\beta\)</span>, define the auxiliary density function</p>
+<p><span class="math display">\[
+f_{\beta}(y)=f(y)\left(1+y X^{\prime} \beta / \sigma^{2}\right) .
+\]</span></p>
+<p>Under the assumptions, <span class="math inline">\(0 \leq f_{\beta}(y) \leq 2 f(y), f_{\beta}(y)\)</span> has support <span class="math inline">\(\mathscr{Y}\)</span>, and <span class="math inline">\(\int_{\mathscr{Y}} f_{\beta}(y) d y=1\)</span>. To see the later, observe that <span class="math inline">\(\int_{\mathscr{Y}} y f(y) d y=X^{\prime} \beta_{0}=0\)</span> under the normalization <span class="math inline">\(\beta_{0}=0\)</span>, and thus</p>
+<p><span class="math display">\[
+\int_{\mathscr{Y}} f_{\beta}(y) d y=\int_{\mathscr{Y}} f(y) d y+\int_{\mathscr{Y}} f(y) y d y X^{\prime} \beta / \sigma^{2}=1
+\]</span></p>
+<p>because <span class="math inline">\(\int_{\mathscr{Y}} f(y) d y=1\)</span>. Thus <span class="math inline">\(f_{\beta}\)</span> is a parametric family of density functions. Evaluated at <span class="math inline">\(\beta_{0}\)</span> we see that <span class="math inline">\(f_{0}=f\)</span>, which means that <span class="math inline">\(f_{\beta}\)</span> is a correctly-specified parametric family with true parameter value <span class="math inline">\(\beta_{0}=0\)</span>.</p>
+<p>To illustrate, take the case <span class="math inline">\(X=1\)</span>. Figure 4.1 displays an example density <span class="math inline">\(f(y)=(3 / 4)\left(1-y^{2}\right)\)</span> on <span class="math inline">\([-1,1]\)</span> with auxiliary density <span class="math inline">\(f_{\beta}(y)=f(y)(1+y)\)</span>. We can see how the auxiliary density is a tilted version of the original density <span class="math inline">\(f(y)\)</span>.</p>
+<p><img src="data-raw/images//2022_09_17_46fafb30295495354ae2g-09.jpg" class="img-fluid"></p>
+<p>Figure 4.1: Original and Auxiliary Density</p>
+<p>Let <span class="math inline">\(\mathbb{E}_{\beta}\)</span> denote expectation with respect to the auxiliary distribution. Since <span class="math inline">\(\int_{\mathscr{Y}} y f(y) d y=0\)</span> and <span class="math inline">\(\int_{\mathscr{Y}} y^{2} f(y) d y=\)</span> <span class="math inline">\(\sigma^{2}\)</span>, we find</p>
+<p><span class="math display">\[
+\mathbb{E}_{\beta}[Y]=\int_{\mathscr{Y}} y f_{\beta}(y) d y=\int_{\mathscr{Y}} y f(y) d y+\int_{\mathscr{Y}} y^{2} f(y) d y X^{\prime} \beta / \sigma^{2}=X^{\prime} \beta .
+\]</span></p>
+<p>This shows that <span class="math inline">\(f_{\beta}\)</span> is a regression model with regression coefficient <span class="math inline">\(\beta\)</span>.</p>
+<p>In Figure 4.1, the means of the two densities are indicated by the arrows to the <span class="math inline">\(\mathrm{x}\)</span>-axis. In this example we can see how the auxiliary density has a larger expected value, because the density has been tilted to the right.</p>
+<p>The parametric family <span class="math inline">\(f_{\beta}\)</span> over <span class="math inline">\(\beta \in B\)</span> has the following properties: its expectation is <span class="math inline">\(X^{\prime} \beta\)</span>, its variance is finite, the true value <span class="math inline">\(\beta_{0}\)</span> lies in the interior of <span class="math inline">\(B\)</span>, and the support of the distribution does not depend on <span class="math inline">\(\beta\)</span>.</p>
+<p>The likelihood score of the auxiliary density function for an observation, using the fact that <span class="math inline">\(Y_{i}=e_{i}\)</span>, is</p>
+<p><span class="math display">\[
+S_{i}=\left.\frac{\partial}{\partial \beta}\left(\log f_{\beta}\left(Y_{i}\right)\right)\right|_{\beta=0}=\left.\frac{\partial}{\partial \beta}\left(\log f\left(e_{i}\right)+\log \left(1+e_{i} X_{i}^{\prime} \beta / \sigma^{2}\right)\right)\right|_{\beta=0}=X_{i} e_{i} / \sigma^{2} .
+\]</span></p>
+<p>Therefore the information matrix is</p>
+<p><span class="math display">\[
+\mathscr{I}=\sum_{i=1}^{n} \mathbb{E}\left[S_{i} S_{i}^{\prime}\right]=\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \mathbb{E}\left[e_{i}^{2}\right] / \sigma^{4}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right) / \sigma^{2} .
+\]</span></p>
+<p>By assumption, <span class="math inline">\(\widetilde{\beta}\)</span> is unbiased. The Cramér-Rao lower bound states that</p>
+<p><span class="math display">\[
+\operatorname{var}[\widetilde{\beta}] \geq \mathscr{I}^{-1}=\sigma^{2}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} .
+\]</span></p>
+<p>This is the variance lower bound, completing the proof of Theorem 4.4.</p>
+<p>The above argument is rather tricky. At its core is the observation that the model <span class="math inline">\(f_{\beta}\)</span> is a submodel of the set of all linear regression models. The Cramér-Rao bound over any regular parametric submodel is a lower bound on the variance of any unbiased estimator. This means that the Cramér-Rao bound over <span class="math inline">\(f_{\beta}\)</span> is a lower bound for unbiased estimation of the regression coefficient. The model <span class="math inline">\(f_{\beta}\)</span> was selected judiciously so that its Cramér-Rao bound equals the variance of the least squares estimator, and this is sufficient to establish the bound.</p>
+</section>
+<section id="generalized-least-squares" class="level2">
+<h2 class="anchored" data-anchor-id="generalized-least-squares">Generalized Least Squares</h2>
+<p>Take the linear regression model in matrix format</p>
+<p><span class="math display">\[
+\boldsymbol{Y}=\boldsymbol{X} \beta+\boldsymbol{e} .
+\]</span></p>
+<p>Consider a generalized situation where the observation errors are possibly correlated and/or heteroskedastic. Specifically, suppose that</p>
+<p><span class="math display">\[
+\begin{gathered}
+\mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}]=0   
+\operatorname{var}[\boldsymbol{e} \mid \boldsymbol{X}]=\Sigma \sigma^{2}
+\end{gathered}
+\]</span></p>
+<p>for some <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\Sigma&gt;0\)</span>, possibly a function of <span class="math inline">\(\boldsymbol{X}\)</span>, and some scalar <span class="math inline">\(\sigma^{2}\)</span>. This includes the independent sampling framework where <span class="math inline">\(\Sigma\)</span> is diagonal but allows for non-diagonal covariance matrices as well. As a scaled covariance matrix, <span class="math inline">\(\Sigma\)</span> is necessarily symmetric and positive semi-definite.</p>
+<p>Under these assumptions, by arguments similar to the previous sections we can calculate the expectation and variance of the OLS estimator:</p>
+<p><span class="math display">\[
+\begin{gathered}
+\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}]=\beta   
+\operatorname{var}[\widehat{\beta} \mid \boldsymbol{X}]=\sigma^{2}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \Sigma \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}
+\end{gathered}
+\]</span></p>
+<p>(see Exercise 4.5).</p>
+<p>Aitken (1935) established a generalization of the Gauss-Markov Theorem. The following statement is due to B. E. Hansen (2021). Theorem 4.5 Take the linear regression model (4.17)-(4.19). If <span class="math inline">\(\widetilde{\beta}\)</span> is an unbiased estimator of <span class="math inline">\(\beta\)</span> then</p>
+<p><span class="math display">\[
+\operatorname{var}[\widetilde{\beta} \mid \boldsymbol{X}] \geq \sigma^{2}\left(\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{X}\right)^{-1}
+\]</span></p>
+<p>We defer the proof to Section 4.24. See also Exercise 4.6.</p>
+<p>Theorem <span class="math inline">\(4.5\)</span> provides a lower bound on the covariance matrix of unbiased estimators. Theorem <span class="math inline">\(4.4\)</span> was the special case <span class="math inline">\(\Sigma=\boldsymbol{I}_{n}\)</span>.</p>
+<p>When <span class="math inline">\(\Sigma\)</span> is known, Aitken (1935) constructed an estimator which achieves the lower bound in Theorem 4.5. Take the linear model (4.17) and pre-multiply by <span class="math inline">\(\Sigma^{-1 / 2}\)</span>. This produces the equation <span class="math inline">\(\tilde{\boldsymbol{Y}}=\widetilde{\boldsymbol{X}} \beta+\widetilde{\boldsymbol{e}}\)</span> where <span class="math inline">\(\tilde{\boldsymbol{Y}}=\Sigma^{-1 / 2} \boldsymbol{Y}, \widetilde{\boldsymbol{X}}=\Sigma^{-1 / 2} \boldsymbol{X}\)</span>, and <span class="math inline">\(\widetilde{\boldsymbol{e}}=\Sigma^{-1 / 2} \boldsymbol{e}\)</span>. Consider OLS estimation of <span class="math inline">\(\beta\)</span> in this equation.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widetilde{\beta}_{\text {gls }} &amp;=\left(\widetilde{\boldsymbol{X}}^{\prime} \widetilde{\boldsymbol{X}}\right)^{-1} \widetilde{\boldsymbol{X}}^{\prime} \widetilde{\boldsymbol{Y}}   
+&amp;=\left(\left(\Sigma^{-1 / 2} \boldsymbol{X}\right)^{\prime}\left(\Sigma^{-1 / 2} \boldsymbol{X}\right)\right)^{-1}\left(\Sigma^{-1 / 2} \boldsymbol{X}\right)^{\prime}\left(\Sigma^{-1 / 2} \boldsymbol{Y}\right)   
+&amp;=\left(\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{Y} .
+\end{aligned}
+\]</span></p>
+<p>This is called the Generalized Least Squares (GLS) estimator of <span class="math inline">\(\beta\)</span>.</p>
+<p>You can calculate that</p>
+<p><span class="math display">\[
+\begin{gathered}
+\mathbb{E}\left[\widetilde{\beta}_{\text {gls }} \mid \boldsymbol{X}\right]=\beta   
+\operatorname{var}\left[\widetilde{\beta}_{\text {gls }} \mid \boldsymbol{X}\right]=\sigma^{2}\left(\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{X}\right)^{-1} .
+\end{gathered}
+\]</span></p>
+<p>This shows that the GLS estimator is unbiased and has a covariance matrix which equals the lower bound from Theorem 4.5. This shows that the lower bound is sharp. GLS is thus efficient in the class of unbiased estimators.</p>
+<p>In the linear regression model with independent observations and known conditional variances, so that <span class="math inline">\(\Sigma=\boldsymbol{D}=\operatorname{diag}\left(\sigma_{1}^{2}, \ldots, \sigma_{n}^{2}\right)\)</span>, the GLS estimator takes the form</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widetilde{\beta}_{\mathrm{gls}} &amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{D}^{-1} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{D}^{-1} \boldsymbol{Y}   
+&amp;=\left(\sum_{i=1}^{n} \sigma_{i}^{-2} X_{i} X_{i}^{\prime}\right)^{-1}\left(\sum_{i=1}^{n} \sigma_{i}^{-2} X_{i} Y_{i}\right) .
+\end{aligned}
+\]</span></p>
+<p>The assumption <span class="math inline">\(\Sigma&gt;0\)</span> in this case reduces to <span class="math inline">\(\sigma_{i}^{2}&gt;0\)</span> for <span class="math inline">\(i=1, \ldots n\)</span>.</p>
+<p>In most settings the matrix <span class="math inline">\(\Sigma\)</span> is unknown so the GLS estimator is not feasible. However, the form of the GLS estimator motivates feasible versions, effectively by replacing <span class="math inline">\(\Sigma\)</span> with a suitable estimator.</p>
+</section>
+<section id="residuals" class="level2">
+<h2 class="anchored" data-anchor-id="residuals">Residuals</h2>
+<p>What are some properties of the residuals <span class="math inline">\(\widehat{e}_{i}=Y_{i}-X_{i}^{\prime} \widehat{\beta}\)</span> and prediction errors <span class="math inline">\(\widetilde{e}_{i}=Y_{i}-X_{i}^{\prime} \widehat{\beta}_{(-i)}\)</span> in the context of the linear regression model?</p>
+<p>Recall from (3.24) that we can write the residuals in vector notation as <span class="math inline">\(\widehat{\boldsymbol{e}}=\boldsymbol{M} \boldsymbol{e}\)</span> where <span class="math inline">\(\boldsymbol{M}=\boldsymbol{I}_{n}-\)</span> <span class="math inline">\(\boldsymbol{X}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime}\)</span> is the orthogonal projection matrix. Using the properties of conditional expectation</p>
+<p><span class="math display">\[
+\mathbb{E}[\widehat{\boldsymbol{e}} \mid \boldsymbol{X}]=\mathbb{E}[\boldsymbol{M e} \mid \boldsymbol{X}]=\boldsymbol{M} \mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}]=0
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\operatorname{var}[\widehat{\boldsymbol{e}} \mid \boldsymbol{X}]=\operatorname{var}[\boldsymbol{M} \boldsymbol{e} \mid \boldsymbol{X}]=\boldsymbol{M} \operatorname{var}[\boldsymbol{e} \mid \boldsymbol{X}] \boldsymbol{M}=\boldsymbol{M D} \boldsymbol{M}
+\]</span></p>
+<p>where <span class="math inline">\(\boldsymbol{D}\)</span> is defined in (4.8).</p>
+<p>We can simplify this expression under the assumption of conditional homoskedasticity</p>
+<p><span class="math display">\[
+\mathbb{E}\left[e^{2} \mid X\right]=\sigma^{2} .
+\]</span></p>
+<p>In this case (4.25) simplifies to</p>
+<p><span class="math display">\[
+\operatorname{var}[\widehat{\boldsymbol{e}} \mid \boldsymbol{X}]=\boldsymbol{M} \sigma^{2} .
+\]</span></p>
+<p>In particular, for a single observation <span class="math inline">\(i\)</span> we can find the variance of <span class="math inline">\(\widehat{e}_{i}\)</span> by taking the <span class="math inline">\(i^{t h}\)</span> diagonal element of (4.26). Since the <span class="math inline">\(i^{t h}\)</span> diagonal element of <span class="math inline">\(M\)</span> is <span class="math inline">\(1-h_{i i}\)</span> as defined in (3.40) we obtain</p>
+<p><span class="math display">\[
+\operatorname{var}\left[\widehat{e}_{i} \mid \boldsymbol{X}\right]=\mathbb{E}\left[\widehat{e}_{i}^{2} \mid \boldsymbol{X}\right]=\left(1-h_{i i}\right) \sigma^{2} .
+\]</span></p>
+<p>As this variance is a function of <span class="math inline">\(h_{i i}\)</span> and hence <span class="math inline">\(X_{i}\)</span> the residuals <span class="math inline">\(\widehat{e}_{i}\)</span> are heteroskedastic even if the errors <span class="math inline">\(e_{i}\)</span> are homoskedastic. Notice as well that (4.27) implies <span class="math inline">\(\widehat{e}_{i}^{2}\)</span> is a biased estimator of <span class="math inline">\(\sigma^{2}\)</span>.</p>
+<p>Similarly, recall from (3.45) that the prediction errors <span class="math inline">\(\widetilde{e}_{i}=\left(1-h_{i i}\right)^{-1} \widehat{e}_{i}\)</span> can be written in vector notation as <span class="math inline">\(\widetilde{\boldsymbol{e}}=\boldsymbol{M}^{*} \widehat{\boldsymbol{e}}\)</span> where <span class="math inline">\(\boldsymbol{M}^{*}\)</span> is a diagonal matrix with <span class="math inline">\(i^{t h}\)</span> diagonal element <span class="math inline">\(\left(1-h_{i i}\right)^{-1}\)</span>. Thus <span class="math inline">\(\widetilde{\boldsymbol{e}}=\boldsymbol{M}^{*} \boldsymbol{M} \boldsymbol{e}\)</span>. We can calculate that</p>
+<p><span class="math display">\[
+\mathbb{E}[\tilde{\boldsymbol{e}} \mid \boldsymbol{X}]=\boldsymbol{M}^{*} \boldsymbol{M} \mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}]=0
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\operatorname{var}[\widetilde{\boldsymbol{e}} \mid \boldsymbol{X}]=\boldsymbol{M}^{*} \boldsymbol{M} \operatorname{var}[\boldsymbol{e} \mid \boldsymbol{X}] \boldsymbol{M} \boldsymbol{M}^{*}=\boldsymbol{M}^{*} \boldsymbol{M D} \boldsymbol{M} \boldsymbol{M}^{*}
+\]</span></p>
+<p>which simplifies under homoskedasticity to</p>
+<p><span class="math display">\[
+\operatorname{var}[\widetilde{\boldsymbol{e}} \mid \boldsymbol{X}]=\boldsymbol{M}^{*} \boldsymbol{M} \boldsymbol{M} \boldsymbol{M}^{*} \sigma^{2}=\boldsymbol{M}^{*} \boldsymbol{M} \boldsymbol{M}^{*} \sigma^{2} .
+\]</span></p>
+<p>The variance of the <span class="math inline">\(i^{t h}\)</span> prediction error is then</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{var}\left[\widetilde{e}_{i} \mid \boldsymbol{X}\right] &amp;=\mathbb{E}\left[\widetilde{e}_{i}^{2} \mid \boldsymbol{X}\right]   
+&amp;=\left(1-h_{i i}\right)^{-1}\left(1-h_{i i}\right)\left(1-h_{i i}\right)^{-1} \sigma^{2}   
+&amp;=\left(1-h_{i i}\right)^{-1} \sigma^{2} .
+\end{aligned}
+\]</span></p>
+<p>A residual with constant conditional variance can be obtained by rescaling. The standardized residuals are</p>
+<p><span class="math display">\[
+\bar{e}_{i}=\left(1-h_{i i}\right)^{-1 / 2} \widehat{e}_{i},
+\]</span></p>
+<p>and in vector notation</p>
+<p><span class="math display">\[
+\overline{\boldsymbol{e}}=\left(\bar{e}_{1}, \ldots, \bar{e}_{n}\right)^{\prime}=\boldsymbol{M}^{* 1 / 2} \boldsymbol{M e} .
+\]</span></p>
+<p>From the above calculations, under homoskedasticity,</p>
+<p><span class="math display">\[
+\operatorname{var}[\overline{\boldsymbol{e}} \mid \boldsymbol{X}]=\boldsymbol{M}^{* 1 / 2} \boldsymbol{M} \boldsymbol{M}^{* 1 / 2} \sigma^{2}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\operatorname{var}\left[\bar{e}_{i} \mid \boldsymbol{X}\right]=\mathbb{E}\left[\bar{e}_{i}^{2} \mid \boldsymbol{X}\right]=\sigma^{2}
+\]</span></p>
+<p>and thus these standardized residuals have the same bias and variance as the original errors when the latter are homoskedastic.</p>
+</section>
+<section id="estimation-of-error-variance" class="level2">
+<h2 class="anchored" data-anchor-id="estimation-of-error-variance">Estimation of Error Variance</h2>
+<p>The error variance <span class="math inline">\(\sigma^{2}=\mathbb{E}\left[e^{2}\right]\)</span> can be a parameter of interest even in a heteroskedastic regression or a projection model. <span class="math inline">\(\sigma^{2}\)</span> measures the variation in the “unexplained” part of the regression. Its method of moments estimator (MME) is the sample average of the squared residuals:</p>
+<p><span class="math display">\[
+\widehat{\sigma}^{2}=\frac{1}{n} \sum_{i=1}^{n} \widehat{e}_{i}^{2} .
+\]</span></p>
+<p>In the linear regression model we can calculate the expectation of <span class="math inline">\(\widehat{\sigma}^{2}\)</span>. From (3.28) and the properties of the trace operator observe that</p>
+<p><span class="math display">\[
+\widehat{\sigma}^{2}=\frac{1}{n} \boldsymbol{e}^{\prime} \boldsymbol{M} \boldsymbol{e}=\frac{1}{n} \operatorname{tr}\left(\boldsymbol{e}^{\prime} \boldsymbol{M} \boldsymbol{e}\right)=\frac{1}{n} \operatorname{tr}\left(\boldsymbol{M e}^{\prime}\right) .
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[\widehat{\sigma}^{2} \mid \boldsymbol{X}\right] &amp;=\frac{1}{n} \operatorname{tr}\left(\mathbb{E}\left[\boldsymbol{M e e}^{\prime} \mid \boldsymbol{X}\right]\right)   
+&amp;=\frac{1}{n} \operatorname{tr}\left(\boldsymbol{M}\left[\boldsymbol{e} \boldsymbol{e}^{\prime} \mid \boldsymbol{X}\right]\right)   
+&amp;=\frac{1}{n} \operatorname{tr}(\boldsymbol{M D})   
+&amp;=\frac{1}{n} \sum_{i=1}^{n}\left(1-h_{i i}\right) \sigma_{i}^{2}
+\end{aligned}
+\]</span></p>
+<p>The final equality holds because the trace is the sum of the diagonal elements of <span class="math inline">\(\boldsymbol{M D}\)</span>, and because <span class="math inline">\(\boldsymbol{D}\)</span> is diagonal the diagonal elements of <span class="math inline">\(M D\)</span> are the product of the diagonal elements of <span class="math inline">\(M\)</span> and <span class="math inline">\(\boldsymbol{D}\)</span> which are <span class="math inline">\(1-h_{i i}\)</span> and <span class="math inline">\(\sigma_{i}^{2}\)</span>, respectively.</p>
+<p>Adding the assumption of conditional homoskedasticity <span class="math inline">\(\mathbb{E}\left[e^{2} \mid X\right]=\sigma^{2}\)</span> so that <span class="math inline">\(\boldsymbol{D}=\boldsymbol{I}_{n} \sigma^{2}\)</span>, then (4.30) simplifies to</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\widehat{\sigma}^{2} \mid \boldsymbol{X}\right]=\frac{1}{n} \operatorname{tr}\left(\boldsymbol{M} \sigma^{2}\right)=\sigma^{2}\left(\frac{n-k}{n}\right)
+\]</span></p>
+<p>the final equality by (3.22). This calculation shows that <span class="math inline">\(\widehat{\sigma}^{2}\)</span> is biased towards zero. The order of the bias depends on <span class="math inline">\(k / n\)</span>, the ratio of the number of estimated coefficients to the sample size.</p>
+<p>Another way to see this is to use (4.27). Note that</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\widehat{\sigma}^{2} \mid \boldsymbol{X}\right]=\frac{1}{n} \sum_{i=1}^{n} \mathbb{E}\left[\widehat{e}_{i}^{2} \mid \boldsymbol{X}\right]=\frac{1}{n} \sum_{i=1}^{n}\left(1-h_{i i}\right) \sigma^{2}=\left(\frac{n-k}{n}\right) \sigma^{2}
+\]</span></p>
+<p>the last equality using Theorem 3.6.</p>
+<p>Since the bias takes a scale form a classic method to obtain an unbiased estimator is by rescaling. Define</p>
+<p><span class="math display">\[
+s^{2}=\frac{1}{n-k} \sum_{i=1}^{n} \widehat{e}_{i}^{2} .
+\]</span></p>
+<p>By the above calculation <span class="math inline">\(\mathbb{E}\left[s^{2} \mid \boldsymbol{X}\right]=\sigma^{2}\)</span> and <span class="math inline">\(\mathbb{E}\left[s^{2}\right]=\sigma^{2}\)</span>. Hence the estimator <span class="math inline">\(s^{2}\)</span> is unbiased for <span class="math inline">\(\sigma^{2}\)</span>. Consequently, <span class="math inline">\(s^{2}\)</span> is known as the bias-corrected estimator for <span class="math inline">\(\sigma^{2}\)</span> and in empirical practice <span class="math inline">\(s^{2}\)</span> is the most widely used estimator for <span class="math inline">\(\sigma^{2}\)</span>. Interestingly, this is not the only method to construct an unbiased estimator for <span class="math inline">\(\sigma^{2}\)</span>. An estimator constructed with the standardized residuals <span class="math inline">\(\bar{e}_{i}\)</span> from (4.28) is</p>
+<p><span class="math display">\[
+\bar{\sigma}^{2}=\frac{1}{n} \sum_{i=1}^{n} \bar{e}_{i}^{2}=\frac{1}{n} \sum_{i=1}^{n}\left(1-h_{i i}\right)^{-1} \widehat{e}_{i}^{2} .
+\]</span></p>
+<p>You can show (see Exercise 4.9) that</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\bar{\sigma}^{2} \mid \boldsymbol{X}\right]=\sigma^{2}
+\]</span></p>
+<p>and thus <span class="math inline">\(\bar{\sigma}^{2}\)</span> is unbiased for <span class="math inline">\(\sigma^{2}\)</span> (in the homoskedastic linear regression model).</p>
+<p>When <span class="math inline">\(k / n\)</span> is small the estimators <span class="math inline">\(\widehat{\sigma}^{2}, s^{2}\)</span> and <span class="math inline">\(\bar{\sigma}^{2}\)</span> are likely to be similar to one another. However, if <span class="math inline">\(k / n\)</span> is large then <span class="math inline">\(s^{2}\)</span> and <span class="math inline">\(\bar{\sigma}^{2}\)</span> are generally preferred to <span class="math inline">\(\widehat{\sigma}^{2}\)</span>. Consequently it is best to use one of the biascorrected variance estimators in applications.</p>
+</section>
+<section id="mean-square-forecast-error" class="level2">
+<h2 class="anchored" data-anchor-id="mean-square-forecast-error">Mean-Square Forecast Error</h2>
+<p>One use of an estimated regression is to predict out-of-sample. Consider an out-of-sample realization <span class="math inline">\(\left(Y_{n+1}, X_{n+1}\right)\)</span> where <span class="math inline">\(X_{n+1}\)</span> is observed but not <span class="math inline">\(Y_{n+1}\)</span>. Given the coefficient estimator <span class="math inline">\(\widehat{\beta}\)</span> the standard point estimator of <span class="math inline">\(\mathbb{E}\left[Y_{n+1} \mid X_{n+1}\right]=X_{n+1}^{\prime} \beta\)</span> is <span class="math inline">\(\widetilde{Y}_{n+1}=X_{n+1}^{\prime} \widehat{\beta}\)</span>. The forecast error is the difference between the actual value <span class="math inline">\(Y_{n+1}\)</span> and the point forecast <span class="math inline">\(\widetilde{Y}_{n+1}\)</span>. This is the forecast error <span class="math inline">\(\widetilde{e}_{n+1}=Y_{n+1}-\widetilde{Y}_{n+1}\)</span>. The meansquared forecast error (MSFE) is its expected squared value <span class="math inline">\(\operatorname{MSFE}_{n}=\mathbb{E}\left[\widetilde{e}_{n+1}^{2}\right]\)</span>. In the linear regression model <span class="math inline">\(\widetilde{e}_{n+1}=e_{n+1}-X_{n+1}^{\prime}(\widehat{\beta}-\beta)\)</span> so</p>
+<p><span class="math display">\[
+\operatorname{MSFE}_{n}=\mathbb{E}\left[e_{n+1}^{2}\right]-2 \mathbb{E}\left[e_{n+1} X_{n+1}^{\prime}(\widehat{\beta}-\beta)\right]+\mathbb{E}\left[X_{n+1}^{\prime}(\widehat{\beta}-\beta)(\widehat{\beta}-\beta)^{\prime} X_{n+1}\right] .
+\]</span></p>
+<p>The first term in (4.33) is <span class="math inline">\(\sigma^{2}\)</span>. The second term in (4.33) is zero because <span class="math inline">\(e_{n+1} X_{n+1}^{\prime}\)</span> is independent of <span class="math inline">\(\widehat{\beta}-\beta\)</span> and both are mean zero. Using the properties of the trace operator the third term in (4.33) is</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;\operatorname{tr}\left(\mathbb{E}\left[X_{n+1} X_{n+1}^{\prime}\right] \mathbb{E}\left[(\widehat{\beta}-\beta)(\widehat{\beta}-\beta)^{\prime}\right]\right)   
+&amp;=\operatorname{tr}\left(\mathbb{E}\left[X_{n+1} X_{n+1}^{\prime}\right] \mathbb{E}\left[\mathbb{E}\left[(\widehat{\beta}-\beta)(\widehat{\beta}-\beta)^{\prime} \mid \boldsymbol{X}\right]\right]\right)   
+&amp;=\operatorname{tr}\left(\mathbb{E}\left[X_{n+1} X_{n+1}^{\prime}\right] \mathbb{E}\left[\boldsymbol{V}_{\widehat{\beta}}\right]\right)   
+&amp;=\mathbb{E}\left[\operatorname{tr}\left(\left(X_{n+1} X_{n+1}^{\prime}\right) \boldsymbol{V}_{\widehat{\beta}}\right)\right]   
+&amp;=\mathbb{E}\left[X_{n+1}^{\prime} \boldsymbol{V}_{\widehat{\beta}} X_{n+1}\right]
+\end{aligned}
+\]</span></p>
+<p>where we use the fact that <span class="math inline">\(X_{n+1}\)</span> is independent of <span class="math inline">\(\widehat{\beta}\)</span>, the definition <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}=\mathbb{E}\left[(\widehat{\beta}-\beta)(\widehat{\beta}-\beta)^{\prime} \mid \boldsymbol{X}\right]\)</span>, and the fact that <span class="math inline">\(X_{n+1}\)</span> is independent of <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}\)</span>. Thus</p>
+<p><span class="math display">\[
+\operatorname{MSFE}_{n}=\sigma^{2}+\mathbb{E}\left[X_{n+1}^{\prime} \boldsymbol{V}_{\widehat{\beta}} X_{n+1}\right] .
+\]</span></p>
+<p>Under conditional homoskedasticity this simplifies to</p>
+<p><span class="math display">\[
+\operatorname{MSFE}_{n}=\sigma^{2}\left(1+\mathbb{E}\left[X_{n+1}^{\prime}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} X_{n+1}\right]\right) .
+\]</span></p>
+<p>A simple estimator for the MSFE is obtained by averaging the squared prediction errors (3.46)</p>
+<p><span class="math display">\[
+\widetilde{\sigma}^{2}=\frac{1}{n} \sum_{i=1}^{n} \widetilde{e}_{i}^{2}
+\]</span></p>
+<p>where <span class="math inline">\(\widetilde{e}_{i}=Y_{i}-X_{i}^{\prime} \widehat{\beta}_{(-i)}=\widehat{e}_{i}\left(1-h_{i i}\right)^{-1}\)</span>. Indeed, we can calculate that</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[\widetilde{\sigma}^{2}\right] &amp;=\mathbb{E}\left[\widetilde{e}_{i}^{2}\right]   
+&amp;=\mathbb{E}\left[\left(e_{i}-X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)\right)^{2}\right]   
+&amp;=\sigma^{2}+\mathbb{E}\left[X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)\left(\widehat{\beta}_{(-i)}-\beta\right)^{\prime} X_{i}\right] .
+\end{aligned}
+\]</span></p>
+<p>By a similar calculation as in (4.34) we find</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\widetilde{\sigma}^{2}\right]=\sigma^{2}+\mathbb{E}\left[X_{i}^{\prime} \boldsymbol{V}_{\widehat{\beta}_{(-i)}} X_{i}\right]=\operatorname{MSFE}_{n-1} .
+\]</span></p>
+<p>This is the MSFE based on a sample of size <span class="math inline">\(n-1\)</span> rather than size <span class="math inline">\(n\)</span>. The difference arises because the in-sample prediction errors <span class="math inline">\(\widetilde{e}_{i}\)</span> for <span class="math inline">\(i \leq n\)</span> are calculated using an effective sample size of <span class="math inline">\(n-1\)</span>, while the out-of sample prediction error <span class="math inline">\(\widetilde{e}_{n+1}\)</span> is calculated from a sample with the full <span class="math inline">\(n\)</span> observations. Unless <span class="math inline">\(n\)</span> is very small we should expect <span class="math inline">\(\operatorname{MSFE}_{n-1}\)</span> (the MSFE based on <span class="math inline">\(n-1\)</span> observations) to be close to <span class="math inline">\(\mathrm{MSFE}_{n}\)</span> (the MSFE based on <span class="math inline">\(n\)</span> observations). Thus <span class="math inline">\(\widetilde{\sigma}^{2}\)</span> is a reasonable estimator for MSFE <span class="math inline">\(n\)</span>.</p>
+</section>
+<section id="theorem-4.6-msfe" class="level2">
+<h2 class="anchored" data-anchor-id="theorem-4.6-msfe">Theorem 4.6 MSFE</h2>
+<p>In the linear regression model (Assumption 4.2) and i.i.d. sampling (Assumption 4.1)</p>
+<p><span class="math display">\[
+\operatorname{MSFE}_{n}=\mathbb{E}\left[\widetilde{e}_{n+1}^{2}\right]=\sigma^{2}+\mathbb{E}\left[X_{n+1}^{\prime} \boldsymbol{V}_{\widehat{\beta}} X_{n+1}\right]
+\]</span></p>
+<p>where <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}=\operatorname{var}[\widehat{\beta} \mid \boldsymbol{X}]\)</span>. Furthermore, <span class="math inline">\(\widetilde{\sigma}^{2}\)</span> defined in (3.46) is an unbiased estimator of <span class="math inline">\(\operatorname{MSFE}_{n-1}\)</span>, because <span class="math inline">\(\mathbb{E}\left[\widetilde{\sigma}^{2}\right]=\operatorname{MSFE}_{n-1}\)</span>.</p>
+</section>
+<section id="covariance-matrix-estimation-under-homoskedasticity" class="level2">
+<h2 class="anchored" data-anchor-id="covariance-matrix-estimation-under-homoskedasticity">Covariance Matrix Estimation Under Homoskedasticity</h2>
+<p>For inference we need an estimator of the covariance matrix <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}\)</span> of the least squares estimator. In this section we consider the homoskedastic regression model (Assumption 4.3).</p>
+<p>Under homoskedasticity the covariance matrix takes the simple form</p>
+<p><span class="math display">\[
+\boldsymbol{V}_{\widehat{\beta}}^{0}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2}
+\]</span></p>
+<p>which is known up to the scale <span class="math inline">\(\sigma^{2}\)</span>. In Section <span class="math inline">\(4.11\)</span> we discussed three estimators of <span class="math inline">\(\sigma^{2}\)</span>. The most commonly used choice is <span class="math inline">\(s^{2}\)</span> leading to the classic covariance matrix estimator</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{0}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} s^{2} .
+\]</span></p>
+<p>Since <span class="math inline">\(s^{2}\)</span> is conditionally unbiased for <span class="math inline">\(\sigma^{2}\)</span> it is simple to calculate that <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{0}\)</span> is conditionally unbiased for <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}\)</span> under the assumption of homoskedasticity:</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{0} \mid \boldsymbol{X}\right]=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \mathbb{E}\left[s^{2} \mid \boldsymbol{X}\right]=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2}=\boldsymbol{V}_{\widehat{\beta}} .
+\]</span></p>
+<p>This was the dominant covariance matrix estimator in applied econometrics for many years and is still the default method in most regression packages. For example, Stata uses the covariance matrix estimator (4.35) by default in linear regression unless an alternative is specified. If the estimator (4.35) is used but the regression error is heteroskedastic it is possible for <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{0}\)</span> to be quite biased for the correct covariance matrix <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{D} \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\)</span>. For example, suppose <span class="math inline">\(k=1\)</span> and <span class="math inline">\(\sigma_{i}^{2}=X_{i}^{2}\)</span> with <span class="math inline">\(\mathbb{E}[X]=0\)</span>. The ratio of the true variance of the least squares estimator to the expectation of the variance estimator is</p>
+<p><span class="math display">\[
+\frac{\boldsymbol{V}_{\widehat{\beta}}}{\mathbb{E}\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{0} \mid \boldsymbol{X}\right]}=\frac{\sum_{i=1}^{n} X_{i}^{4}}{\sigma^{2} \sum_{i=1}^{n} X_{i}^{2}} \simeq \frac{\mathbb{E}\left[X^{4}\right]}{\left(\mathbb{E}\left[X^{2}\right]\right)^{2}} \stackrel{\text { def }}{=} \kappa
+\]</span></p>
+<p>(Notice that we use the fact that <span class="math inline">\(\sigma_{i}^{2}=X_{i}^{2}\)</span> implies <span class="math inline">\(\sigma^{2}=\mathbb{E}\left[\sigma_{i}^{2}\right]=\mathbb{E}\left[X^{2}\right]\)</span>.) The constant <span class="math inline">\(\kappa\)</span> is the standardized fourth moment (or kurtosis) of the regressor <span class="math inline">\(X\)</span> and can be any number greater than one. For example, if <span class="math inline">\(X \sim \mathrm{N}\left(0, \sigma^{2}\right)\)</span> then <span class="math inline">\(\kappa=3\)</span>, so the true variance <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}\)</span> is three times larger than the expected homoskedastic estimator <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{0}\)</span>. But <span class="math inline">\(\kappa\)</span> can be much larger. Take, for example, the variable wage in the CPS data set. It satisfies <span class="math inline">\(\kappa=30\)</span> so that if the conditional variance equals <span class="math inline">\(\sigma_{i}^{2}=X_{i}^{2}\)</span> then the true variance <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}\)</span> is 30 times larger than the expected homoskedastic estimator <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{0}\)</span>. While this is an extreme case the point is that the classic covariance matrix estimator (4.35) may be quite biased when the homoskedasticity assumption fails.</p>
+</section>
+<section id="covariance-matrix-estimation-under-heteroskedasticity" class="level2">
+<h2 class="anchored" data-anchor-id="covariance-matrix-estimation-under-heteroskedasticity">Covariance Matrix Estimation Under Heteroskedasticity</h2>
+<p>In the previous section we showed that that the classic covariance matrix estimator can be highly biased if homoskedasticity fails. In this section we show how to construct covariance matrix estimators which do not require homoskedasticity.</p>
+<p>Recall that the general form for the covariance matrix is</p>
+<p><span class="math display">\[
+\boldsymbol{V}_{\widehat{\beta}}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{D} \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} .
+\]</span></p>
+<p>with <span class="math inline">\(\boldsymbol{D}\)</span> defined in (4.8). This depends on the unknown matrix <span class="math inline">\(\boldsymbol{D}\)</span> which we can write as</p>
+<p><span class="math display">\[
+\boldsymbol{D}=\operatorname{diag}\left(\sigma_{1}^{2}, \ldots, \sigma_{n}^{2}\right)=\mathbb{E}\left[\boldsymbol{e} \boldsymbol{e}^{\prime} \mid \boldsymbol{X}\right]=\mathbb{E}[\widetilde{\boldsymbol{D}} \mid \boldsymbol{X}]
+\]</span></p>
+<p>where <span class="math inline">\(\widetilde{\boldsymbol{D}}=\operatorname{diag}\left(e_{1}^{2}, \ldots, e_{n}^{2}\right)\)</span>. Thus <span class="math inline">\(\widetilde{\boldsymbol{D}}\)</span> is a conditionally unbiased estimator for <span class="math inline">\(\boldsymbol{D}\)</span>. If the squared errors <span class="math inline">\(e_{i}^{2}\)</span> were observable, we could construct an unbiased estimator for <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}\)</span> as</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\text {ideal }} &amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \widetilde{\boldsymbol{D}} \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+&amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} e_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}
+\end{aligned}
+\]</span></p>
+<p>Indeed,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\text {ideal }} \mid \boldsymbol{X}\right] &amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \mathbb{E}\left[e_{i}^{2} \mid \boldsymbol{X}\right]\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+&amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \sigma_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+&amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{D} \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}=\boldsymbol{V}_{\widehat{\beta}}
+\end{aligned}
+\]</span></p>
+<p>verifying that <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\text {ideal }}\)</span> is unbiased for <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}\)</span>. Since the errors <span class="math inline">\(e_{i}^{2}\)</span> are unobserved <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\text {ideal }}\)</span> is not a feasible estimator. However, we can replace <span class="math inline">\(e_{i}^{2}\)</span> with the squared residuals <span class="math inline">\(\widehat{e}_{i}^{2}\)</span>. Making this substitution we obtain the estimator</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 0}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \widehat{e}_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} .
+\]</span></p>
+<p>The label “HC” refers to “heteroskedasticity-consistent”. The label “HC0” refers to this being the baseline heteroskedasticity-consistent covariance matrix estimator.</p>
+<p>We know, however, that <span class="math inline">\(\widehat{e}_{i}^{2}\)</span> is biased towards zero (recall equation (4.27)). To estimate the variance <span class="math inline">\(\sigma^{2}\)</span> the unbiased estimator <span class="math inline">\(s^{2}\)</span> scales the moment estimator <span class="math inline">\(\widehat{\sigma}^{2}\)</span> by <span class="math inline">\(n /(n-k)\)</span>. Making the same adjustment we obtain the estimator</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC1}}=\left(\frac{n}{n-k}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \widehat{e}_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} .
+\]</span></p>
+<p>While the scaling by <span class="math inline">\(n /(n-k)\)</span> is <span class="math inline">\(a d h o c, \mathrm{HCl}\)</span> is often recommended over the unscaled HC0 estimator.</p>
+<p>Alternatively, we could use the standardized residuals <span class="math inline">\(\bar{e}_{i}\)</span> or the prediction errors <span class="math inline">\(\widetilde{e}_{i}\)</span>, yielding the “HC2” and “HC3” estimators</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 2} &amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \bar{e}_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+&amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n}\left(1-h_{i i}\right)^{-1} X_{i} X_{i}^{\prime} \widehat{e}_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}
+\end{aligned}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 3} &amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \tilde{e}_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+&amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n}\left(1-h_{i i}\right)^{-2} X_{i} X_{i}^{\prime} \widehat{e}_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} .
+\end{aligned}
+\]</span></p>
+<p>The four estimators <span class="math inline">\(\mathrm{HC}\)</span>, <span class="math inline">\(\mathrm{HC1}\)</span>, HC2, and HC3 are collectively called robust, heteroskedasticityconsistent, or heteroskedasticity-robust covariance matrix estimators. The HC0 estimator was first developed by Eicker (1963) and introduced to econometrics by White (1980) and is sometimes called the Eicker-White or White covariance matrix estimator. The degree-of-freedom adjustment in <span class="math inline">\(\mathrm{HCl}\)</span> was recommended by Hinkley (1977) and is the default robust covariance matrix estimator implemented in Stata. It is implement by the “, <span class="math inline">\(r\)</span>” option. In current applied econometric practice this is the most popular covariance matrix estimator. The HC2 estimator was introduced by Horn, Horn and Duncan (1975) and is implemented using the vce (hc2) option in Stata. The HC3 estimator was derived by MacKinnon and White (1985) from the jackknife principle (see Section 10.3), and by Andrews (1991a) based on the principle of leave-one-out cross-validation, and is implemented using the vce(hc3) option in Stata.</p>
+<p>Since <span class="math inline">\(\left(1-h_{i i}\right)^{-2}&gt;\left(1-h_{i i}\right)^{-1}&gt;1\)</span> it is straightforward to show that</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 0}&lt;\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 2}&lt;\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 3} .
+\]</span></p>
+<p>(See Exercise 4.10.) The inequality <span class="math inline">\(\boldsymbol{A}&lt;\boldsymbol{B}\)</span> when applied to matrices means that the matrix <span class="math inline">\(\boldsymbol{B}-\boldsymbol{A}\)</span> is positive definite. In general, the bias of the covariance matrix estimators is complicated but simplify under the assumption of homoskedasticity (4.3). For example, using (4.27),</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 0} \mid \boldsymbol{X}\right] &amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \mathbb{E}\left[\widehat{e}_{i}^{2} \mid \boldsymbol{X}\right]\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+&amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime}\left(1-h_{i i}\right) \sigma^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+&amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2}-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} h_{i i}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2}   
+&amp;&lt;\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2}=\boldsymbol{V}_{\widehat{\beta}}
+\end{aligned}
+\]</span></p>
+<p>This calculation shows that <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 0}\)</span> is biased towards zero.</p>
+<p>By a similar calculation (again under homoskedasticity) we can calculate that the HC2 estimator is unbiased</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 2} \mid \boldsymbol{X}\right]=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2} .
+\]</span></p>
+<p>(See Exercise 4.11.)</p>
+<p>It might seem rather odd to compare the bias of heteroskedasticity-robust estimators under the assumption of homoskedasticity but it does give us a baseline for comparison.</p>
+<p>Another interesting calculation shows that in general (that is, without assuming homoskedasticity) the HC3 estimator is biased away from zero. Indeed, using the definition of the prediction errors (3.44)</p>
+<p><span class="math display">\[
+\widetilde{e}_{i}=Y_{i}-X_{i}^{\prime} \widehat{\beta}_{(-i)}=e_{i}-X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)
+\]</span></p>
+<p>so</p>
+<p><span class="math display">\[
+\widetilde{e}_{i}^{2}=e_{i}^{2}-2 X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right) e_{i}+\left(X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)\right)^{2} .
+\]</span></p>
+<p>Note that <span class="math inline">\(e_{i}\)</span> and <span class="math inline">\(\widehat{\beta}_{(-i)}\)</span> are functions of non-overlapping observations and are thus independent. Hence <span class="math inline">\(\mathbb{E}\left[\left(\widehat{\beta}_{(-i)}-\beta\right) e_{i} \mid \boldsymbol{X}\right]=0\)</span> and</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[\widetilde{e}_{i}^{2} \mid \boldsymbol{X}\right] &amp;=\mathbb{E}\left[e_{i}^{2} \mid \boldsymbol{X}\right]-2 X_{i}^{\prime} \mathbb{E}\left[\left(\widehat{\beta}_{(-i)}-\beta\right) e_{i} \mid \boldsymbol{X}\right]+\mathbb{E}\left[\left(X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)\right)^{2} \mid \boldsymbol{X}\right]   
+&amp;=\sigma_{i}^{2}+\mathbb{E}\left[\left(X_{i}^{\prime}\left(\widehat{\beta}_{(-i)}-\beta\right)\right)^{2} \mid \boldsymbol{X}\right]   
+&amp; \geq \sigma_{i}^{2} .
+\end{aligned}
+\]</span></p>
+<p>It follows that</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 3} \mid \boldsymbol{X}\right] &amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \mathbb{E}\left[\tilde{e}_{i}^{2} \mid \boldsymbol{X}\right]\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}   
+&amp; \geq\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \sigma_{i}^{2}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}=\boldsymbol{V}_{\widehat{\beta}}
+\end{aligned}
+\]</span></p>
+<p>This means that the HC3 estimator is conservative in the sense that it is weakly larger (in expectation) than the correct variance for any realization of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+<p>We have introduced five covariance matrix estimators, including the homoskedastic estimator <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{0}\)</span> and the four HC estimators. Which should you use? The classic estimator <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{0}\)</span> is typically a poor choice as it is only valid under the unlikely homoskedasticity restriction. For this reason it is not typically used in contemporary econometric research. Unfortunately, standard regression packages set their default choice as <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{0}\)</span> so users must intentionally select a robust covariance matrix estimator.</p>
+<p>Of the four robust estimators <span class="math inline">\(\mathrm{HCl}\)</span> is the most commonly used as it is the default robust covariance matrix option in Stata. However, HC2 and HC3 are preferred. HC2 is unbiased (under homoskedasticity) and HC3 is conservative for any <span class="math inline">\(\boldsymbol{X}\)</span>. In most applications <span class="math inline">\(\mathrm{HC} 1, \mathrm{HC} 2\)</span>, and <span class="math inline">\(\mathrm{HC} 3\)</span> will be similar so this choice will not matter. The context where the estimators can differ substantially is when the sample has a large leverage value <span class="math inline">\(h_{i i}\)</span> for at least one observation. You can see this by comparing the formulas (4.37), (4.38), and (4.39) and noting that the only difference is the scaling by the leverage values <span class="math inline">\(h_{i i}\)</span>. If there is an observation with <span class="math inline">\(h_{i i}\)</span> close to one, then <span class="math inline">\(\left(1-h_{i i}\right)^{-1}\)</span> and <span class="math inline">\(\left(1-h_{i i}\right)^{-2}\)</span> will be large, giving this observation much greater weight in the covariance matrix formula.</p>
+<p><img src="data-raw/images//2022_09_17_46fafb30295495354ae2g-19.jpg" class="img-fluid"></p>
+</section>
+<section id="standard-errors" class="level2">
+<h2 class="anchored" data-anchor-id="standard-errors">Standard Errors</h2>
+<p>A variance estimator such as <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}\)</span> is an estimator of the variance of the distribution of <span class="math inline">\(\widehat{\beta}\)</span>. A more easily interpretable measure of spread is its square root - the standard deviation. This is so important when discussing the distribution of parameter estimators we have a special name for estimates of their standard deviation.</p>
+<p>Definition <span class="math inline">\(4.2\)</span> A standard error <span class="math inline">\(s(\widehat{\beta})\)</span> for a real-valued estimator <span class="math inline">\(\widehat{\beta}\)</span> is an estimator of the standard deviation of the distribution of <span class="math inline">\(\widehat{\beta}\)</span>.</p>
+<p>When <span class="math inline">\(\beta\)</span> is a vector with estimator <span class="math inline">\(\widehat{\beta}\)</span> and covariance matrix estimator <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}\)</span>, standard errors for individual elements are the square roots of the diagonal elements of <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}\)</span>. That is,</p>
+<p><span class="math display">\[
+s\left(\widehat{\beta}_{j}\right)=\sqrt{\widehat{\boldsymbol{V}}_{\widehat{\beta}_{j}}}=\sqrt{\left[\widehat{\boldsymbol{V}}_{\widehat{\beta}}\right]_{j j}}
+\]</span></p>
+<p>When the classical covariance matrix estimator (4.35) is used the standard error takes the simple form</p>
+<p><span class="math display">\[
+s\left(\widehat{\beta}_{j}\right)=s \sqrt{\left[\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\right]_{j j}} .
+\]</span></p>
+<p>As we discussed in the previous section there are multiple possible covariance matrix estimators so standard errors are not unique. It is therefore important to understand what formula and method is used by an author when studying their work. It is also important to understand that a particular standard error may be relevant under one set of model assumptions but not under another set of assumptions.</p>
+<p>To illustrate, we return to the log wage regression (3.12) of Section 3.7. We calculate that <span class="math inline">\(s^{2}=0.160\)</span>. Therefore the homoskedastic covariance matrix estimate is</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{0}=\left(\begin{array}{cc}
+5010 &amp; 314   
+314 &amp; 20
+\end{array}\right)^{-1} 0.160=\left(\begin{array}{cc}
+0.002 &amp; -0.031   
+-0.031 &amp; 0.499
+\end{array}\right)
+\]</span></p>
+<p>We also calculate that</p>
+<p><span class="math display">\[
+\sum_{i=1}^{n}\left(1-h_{i i}\right)^{-1} X_{i} X_{i}^{\prime} \widehat{e}_{i}^{2}=\left(\begin{array}{cc}
+763.26 &amp; 48.513   
+48.513 &amp; 3.1078
+\end{array}\right) .
+\]</span></p>
+<p>Therefore the HC2 covariance matrix estimate is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC} 2} &amp;=\left(\begin{array}{cc}
+5010 &amp; 314   
+314 &amp; 20
+\end{array}\right)^{-1}\left(\begin{array}{cc}
+763.26 &amp; 48.513   
+48.513 &amp; 3.1078
+\end{array}\right)\left(\begin{array}{cc}
+5010 &amp; 314   
+314 &amp; 20
+\end{array}\right)^{-1}   
+&amp;=\left(\begin{array}{cc}
+0.001 &amp; -0.015   
+-0.015 &amp; 0.243
+\end{array}\right) .
+\end{aligned}
+\]</span></p>
+<p>The standard errors are the square roots of the diagonal elements of these matrices. A conventional format to write the estimated equation with standard errors is</p>
+<p><img src="data-raw/images//2022_09_17_46fafb30295495354ae2g-20.jpg" class="img-fluid"></p>
+<p>Alternatively, standard errors could be calculated using the other formulae. We report the different standard errors in the following table.</p>
+<p>Table 4.1: Standard Errors</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th>Education</th>
+<th>Intercept</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Homoskedastic (4.35)</td>
+<td><span class="math inline">\(0.045\)</span></td>
+<td><span class="math inline">\(0.707\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HC0 (4.36)</td>
+<td><span class="math inline">\(0.029\)</span></td>
+<td><span class="math inline">\(0.461\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HC1 <span class="math inline">\((4.37)\)</span></td>
+<td><span class="math inline">\(0.030\)</span></td>
+<td><span class="math inline">\(0.486\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HC2 <span class="math inline">\((4.38)\)</span></td>
+<td><span class="math inline">\(0.031\)</span></td>
+<td><span class="math inline">\(0.493\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HC3 <span class="math inline">\((4.39)\)</span></td>
+<td><span class="math inline">\(0.033\)</span></td>
+<td><span class="math inline">\(0.527\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The homoskedastic standard errors are noticeably different (larger in this case) than the others. The robust standard errors are reasonably close to one another though the HC3 standard errors are larger than the others.</p>
+</section>
+<section id="estimation-with-sparse-dummy-variables" class="level2">
+<h2 class="anchored" data-anchor-id="estimation-with-sparse-dummy-variables">Estimation with Sparse Dummy Variables</h2>
+<p>The heteroskedasticity-robust covariance matrix estimators can be quite imprecise in some contexts. One is in the presence of sparse dummy variables - when a dummy variable only takes the value 1 or 0 for very few observations. In these contexts one component of the covariance matrix is estimated on just those few observations and will be imprecise. This is effectively hidden from the user. To see the problem, let <span class="math inline">\(D\)</span> be a dummy variable (takes on the values 1 and 0 ) and consider the dummy variable regression</p>
+<p><span class="math display">\[
+Y=\beta_{1} D+\beta_{2}+e .
+\]</span></p>
+<p>The number of observations for which <span class="math inline">\(D_{i}=1\)</span> is <span class="math inline">\(n_{1}=\sum_{i=1}^{n} D_{i}\)</span>. The number of observations for which <span class="math inline">\(D_{i}=0\)</span> is <span class="math inline">\(n_{2}=n-n_{1}\)</span>. We say the design is sparse if <span class="math inline">\(n_{1}\)</span> or <span class="math inline">\(n_{2}\)</span> is small.</p>
+<p>To simplify our analysis, we take the extreme case <span class="math inline">\(n_{1}=1\)</span>. The ideas extend to the case of <span class="math inline">\(n_{1}&gt;1\)</span> but small, though with less dramatic effects.</p>
+<p>In the regression model (4.45) we can calculate that the true covariance matrix of the least squares estimator for the coefficients under the simplifying assumption of conditional homoskedasticity is</p>
+<p><span class="math display">\[
+\boldsymbol{V}_{\widehat{\beta}}=\sigma^{2}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}=\sigma^{2}\left(\begin{array}{ll}
+1 &amp; 1   
+1 &amp; n
+\end{array}\right)^{-1}=\frac{\sigma^{2}}{n-1}\left(\begin{array}{cc}
+n &amp; -1   
+-1 &amp; 1
+\end{array}\right)
+\]</span></p>
+<p>In particular, the variance of the estimator for the coefficient on the dummy variable is</p>
+<p><span class="math display">\[
+V_{\widehat{\beta}_{1}}=\sigma^{2} \frac{n}{n-1} .
+\]</span></p>
+<p>Essentially, the coefficient <span class="math inline">\(\beta_{1}\)</span> is estimated from a single observation so its variance is roughly unaffected by sample size. An important message is that certain coefficient estimators in the presence of sparse dummy variables will be imprecise, regardless of the sample size. A large sample alone is not sufficient to ensure precise estimation.</p>
+<p>Now let’s examine the standard HC1 covariance matrix estimator (4.37). The regression has perfect fit for the observation for which <span class="math inline">\(D_{i}=1\)</span> so the corresponding residual is <span class="math inline">\(\widehat{e}_{i}=0\)</span>. It follows that <span class="math inline">\(D_{i} \widehat{e}_{i}=0\)</span> for all <span class="math inline">\(i\)</span> (either <span class="math inline">\(D_{i}=0\)</span> or <span class="math inline">\(\widehat{e}_{i}=0\)</span> ). Hence</p>
+<p><span class="math display">\[
+\sum_{i=1}^{n} X_{i} X_{i}^{\prime} \hat{e}_{i}^{2}=\left(\begin{array}{cc}
+0 &amp; 0   
+0 &amp; \sum_{i=1}^{n} \widehat{e}_{i}^{2}
+\end{array}\right)=\left(\begin{array}{cc}
+0 &amp; 0   
+0 &amp; (n-2) s^{2}
+\end{array}\right)
+\]</span></p>
+<p>where <span class="math inline">\(s^{2}=(n-2)^{-1} \sum_{i=1}^{n} \widehat{e}_{i}^{2}\)</span> is the bias-corrected estimator of <span class="math inline">\(\sigma^{2}\)</span>. Together we find that</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC1}} &amp;=\left(\frac{n}{n-2}\right) \frac{1}{(n-1)^{2}}\left(\begin{array}{cc}
+n &amp; -1   
+-1 &amp; 1
+\end{array}\right)\left(\begin{array}{cc}
+0 &amp; 0   
+0 &amp; (n-2) s^{2}
+\end{array}\right)\left(\begin{array}{cc}
+n &amp; -1   
+-1 &amp; 1
+\end{array}\right)   
+&amp;=s^{2} \frac{n}{(n-1)^{2}}\left(\begin{array}{cc}
+1 &amp; -1   
+-1 &amp; 1
+\end{array}\right) .
+\end{aligned}
+\]</span></p>
+<p>In particular, the estimator for <span class="math inline">\(V_{\widehat{\beta}_{1}}\)</span> is</p>
+<p><span class="math display">\[
+\widehat{V}_{\widehat{\beta}_{1}}^{\mathrm{HC} 1}=s^{2} \frac{n}{(n-1)^{2}}
+\]</span></p>
+<p>It has expectation</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\widehat{V}_{\widehat{\beta}_{1}}^{\mathrm{HC1}}\right]=\sigma^{2} \frac{n}{(n-1)^{2}}=\frac{V_{\widehat{\beta}_{1}}}{n-1}&lt;&lt;V_{\widehat{\beta}_{1}} .
+\]</span></p>
+<p>The variance estimator <span class="math inline">\(\widehat{V}_{\widehat{\beta}_{1}}^{\mathrm{HCl}}\)</span> is extremely biased for <span class="math inline">\(V_{\widehat{\beta}_{1}}\)</span>. It is too small by a multiple of <span class="math inline">\(n\)</span> ! The reported variance - and standard error - is misleadingly small. The variance estimate erroneously mis-states the precision of <span class="math inline">\(\widehat{\beta}_{1}\)</span>.</p>
+<p>The fact that <span class="math inline">\(\widehat{V}_{\widehat{\beta}_{1}}^{\mathrm{HCl}}\)</span> is biased is unlikely to be noticed by an applied researcher. Nothing in the reported output will alert a researcher to the problem. Another way to see the issue is to consider the estimator <span class="math inline">\(\widehat{\theta}=\widehat{\beta}_{1}+\widehat{\beta}_{2}\)</span> for the sum of the coefficients <span class="math inline">\(\theta=\beta_{1}+\beta_{2}\)</span>. This estimator has true variance <span class="math inline">\(\sigma^{2}\)</span>. The variance estimator, however is <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\theta}}^{\mathrm{HC1}}=0\)</span> ! (It equals the sum of the four elements in <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{HC1}}\)</span> ). Clearly, the estimator ” 0 ” is biased for the true value <span class="math inline">\(\sigma^{2}\)</span>.</p>
+<p>Another insight is to examine the leverage values. The (single) observation with <span class="math inline">\(D_{i}=1\)</span> has</p>
+<p><span class="math display">\[
+h_{i i}=\frac{1}{n-1}\left(\begin{array}{ll}
+1 &amp; 1
+\end{array}\right)\left(\begin{array}{cc}
+n &amp; -1   
+-1 &amp; 1
+\end{array}\right)\left(\begin{array}{l}
+1   
+1
+\end{array}\right)=1 .
+\]</span></p>
+<p>This is an extreme leverage value.</p>
+<p>A possible solution is to replace the biased covariance matrix estimator <span class="math inline">\(\widehat{V}_{\widehat{\beta}_{1}}^{\mathrm{HC1}}\)</span> with the unbiased estimator <span class="math inline">\(\widehat{V}_{\widehat{\beta}_{1}}^{\mathrm{HC} 2}\)</span> (unbiased under homoskedasticity) or the conservative estimator <span class="math inline">\(\widehat{V}_{\widehat{\beta}_{1}}^{\mathrm{HC}} .\)</span> Neither approach can be done in the extreme sparse case <span class="math inline">\(n_{1}=1\)</span> (for <span class="math inline">\(\widehat{V}_{\widehat{\beta}_{1}}^{\mathrm{HC} 2}\)</span> and <span class="math inline">\(\widehat{V}_{\widehat{\beta}_{1}}^{\mathrm{HC}}\)</span> cannot be calculated if <span class="math inline">\(h_{i i}=1\)</span> for any observation) but applies otherwise. When <span class="math inline">\(h_{i i}=1\)</span> for an observation then <span class="math inline">\(\widehat{V}_{\widehat{\beta}_{1}}^{\mathrm{HC} 2}\)</span> and <span class="math inline">\(\widehat{V}_{\widehat{\beta}_{1}}^{\mathrm{HC} 3}\)</span> cannot be calculated. In this case unbiased covariance matrix estimation appears to be impossible.</p>
+<p>It is unclear if there is a best practice to avoid this situation. Once possibility is to calculate the maximum leverage value. If it is very large calculate the standard errors using several methods to see if variation occurs.</p>
+</section>
+<section id="computation" class="level2">
+<h2 class="anchored" data-anchor-id="computation">Computation</h2>
+<p>We illustrate methods to compute standard errors for equation (3.13) extending the code of Section <span class="math inline">\(3.25 .\)</span></p>
+</section>
+<section id="stata-do-file-continued" class="level2">
+<h2 class="anchored" data-anchor-id="stata-do-file-continued">Stata do File (continued)</h2>
+<ul>
+<li>Homoskedastic formula (4.35):</li>
+</ul>
+<p>reg wage education experience exp2 if <span class="math inline">\((\mathrm{mnwf}==1)\)</span></p>
+<ul>
+<li><span class="math inline">\(\quad\)</span> HC1 formula (4.37):</li>
+</ul>
+<p>reg wage education experience exp2 if <span class="math inline">\((\operatorname{mnwf}==1), \mathrm{r}\)</span></p>
+<ul>
+<li><span class="math inline">\(\mathrm{HC} 2\)</span> formula (4.38):</li>
+</ul>
+<p>reg wage education experience <span class="math inline">\(\exp 2\)</span> if <span class="math inline">\((\mathrm{mnwf}==1)\)</span>, vce <span class="math inline">\((\mathrm{hc} 2)\)</span></p>
+<ul>
+<li><span class="math inline">\(\quad\)</span> HC3 formula (4.39):</li>
+</ul>
+<p>reg wage education experience exp2 if (mnwf <span class="math inline">\(==1)\)</span>, vce <span class="math inline">\((\mathrm{hc} 3)\)</span></p>
+<p><img src="data-raw/images//2022_09_17_46fafb30295495354ae2g-23.jpg" class="img-fluid"></p>
+<p><img src="data-raw/images//2022_09_17_46fafb30295495354ae2g-23(1).jpg" class="img-fluid"></p>
+</section>
+<section id="measures-of-fit" class="level2">
+<h2 class="anchored" data-anchor-id="measures-of-fit">Measures of Fit</h2>
+<p>As we described in the previous chapter a commonly reported measure of regression fit is the regression <span class="math inline">\(R^{2}\)</span> defined as</p>
+<p><span class="math display">\[
+R^{2}=1-\frac{\sum_{i=1}^{n} \widehat{e}_{i}^{2}}{\sum_{i=1}^{n}\left(Y_{i}-\bar{Y}\right)^{2}}=1-\frac{\widehat{\sigma}^{2}}{\widehat{\sigma}_{Y}^{2}} .
+\]</span></p>
+<p>where <span class="math inline">\(\widehat{\sigma}_{Y}^{2}=n^{-1} \sum_{i=1}^{n}\left(Y_{i}-\bar{Y}\right)^{2} \cdot R^{2}\)</span> is an estimator of the population parameter</p>
+<p><span class="math display">\[
+\rho^{2}=\frac{\operatorname{var}\left[X^{\prime} \beta\right]}{\operatorname{var}[Y]}=1-\frac{\sigma^{2}}{\sigma_{Y}^{2}} .
+\]</span></p>
+<p>However, <span class="math inline">\(\widehat{\sigma}^{2}\)</span> and <span class="math inline">\(\widehat{\sigma}_{Y}^{2}\)</span> are biased. Theil (1961) proposed replacing these by the unbiased versions <span class="math inline">\(s^{2}\)</span> and <span class="math inline">\(\widetilde{\sigma}_{Y}^{2}=(n-1)^{-1} \sum_{i=1}^{n}\left(Y_{i}-\bar{Y}\right)^{2}\)</span> yielding what is known as R-bar-squared or adjusted R-squared:</p>
+<p><span class="math display">\[
+\bar{R}^{2}=1-\frac{s^{2}}{\widetilde{\sigma}_{Y}^{2}}=1-\frac{(n-1)^{-1} \sum_{i=1}^{n} \widehat{e}_{i}^{2}}{(n-k)^{-1} \sum_{i=1}^{n}\left(Y_{i}-\bar{Y}\right)^{2}} .
+\]</span></p>
+<p>While <span class="math inline">\(\bar{R}^{2}\)</span> is an improvement on <span class="math inline">\(R^{2}\)</span> a much better improvement is</p>
+<p><span class="math display">\[
+\widetilde{R}^{2}=1-\frac{\sum_{i=1}^{n} \widetilde{e}_{i}^{2}}{\sum_{i=1}^{n}\left(Y_{i}-\bar{Y}\right)^{2}}=1-\frac{\widetilde{\sigma}^{2}}{\widehat{\sigma}_{Y}^{2}}
+\]</span></p>
+<p>where <span class="math inline">\(\widetilde{e}_{i}\)</span> are the prediction errors (3.44) and <span class="math inline">\(\widetilde{\sigma}^{2}\)</span> is the MSPE from (3.46). As described in Section (4.12) <span class="math inline">\(\widetilde{\sigma}^{2}\)</span> is a good estimator of the out-of-sample mean-squared forecast error so <span class="math inline">\(\widetilde{R}^{2}\)</span> is a good estimator of the percentage of the forecast variance which is explained by the regression forecast. In this sense <span class="math inline">\(\widetilde{R}^{2}\)</span> is a good measure of fit.</p>
+<p>One problem with <span class="math inline">\(R^{2}\)</span> which is partially corrected by <span class="math inline">\(\bar{R}^{2}\)</span> and fully corrected by <span class="math inline">\(\widetilde{R}^{2}\)</span> is that <span class="math inline">\(R^{2}\)</span> necessarily increases when regressors are added to a regression model. This occurs because <span class="math inline">\(R^{2}\)</span> is a negative function of the sum of squared residuals which cannot increase when a regressor is added. In contrast, <span class="math inline">\(\bar{R}^{2}\)</span> and <span class="math inline">\(\widetilde{R}^{2}\)</span> are non-monotonic in the number of regressors. <span class="math inline">\(\widetilde{R}^{2}\)</span> can even be negative, which occurs when an estimated model predicts worse than a constant-only model.</p>
+<p>In the statistical literature the MSPE <span class="math inline">\(\widetilde{\sigma}^{2}\)</span> is known as the leave-one-out cross validation criterion and is popular for model comparison and selection, especially in high-dimensional and nonparametric contexts. It is equivalent to use <span class="math inline">\(\widetilde{R}^{2}\)</span> or <span class="math inline">\(\widetilde{\sigma}^{2}\)</span> to compare and select models. Models with high <span class="math inline">\(\widetilde{R}^{2}\)</span> (or low <span class="math inline">\(\widetilde{\sigma}^{2}\)</span> ) are better models in terms of expected out of sample squared error. In contrast, <span class="math inline">\(R^{2}\)</span> cannot be used for model selection as it necessarily increases when regressors are added to a regression model. <span class="math inline">\(\bar{R}^{2}\)</span> is also an inappropriate choice for model selection (it tends to select models with too many parameters) though a justification of this assertion requires a study of the theory of model selection. Unfortunately, <span class="math inline">\(\bar{R}^{2}\)</span> is routinely used by some economists, possibly as a hold-over from previous generations.</p>
+<p>In summary, it is recommended to omit <span class="math inline">\(R^{2}\)</span> and <span class="math inline">\(\bar{R}^{2}\)</span>. If a measure of fit is desired, report <span class="math inline">\(\widetilde{R}^{2}\)</span> or <span class="math inline">\(\widetilde{\sigma}^{2}\)</span>.</p>
+<p><img src="data-raw/images//2022_09_17_46fafb30295495354ae2g-24.jpg" class="img-fluid"></p>
+</section>
+<section id="empirical-example" class="level2">
+<h2 class="anchored" data-anchor-id="empirical-example">Empirical Example</h2>
+<p>We again return to our wage equation but use a much larger sample of all individuals with at least 12 years of education. For regressors we include years of education, potential work experience, experience squared, and dummy variable indicators for the following: female, female union member, male union member, married female <span class="math inline">\({ }^{1}\)</span>, married male, formerly married female <span class="math inline">\({ }^{2}\)</span>, formerly married male, Hispanic, Black, American Indian, Asian, and mixed race <span class="math inline">\({ }^{3}\)</span>. The available sample is 46,943 so the parameter estimates are quite precise and reported in Table 4.2. For standard errors we use the unbiased HC2 formula.</p>
+<p>Table <span class="math inline">\(4.2\)</span> displays the parameter estimates in a standard tabular format. Parameter estimates and standard errors are reported for all coefficients. In addition to the coefficient estimates the table also reports the estimated error standard deviation and the sample size. These are useful summary measures of fit which aid readers.</p>
+<p>Table 4.2: OLS Estimates of Linear Equation for <span class="math inline">\(\log (\)</span> wage <span class="math inline">\()\)</span></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;"><span class="math inline">\(\widehat{\beta}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(s(\widehat{\beta})\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Education</td>
+<td style="text-align: right;"><span class="math inline">\(0.117\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.001\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Experience</td>
+<td style="text-align: right;"><span class="math inline">\(0.033\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.001\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Experience <span class="math inline">\(^{2} / 100\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.056\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.002\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Female</td>
+<td style="text-align: right;"><span class="math inline">\(-0.098\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.011\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Female Union Member</td>
+<td style="text-align: right;"><span class="math inline">\(0.023\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.020\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Male Union Member</td>
+<td style="text-align: right;"><span class="math inline">\(0.095\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.020\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Married Female</td>
+<td style="text-align: right;"><span class="math inline">\(0.016\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.010\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Married Male</td>
+<td style="text-align: right;"><span class="math inline">\(0.211\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.010\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Formerly Married Female</td>
+<td style="text-align: right;"><span class="math inline">\(-0.006\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.012\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Formerly Married Male</td>
+<td style="text-align: right;"><span class="math inline">\(0.083\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.015\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hispanic</td>
+<td style="text-align: right;"><span class="math inline">\(-0.108\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.008\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Black</td>
+<td style="text-align: right;"><span class="math inline">\(-0.096\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.008\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">American Indian</td>
+<td style="text-align: right;"><span class="math inline">\(-0.137\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.027\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Asian</td>
+<td style="text-align: right;"><span class="math inline">\(-0.038\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.013\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mixed Race</td>
+<td style="text-align: right;"><span class="math inline">\(-0.041\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.021\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Intercept</td>
+<td style="text-align: right;"><span class="math inline">\(0.909\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.021\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\widehat{\sigma}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.565\)</span></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sample Size</td>
+<td style="text-align: right;">46,943</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<p>Standard errors are heteroskedasticity-consistent (Horn-Horn-Duncan formula).</p>
+<p>As a general rule it is advisable to always report standard errors along with parameter estimates. This allows readers to assess the precision of the parameter estimates, and as we will discuss in later chapters, form confidence intervals and t-tests for individual coefficients if desired.</p>
+<p>The results in Table <span class="math inline">\(4.2\)</span> confirm our earlier findings that the return to a year of education is approximately <span class="math inline">\(12 %\)</span>, the return to experience is concave, single women earn approximately <span class="math inline">\(10 %\)</span> less then single men, and Blacks earn about <span class="math inline">\(10 %\)</span> less than whites. In addition, we see that Hispanics earn about <span class="math inline">\(11 %\)</span> less than whites, American Indians <span class="math inline">\(14 %\)</span> less, and Asians and Mixed races about <span class="math inline">\(4 %\)</span> less. We also see there</p>
+<p><span class="math inline">\({ }^{1}\)</span> Defining “married” as marital code 1,2 , or <span class="math inline">\(3 .\)</span></p>
+<p><span class="math inline">\({ }^{2}\)</span> Defining “formerly married” as marital code 4,5 , or 6 .</p>
+<p><span class="math inline">\({ }^{3}\)</span> Race code 6 or higher. are wage premiums for men who are members of a labor union (about <span class="math inline">\(10 %\)</span> ), married (about 21%) or formerly married (about <span class="math inline">\(8 %\)</span> ), but no similar premiums are apparent for women.</p>
+</section>
+<section id="multicollinearity" class="level2">
+<h2 class="anchored" data-anchor-id="multicollinearity">Multicollinearity</h2>
+<p>As discussed in Section 3.24, if <span class="math inline">\(\boldsymbol{X}^{\prime} \boldsymbol{X}\)</span> is singular then <span class="math inline">\(\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\)</span> and <span class="math inline">\(\widehat{\beta}\)</span> are not defined. This situation is called strict multicollinearity as the columns of <span class="math inline">\(\boldsymbol{X}\)</span> are linearly dependent, i.e., there is some <span class="math inline">\(\alpha \neq 0\)</span> such that <span class="math inline">\(\boldsymbol{X} \alpha=0\)</span>. Most commonly this arises when sets of regressors are included which are identically related. In Section <span class="math inline">\(3.24\)</span> we discussed possible causes of strict multicollinearity and discussed the related problem of ill-conditioning which can cause numerical inaccuracies in severe cases.</p>
+<p>A related common situation is near multicollinearity which is often called “multicollinearity” for brevity. This is the situation when the regressors are highly correlated. An implication of near multicollinearity is that individual coefficient estimates will be imprecise. This is not necessarily a problem for econometric analysis if the reported standard errors are accurate. However, robust standard errors can be sensitive to large leverage values which can occur under near multicollinearity. This leads to the undesirable situation where the coefficient estimates are imprecise yet the standard errors are misleadingly small.</p>
+<p>We can see the impact of near multicollinearity on precision in a simple homoskedastic linear regression model with two regressors</p>
+<p><span class="math display">\[
+Y=X_{1} \beta_{1}+X_{2} \beta_{2}+e
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\frac{1}{n} \boldsymbol{X}^{\prime} \boldsymbol{X}=\left(\begin{array}{ll}
+1 &amp; \rho   
+\rho &amp; 1
+\end{array}\right) .
+\]</span></p>
+<p>In this case</p>
+<p><span class="math display">\[
+\operatorname{var}[\widehat{\beta} \mid \boldsymbol{X}]=\frac{\sigma^{2}}{n}\left(\begin{array}{ll}
+1 &amp; \rho   
+\rho &amp; 1
+\end{array}\right)^{-1}=\frac{\sigma^{2}}{n\left(1-\rho^{2}\right)}\left(\begin{array}{cc}
+1 &amp; -\rho   
+-\rho &amp; 1
+\end{array}\right) .
+\]</span></p>
+<p>The correlation <span class="math inline">\(\rho\)</span> indexes collinearity since as <span class="math inline">\(\rho\)</span> approaches 1 the matrix becomes singular. We can see the effect of collinearity on precision by observing that the variance of a coefficient estimate <span class="math inline">\(\sigma^{2}\left[n\left(1-\rho^{2}\right)\right]^{-1}\)</span> approaches infinity as <span class="math inline">\(\rho\)</span> approaches 1 . Thus the more “collinear” are the regressors the worse the precision of the individual coefficient estimates.</p>
+<p>What is happening is that when the regressors are highly dependent it is statistically difficult to disentangle the impact of <span class="math inline">\(\beta_{1}\)</span> from that of <span class="math inline">\(\beta_{2}\)</span>. As a consequence the precision of individual estimates are reduced.</p>
+<p>Many early-generation textbooks overemphasized multicollinearity. An amusing parody of these texts is Micronumerosity, Chapter <span class="math inline">\(23.3\)</span> of Goldberger’s A Course in Econometrics (1991). Among the witty remarks of his chapter are the following.</p>
+<p>The extreme case, ‘exact micronumerosity’, arises when <span class="math inline">\(n=0\)</span>, in which case the sample estimate of <span class="math inline">\(\mu\)</span> is not unique. (Technically, there is a violation of the rank condition <span class="math inline">\(n&gt;0\)</span> : the matrix 0 is singular.)</p>
+<p>Tests for the presence of micronumerosity require the judicious use of various fingers. Some researchers prefer a single finger, others use their toes, still others let their thumbs rule.</p>
+<p>A generally reliable guide may be obtained by counting the number of observations. Most of the time in econometric analysis, when <span class="math inline">\(n\)</span> is close to zero, it is also far from infinity.</p>
+<p>Arthur S. Goldberger, A Course in Econometrics (1991), pp.&nbsp;<span class="math inline">\(249 .\)</span> To understand Goldberger’s basic point you should notice that the estimation variance <span class="math inline">\(\sigma^{2}\left[n\left(1-\rho^{2}\right)\right]^{-1}\)</span> depends equally and symmetrically on the correlation <span class="math inline">\(\rho\)</span> and the sample size <span class="math inline">\(n\)</span>. He was pointing out that the only statistical implication of multicollinearity in the homoskedastic model is a lack of precision. Small sample sizes have the exact same implication.</p>
+<table class="table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Arthur S. Goldberger</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Art Goldberger (1930-2009) was one of the most distinguished members of the</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Department of Economics at the University of Wisconsin. His Ph.D.&nbsp;thesis devel-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">oped a pioneering macroeconometric forecasting model (the Klein-Goldberger</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model). Most of his remaining career focused on microeconometric issues. He</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">was the leading pioneer of what has been called the Wisconsin Tradition of em-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pirical work - a combination of formal econometric theory with a careful critical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">analysis of empirical work. Goldberger wrote a series of highly regarded and in-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fluential graduate econometric textbooks, including Econometric Theory (1964),</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Topics in Regression Analysis (1968), and A Course in Econometrics (1991).</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="clustered-sampling" class="level2">
+<h2 class="anchored" data-anchor-id="clustered-sampling">Clustered Sampling</h2>
+<p>In Section <span class="math inline">\(4.2\)</span> we briefly mentioned clustered sampling as an alternative to the assumption of random sampling. We now introduce the framework in more detail and extend the primary results of this chapter to encompass clustered dependence.</p>
+<p>It might be easiest to understand the idea of clusters by considering a concrete example. Duflo, Dupas, and Kremer (2011) investigate the impact of tracking (assigning students based on initial test score) on educational attainment in a randomized experiment. An extract of their data set is available on the textbook webpage in the file DDK2011.</p>
+<p>In 2005, 140 primary schools in Kenya received funding to hire an extra first grade teacher to reduce class sizes. In half of the schools (selected randomly) students were assigned to classrooms based on an initial test score (“tracking”); in the remaining schools the students were randomly assigned to classrooms. For their analysis the authors restricted attention to the 121 schools which initially had a single first-grade class.</p>
+<p>The key regression <span class="math inline">\({ }^{4}\)</span> in the paper is</p>
+<p><span class="math display">\[
+\text { TestScore }_{i g}=-0.071+0.138 \text { Tracking }_{g}+e_{i g}
+\]</span></p>
+<p>where TestScore <span class="math inline">\({ }_{i g}\)</span> is the standardized test score (normalized to have mean 0 and variance 1) of student <span class="math inline">\(i\)</span> in school <span class="math inline">\(g\)</span>, and Tracking <span class="math inline">\(g\)</span> is a dummy equal to 1 if school <span class="math inline">\(g\)</span> was tracking. The OLS estimates indicate that schools which tracked the students had an overall increase in test scores by about <span class="math inline">\(0.14\)</span> standard deviations, which is meaningful. More general versions of this regression are estimated, many of which take the form</p>
+<p><span class="math display">\[
+\text { TestScore }_{i g}=\alpha+\gamma \text { Tracking }_{g}+X_{i g}^{\prime} \beta+e_{i g}
+\]</span></p>
+<p>where <span class="math inline">\(X_{i g}\)</span> is a set of controls specific to the student (including age, gender, and initial test score).</p>
+<p><span class="math inline">\({ }^{4}\)</span> Table 2, column (1). Duflo, Dupas and Kremer (2011) report a coefficient estimate of <span class="math inline">\(0.139\)</span>, perhaps due to a slightly different calculation to standardize the test score. A difficulty with applying the classical regression framework is that student achievement is likely correlated within a given school. Student achievement may be affected by local demographics, individual teachers, and classmates, all of which imply dependence. These concerns, however, do not suggest that achievement will be correlated across schools, so it seems reasonable to model achievement across schools as mutually independent. We call such dependence clustered.</p>
+<p>In clustering contexts it is convenient to double index the observations as <span class="math inline">\(\left(Y_{i g}, X_{i g}\right)\)</span> where <span class="math inline">\(g=1, \ldots, G\)</span> indexes the cluster and <span class="math inline">\(i=1, \ldots, n_{g}\)</span> indexes the individual within the <span class="math inline">\(g^{t h}\)</span> cluster. The number of observations per cluster <span class="math inline">\(n_{g}\)</span> may vary across clusters. The number of clusters is <span class="math inline">\(G\)</span>. The total number of observations is <span class="math inline">\(n=\sum_{g=1}^{G} n_{g}\)</span>. In the Kenyan schooling example the number of clusters (schools) in the estimation sample is <span class="math inline">\(G=121\)</span>, the number of students per school varies from 19 to 62 , and the total number of observations is <span class="math inline">\(n=5795\)</span>.</p>
+<p>While it is typical to write the observations using the double index notation <span class="math inline">\(\left(Y_{i g}, X_{i g}\right)\)</span> it is also useful to use cluster-level notation. Let <span class="math inline">\(\boldsymbol{Y}_{g}=\left(Y_{1 g}, \ldots, Y_{n_{g} g}\right)^{\prime}\)</span> and <span class="math inline">\(\boldsymbol{X}_{g}=\left(X_{1 g}, \ldots, X_{n_{g} g}\right)^{\prime}\)</span> denote the <span class="math inline">\(n_{g} \times 1\)</span> vector of dependent variables and <span class="math inline">\(n_{g} \times k\)</span> matrix of regressors for the <span class="math inline">\(g^{t h}\)</span> cluster. A linear regression model can be written by individual as</p>
+<p><span class="math display">\[
+Y_{i g}=X_{i g}^{\prime} \beta+e_{i g}
+\]</span></p>
+<p>and using cluster notation as</p>
+<p><span class="math display">\[
+\boldsymbol{Y}_{g}=\boldsymbol{X}_{g} \beta+\boldsymbol{e}_{g}
+\]</span></p>
+<p>where <span class="math inline">\(\boldsymbol{e}_{g}=\left(e_{1 g}, \ldots, e_{n_{g} g}\right)^{\prime}\)</span> is a <span class="math inline">\(n_{g} \times 1\)</span> error vector. We can also stack the observations into full sample matrices and write the model as</p>
+<p><span class="math display">\[
+\boldsymbol{Y}=\boldsymbol{X} \beta+\boldsymbol{e} .
+\]</span></p>
+<p>Using this notation we can write the sums over the observations using the double sum <span class="math inline">\(\sum_{g=1}^{G} \sum_{i=1}^{n_{g}}\)</span>. This is the sum across clusters of the sum across observations within each cluster. The OLS estimator can be written as</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\beta} &amp;=\left(\sum_{g=1}^{G} \sum_{i=1}^{n_{g}} X_{i g} X_{i g}^{\prime}\right)^{-1}\left(\sum_{g=1}^{G} \sum_{i=1}^{n_{g}} X_{i g} Y_{i g}\right)   
+&amp;=\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{X}_{g}\right)^{-1}\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{Y}_{g}\right)   
+&amp;=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{Y}\right)
+\end{aligned}
+\]</span></p>
+<p>The residuals are <span class="math inline">\(\widehat{e}_{i g}=Y_{i g}-X_{i g}^{\prime} \widehat{\beta}\)</span> in individual level notation and <span class="math inline">\(\widehat{\boldsymbol{e}}_{g}=\boldsymbol{Y}_{g}-\boldsymbol{X}_{g} \widehat{\beta}\)</span> in cluster level notation.</p>
+<p>The standard clustering assumption is that the clusters are known to the researcher and that the observations are independent across clusters.</p>
+<p>Assumption 4.4 The clusters <span class="math inline">\(\left(\boldsymbol{Y}_{g}, \boldsymbol{X}_{g}\right)\)</span> are mutually independent across clusters <span class="math inline">\(g\)</span>.</p>
+<p>In our example clusters are schools. In other common applications cluster dependence has been assumed within individual classrooms, families, villages, regions, and within larger units such as industries and states. This choice is up to the researcher though the justification will depend on the context, the nature of the data, and will reflect information and assumptions on the dependence structure across observations. The model is a linear regression under the assumption</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\boldsymbol{e}_{g} \mid \boldsymbol{X}_{g}\right]=0 .
+\]</span></p>
+<p>This is the same as assuming that the individual errors are conditionally mean zero</p>
+<p><span class="math display">\[
+\mathbb{E}\left[e_{i g} \mid \boldsymbol{X}_{g}\right]=0
+\]</span></p>
+<p>or that the conditional expectation of <span class="math inline">\(\boldsymbol{Y}_{g}\)</span> given <span class="math inline">\(\boldsymbol{X}_{g}\)</span> is linear. As in the independent case equation (4.50) means that the linear regression model is correctly specified. In the clustered regression model this requires that all interaction effects within clusters have been accounted for in the specification of the individual regressors <span class="math inline">\(X_{i g}\)</span>.</p>
+<p>In the regression (4.46) the conditional expectation is necessarily linear and satisfies (4.50) since the</p>
+<p><img src="data-raw/images//2022_09_17_46fafb30295495354ae2g-29.jpg" class="img-fluid"><br>
+controls, (4.50) requires that the achievement of any student is unaffected by the individual controls (e.g.&nbsp;age, gender, and initial test score) of other students within the same school.</p>
+<p>Given (4.50) we can calculate the expectation of the OLS estimator. Substituting (4.48) into (4.49) we find</p>
+<p><span class="math display">\[
+\widehat{\beta}-\beta=\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{X}_{g}\right)^{-1}\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{e}_{g}\right)
+\]</span></p>
+<p>The mean of <span class="math inline">\(\widehat{\beta}-\beta\)</span> conditioning on all the regressors is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}[\widehat{\beta}-\beta \mid \boldsymbol{X}] &amp;=\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{X}_{g}\right)^{-1}\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \mathbb{E}\left[\boldsymbol{e}_{g} \mid \boldsymbol{X}\right]\right)   
+&amp;=\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{X}_{g}\right)^{-1}\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \mathbb{E}\left[\boldsymbol{e}_{g} \mid \boldsymbol{X}_{g}\right]\right)   
+&amp;=0 .
+\end{aligned}
+\]</span></p>
+<p>The first equality holds by linearity, the second by Assumption 4.4, and the third by (4.50).</p>
+<p>This shows that OLS is unbiased under clustering if the conditional expectation is linear.</p>
+<p>Theorem 4.7 In the clustered linear regression model (Assumption <span class="math inline">\(4.4\)</span> and (4.50)) <span class="math inline">\(\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}]=\beta\)</span>.</p>
+<p>Now consider the covariance matrix of <span class="math inline">\(\widehat{\beta}\)</span>. Let <span class="math inline">\(\Sigma_{g}=\mathbb{E}\left[\boldsymbol{e}_{g} \boldsymbol{e}_{g}^{\prime} \mid \boldsymbol{X}_{g}\right]\)</span> denote the <span class="math inline">\(n_{g} \times n_{g}\)</span> conditional covariance matrix of the errors within the <span class="math inline">\(g^{t h}\)</span> cluster. Since the observations are independent across clusters,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{var}\left[\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{e}_{g}\right) \mid \boldsymbol{X}\right] &amp;=\sum_{g=1}^{G} \operatorname{var}\left[\boldsymbol{X}_{g}^{\prime} \boldsymbol{e}_{g} \mid \boldsymbol{X}_{g}\right]   
+&amp;=\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \mathbb{E}\left[\boldsymbol{e}_{g} \boldsymbol{e}_{g}^{\prime} \mid \boldsymbol{X}_{g}\right] \boldsymbol{X}_{g}   
+&amp;=\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \Sigma_{g} \boldsymbol{X}_{g}   
+&amp; \stackrel{\text { def }}{=} \Omega_{n}
+\end{aligned}
+\]</span></p>
+<p>It follows that</p>
+<p><span class="math display">\[
+\boldsymbol{V}_{\widehat{\beta}}=\operatorname{var}[\widehat{\beta} \mid \boldsymbol{X}]=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \Omega_{n}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} .
+\]</span></p>
+<p>This differs from the formula in the independent case due to the correlation between observations within clusters. The magnitude of the difference depends on the degree of correlation between observations within clusters and the number of observations within clusters. To see this, suppose that all clusters have the same number of observations <span class="math inline">\(n_{g}=N, \mathbb{E}\left[e_{i g}^{2} \mid \boldsymbol{X}_{g}\right]=\sigma^{2}, \mathbb{E}\left[e_{i g} e_{\ell g} \mid \boldsymbol{X}_{g}\right]=\sigma^{2} \rho\)</span> for <span class="math inline">\(i \neq \ell\)</span>, and the regressors <span class="math inline">\(X_{i g}\)</span> do not vary within a cluster. In this case the exact variance of the OLS estimator equals <span class="math inline">\({ }^{5}\)</span> (after some calculations)</p>
+<p><span class="math display">\[
+\boldsymbol{V}_{\widehat{\beta}}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2}(1+\rho(N-1)) .
+\]</span></p>
+<p>If <span class="math inline">\(\rho&gt;0\)</span> the exact variance is appropriately a multiple <span class="math inline">\(\rho N\)</span> of the conventional formula. In the Kenyan school example the average cluster size is 48 . If <span class="math inline">\(\rho=0.25\)</span> this means the exact variance exceeds the conventional formula by a factor of about twelve. In this case the correct standard errors (the square root of the variance) are a multiple of about three times the conventional formula. This is a substantial difference and should not be neglected.</p>
+<p>Arellano (1987) proposed a cluster-robust covariance matrix estimator which is an extension of the White estimator. Recall that the insight of the White covariance estimator is that the squared error <span class="math inline">\(e_{i}^{2}\)</span> is unbiased for <span class="math inline">\(\mathbb{E}\left[e_{i}^{2} \mid X_{i}\right]=\sigma_{i}^{2}\)</span>. Similarly, with cluster dependence the matrix <span class="math inline">\(\boldsymbol{e}_{g} \boldsymbol{e}_{g}^{\prime}\)</span> is unbiased for <span class="math inline">\(\mathbb{E}\left[\boldsymbol{e}_{g} \boldsymbol{e}_{g}^{\prime} \mid \boldsymbol{X}_{g}\right]=\Sigma_{g}\)</span>. This means that an unbiased estimator for (4.51) is <span class="math inline">\(\widetilde{\Omega}_{n}=\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \boldsymbol{e}_{g} \boldsymbol{e}_{g}^{\prime} \boldsymbol{X}_{g}\)</span>. This is not feasible, but we can replace the unknown errors by the OLS residuals to obtain Arellano’s estimator:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\Omega}_{n} &amp;=\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \widehat{\boldsymbol{e}}_{g} \widehat{\boldsymbol{e}}_{g}^{\prime} \boldsymbol{X}_{g}   
+&amp;=\sum_{g=1}^{G} \sum_{i=1}^{n_{g}} \sum_{\ell=1}^{n_{g}} X_{i g} X_{\ell g}^{\prime} \widehat{e}_{i g} \widehat{e}_{\ell g}   
+&amp;=\sum_{g=1}^{G}\left(\sum_{i=1}^{n_{g}} X_{i g} \widehat{e}_{i g}\right)\left(\sum_{\ell=1}^{n_{g}} X_{\ell g} \widehat{e}_{\ell g}\right)^{\prime} .
+\end{aligned}
+\]</span></p>
+<p>The three expressions in (4.54) give three equivalent formulae which could be used to calculate <span class="math inline">\(\widehat{\Omega}_{n}\)</span>. The final expression writes <span class="math inline">\(\widehat{\Omega}_{n}\)</span> in terms of the cluster sums <span class="math inline">\(\sum_{\ell=1}^{n_{g}} X_{\ell g} \widehat{e}_{\ell g}\)</span> which is the basis for our example <span class="math inline">\(\mathrm{R}\)</span> and MATLAB codes shown below.</p>
+<p>Given the expressions (4.51)-(4.52) a natural cluster covariance matrix estimator takes the form</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}=a_{n}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \widehat{\Omega}_{n}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}
+\]</span></p>
+<p>where <span class="math inline">\(a_{n}\)</span> is a possible finite-sample adjustment. The Stata cluster command uses</p>
+<p><span class="math display">\[
+a_{n}=\left(\frac{n-1}{n-k}\right)\left(\frac{G}{G-1}\right) .
+\]</span></p>
+<p>The factor <span class="math inline">\(G /(G-1)\)</span> was derived by Chris Hansen (2007) in the context of equal-sized clusters to improve performance when the number of clusters <span class="math inline">\(G\)</span> is small. The factor <span class="math inline">\((n-1) /(n-k)\)</span> is an <span class="math inline">\(a d\)</span> hoc generalization which nests the adjustment used in (4.37) since <span class="math inline">\(G=n\)</span> implies the simplification <span class="math inline">\(a_{n}=n /(n-k)\)</span>.</p>
+<p>Alternative cluster-robust covariance matrix estimators can be constructed using cluster-level prediction errors such as <span class="math inline">\(\widetilde{\boldsymbol{e}}_{g}=\boldsymbol{Y}_{g}-\boldsymbol{X}_{g} \widehat{\beta}_{(-g)}\)</span> where <span class="math inline">\(\widehat{\beta}_{(-g)}\)</span> is the least squares estimator omitting cluster <span class="math inline">\(g\)</span>. As in Section 3.20, we can show that</p>
+<p><span class="math display">\[
+\widetilde{\boldsymbol{e}}_{g}=\left(\boldsymbol{I}_{n_{g}}-\boldsymbol{X}_{g}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}_{g}^{\prime}\right)^{-1} \widehat{\boldsymbol{e}}_{g}
+\]</span></p>
+<p><span class="math inline">\({ }^{5}\)</span> This formula is due to Moulton (1990). and</p>
+<p><span class="math display">\[
+\widehat{\beta}_{(-g)}=\widehat{\beta}-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}_{g}^{\prime} \widetilde{\boldsymbol{e}}_{g} .
+\]</span></p>
+<p>We then have the robust covariance matrix estimator</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{CR} 3}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{g=1}^{G} \boldsymbol{X}_{g}^{\prime} \widetilde{\boldsymbol{e}}_{g} \widetilde{\boldsymbol{e}}_{g}^{\prime} \boldsymbol{X}_{g}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} .
+\]</span></p>
+<p>The label “CR” refers to “cluster-robust” and “CR3” refers to the analogous formula for the HC3 estimator.</p>
+<p>Similarly to the heteroskedastic-robust case you can show that CR3 is a conservative estimator for <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}\)</span> in the sense that the conditional expectation of <span class="math inline">\(\widehat{\boldsymbol{V}}_{\widehat{\beta}}^{\mathrm{CR} 3}\)</span> exceeds <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}\)</span>. This covariance matrix estimator is more cumbersome to implement, however, as the cluster-level prediction errors (4.57) cannot be calculated in a simple linear operation and requires a loop across clusters to calculate.</p>
+<p>To illustrate in the context of the Kenyan schooling example we present the regression of student test scores on the school-level tracking dummy with two standard errors displayed. The first (in parenthesis) is the conventional robust standard error. The second [in square brackets] is the clustered standard error (4.55)-(4.56) where clustering is at the level of the school.</p>
+<p><img src="data-raw/images//2022_09_17_46fafb30295495354ae2g-31.jpg" class="img-fluid"></p>
+<p>We can see that the cluster-robust standard errors are roughly three times the conventional robust standard errors. Consequently, confidence intervals for the coefficients are greatly affected by the choice.</p>
+<p>For illustration, we list here the commands needed to produce the regression results with clustered standard errors in Stata, R, and MATLAB.</p>
+<p><img src="data-raw/images//2022_09_17_46fafb30295495354ae2g-31(1).jpg" class="img-fluid"></p>
+<p>You can see that clustered standard errors are simple to calculate in Stata.</p>
+<p><img src="data-raw/images//2022_09_17_46fafb30295495354ae2g-32.jpg" class="img-fluid"></p>
+<p>Programming clustered standard errors in <span class="math inline">\(\mathrm{R}\)</span> is also relatively easy due to the convenient rowsum command which sums variables within clusters.</p>
+<p><img src="data-raw/images//2022_09_17_46fafb30295495354ae2g-33.jpg" class="img-fluid"></p>
+<p>Here we see that programming clustered standard errors in MATLAB is less convenient than the other packages but still can be executed with just a few lines of code. This example uses the accumarray command which is similar to the rowsum command in <span class="math inline">\(\mathrm{R}\)</span> but only can be applied to vectors (hence the loop across the regressors) and works best if the clusterid variable are indices (which is why the original schoolid variable is transformed into indices in schoolidx. Application of these commands requires care and attention.</p>
+</section>
+<section id="inference-with-clustered-samples" class="level2">
+<h2 class="anchored" data-anchor-id="inference-with-clustered-samples">Inference with Clustered Samples</h2>
+<p>In this section we give some cautionary remarks and general advice about cluster-robust inference in econometric practice. There has been remarkably little theoretical research about the properties of cluster-robust methods - until quite recently - so these remarks may become dated rather quickly.</p>
+<p>In many respects cluster-robust inference should be viewed similarly to heteroskedaticity-robust inference where a “cluster” in the cluster-robust case is interpreted similarly to an “observation” in the heteroskedasticity-robust case. In particular, the effective sample size should be viewed as the number of clusters, not the “sample size” <span class="math inline">\(n\)</span>. This is because the cluster-robust covariance matrix estimator effectively treats each cluster as a single observation and estimates the covariance matrix based on the variation across cluster means. Hence if there are only <span class="math inline">\(G=50\)</span> clusters inference should be viewed as (at best) similar to heteroskedasticity-robust inference with <span class="math inline">\(n=50\)</span> observations. This is a bit unsettling when the number of regressors is large (say <span class="math inline">\(k=20\)</span> ) for then the covariance matrix will be estimated imprecisely.</p>
+<p>Furthermore, most cluster-robust theory (for example, the work of Chris Hansen (2007)) assumes that the clusters are homogeneous including the assumption that the cluster sizes are all identical. This turns out to be a very important simplication. When this is violated - when, for example, cluster sizes are highly heterogeneous - the regression should be viewed as roughly equivalent to the heteroskedastic case with an extremely high degree of heteroskedasticity. Cluster sums have variances which are proportional to the cluster sizes so if the latter is heterogeneous so will be the variances of the cluster sums. This also has a large effect on finite sample inference. When clusters are heterogeneous then cluster-robust inference is similar to heteroskedasticity-robust inference with highly heteroskedastic observations.</p>
+<p>Put together, if the number of clusters <span class="math inline">\(G\)</span> is small and the number of observations per cluster is highly varied then we should interpret inferential statements with a great degree of caution. Unfortunately, small <span class="math inline">\(G\)</span> with heterogeneous cluster sizes is commonplace. Many empirical studies on U.S. data cluster at the “state” level meaning that there are 50 or 51 clusters (the District of Columbia is typically treated as a state). The number of observations vary considerably across states since the populations are highly unequal. Thus when you read empirical papers with individual-level data but clustered at the “state” level you should be cautious and recognize that this is equivalent to inference with a small number of extremely heterogeneous observations.</p>
+<p>A further complication occurs when we are interested in treatment as in the tracking example given in the previous section. In many cases (including Duflo, Dupas, and Kremer (2011)) the interest is in the effect of a treatment applied at the cluster level (e.g., schools). In many cases (not, however, Duflo, Dupas, and Kremer (2011)), the number of treated clusters is small relative to the total number of clusters; in an extreme case there is just a single treated cluster. Based on the reasoning given above these applications should be interpreted as equivalent to heteroskedasticity-robust inference with a sparse dummy variable as discussed in Section 4.16. As discussed there, standard error estimates can be erroneously small. In the extreme of a single treated cluster (in the example, if only a single school was tracked) then the estimated coefficient on tracking will be very imprecisely estimated yet will have a misleadingly small cluster standard error. In general, reported standard errors will greatly understate the imprecision of parameter estimates.</p>
+</section>
+<section id="at-what-level-to-cluster" class="level2">
+<h2 class="anchored" data-anchor-id="at-what-level-to-cluster">At What Level to Cluster?</h2>
+<p>A practical question which arises in the context of cluster-robust inference is “At what level should we cluster?” In some examples you could cluster at a very fine level, such as families or classrooms, or at higher levels of aggregation, such as neighborhoods, schools, towns, counties, or states. What is the correct level at which to cluster? Rules of thumb have been advocated by practitioners but at present there is little formal analysis to provide useful guidance. What do we know?</p>
+<p>First, suppose cluster dependence is ignored or imposed at too fine a level (e.g.&nbsp;clustering by households instead of villages). Then variance estimators will be biased as they will omit covariance terms. As correlation is typically positive, this suggests that standard errors will be too small giving rise to spurious indications of significance and precision.</p>
+<p>Second, suppose cluster dependence is imposed at too aggregate a measure (e.g.&nbsp;clustering by states rather than villages). This does not cause bias. But the variance estimators will contain many extra components so the precision of the covariance matrix estimator will be poor. This means that reported standard errors will be imprecise - more random - than if clustering had been less aggregate.</p>
+<p>These considerations show that there is a trade-off between bias and variance in the estimation of the covariance matrix by cluster-robust methods. It is not at all clear-based on current theory - what to do. I state this emphatically. We really do not know what is the “correct” level at which to do cluster-robust inference. This is a very interesting question and should certainly be explored by econometric research. One challenge is that in empirical practice many people have observed: “Clustering is important. Standard errors change a lot whether or not we cluster. Therefore we should only report clustered standard errors.” The flaw in this reasoning is that we do not know why in a specific empirical example the standard errors change under clustering. One possibility is that clustering reduces bias and thus is more accurate. The other possibility is that clustering adds sampling noise and is thus less accurate. In reality it is likely that both factors are present.</p>
+<p>In any event a researcher should be aware of the number of clusters used in the reported calculations and should treat the number of clusters as the effective sample size for assessing inference. If the number of clusters is, say, <span class="math inline">\(G=20\)</span>, this should be treated as a very small sample.</p>
+<p>To illustrate the thought experiment consider the empirical example of Duflo, Dupas, and Kremer (2011). They reported standard errors clustered at the school level and the application uses 111 schools. Thus <span class="math inline">\(G=111\)</span> is the effective sample size. The number of observations (students) ranges from 19 to 62 , which is reasonably homogeneous. This seems like a well balanced application of clustered variance estimation. However, one could imagine clustering at a different level of aggregation. We might consider clustering at a less aggregate level such as the classroom level, but this cannot be done in this particular application as there was only one classroom per school. Clustering at a more aggregate level could be done in this application at the level of the “zone”. However, there are only 9 zones. Thus if we cluster by zone, <span class="math inline">\(G=9\)</span> is the effective sample size which would lead to imprecise standard errors. In this particular example clustering at the school level (as done by the authors) is indeed the prudent choice.</p>
+</section>
+<section id="technical-proofs" class="level2">
+<h2 class="anchored" data-anchor-id="technical-proofs">Technical Proofs*</h2>
+<p>Proof of Theorems <span class="math inline">\(\mathbf{4 . 4}\)</span> and <span class="math inline">\(\mathbf{4 . 5}\)</span> Theorem <span class="math inline">\(4.4\)</span> is a special case so we focus on Theorem 4.5. This argument is taken from B. E. Hansen (2021).</p>
+<p>Our approach is to calculate the Cramér-Rao bound for a carefully crafted parametric model. This is based on an insight of Newey (1990, Appendix B) for the simpler context of a population expectation.</p>
+<p>Without loss of generality, assume that the true coefficient equals <span class="math inline">\(\beta_{0}=0\)</span> and that <span class="math inline">\(\sigma^{2}=1\)</span>. These are merely normalizations which simplify the notation. Also assume that <span class="math inline">\(\boldsymbol{Y}\)</span> has a joint density <span class="math inline">\(f(\boldsymbol{y})\)</span>. This assumption can be avoided through use of the Radon-Nikodym derivative.</p>
+<p>Define the truncation function <span class="math inline">\(\mathbb{R}^{n} \rightarrow \mathbb{R}^{n}\)</span></p>
+<p><span class="math display">\[
+\psi_{c}(\boldsymbol{y})=\boldsymbol{y} \mathbb{1}\left\{\left|\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{y}\right| \leq c\right\}-\mathbb{E}\left[\boldsymbol{Y} \mathbb{1}\left\{\left|\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{Y}\right| \leq c\right\}\right] .
+\]</span></p>
+<p>Notice that it satisfies <span class="math inline">\(\left|\psi_{c}(\boldsymbol{y})\right| \leq 2 c, \mathbb{E}\left[\psi_{c}(\boldsymbol{Y})\right]=0\)</span>, and</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\boldsymbol{Y} \psi_{c}(\boldsymbol{Y})^{\prime}\right]=\mathbb{E}\left[\boldsymbol{Y} \boldsymbol{Y}^{\prime} \mathbb{1}\left\{\left|\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{Y}\right| \leq c\right\}\right] \stackrel{\text { def }}{=} \Sigma_{c} .
+\]</span></p>
+<p>As <span class="math inline">\(c \rightarrow \infty, \Sigma_{c} \rightarrow \mathbb{E}\left[\boldsymbol{Y} \boldsymbol{Y}^{\prime}\right]=\Sigma\)</span>. Pick <span class="math inline">\(c\)</span> sufficiently large so that <span class="math inline">\(\Sigma_{c}&gt;0\)</span>, which is feasible because <span class="math inline">\(\Sigma&gt;0\)</span>.</p>
+<p>Define the auxiliary joint density function</p>
+<p><span class="math display">\[
+f_{\beta}(\boldsymbol{y})=f(\boldsymbol{y})\left(1+\psi_{c}(\boldsymbol{y})^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta\right)
+\]</span></p>
+<p>for parameters <span class="math inline">\(\beta\)</span> in the set</p>
+<p><span class="math display">\[
+B=\left\{\beta \in \mathbb{R}^{m}:\|\beta\| \leq \frac{1}{2 c}\right\} .
+\]</span></p>
+<p>The bounds imply that for <span class="math inline">\(\beta \in B\)</span> and all <span class="math inline">\(y\)</span></p>
+<p><span class="math display">\[
+\left|\psi_{c}(\boldsymbol{y})^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta\right|&lt;1 .
+\]</span></p>
+<p>This implies that <span class="math inline">\(f_{\beta}\)</span> has the same support as <span class="math inline">\(f\)</span> and satisfies the bounds</p>
+<p><span class="math display">\[
+0&lt;f_{\beta}(y)&lt;2 f(y) .
+\]</span></p>
+<p>We calculate that</p>
+<p><span class="math display">\[
+\begin{aligned}
+\int f_{\beta}(\boldsymbol{y}) d \boldsymbol{y} &amp;=\int f(\boldsymbol{y}) d \boldsymbol{y}+\int \psi_{c}(\boldsymbol{y})^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta f_{\beta}(\boldsymbol{y}) d \boldsymbol{y}   
+&amp;=1+\mathbb{E}\left[\psi_{c}(\boldsymbol{Y})\right]^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta   
+&amp;=1
+\end{aligned}
+\]</span></p>
+<p>the last equality because <span class="math inline">\(\mathbb{E}\left[\psi_{c}(\boldsymbol{Y})\right]=0\)</span>. Together, these facts imply that <span class="math inline">\(f_{\beta}\)</span> is a valid density function, and over <span class="math inline">\(\beta \in B\)</span> is a parametric family for <span class="math inline">\(\boldsymbol{Y}\)</span>. Evaluated at <span class="math inline">\(\beta_{0}=0\)</span>, which is in the interior of <span class="math inline">\(B\)</span>, we see <span class="math inline">\(f_{0}=f\)</span>. This means that <span class="math inline">\(f_{\beta}\)</span> is a correctly-specified parametric family with the true parameter value <span class="math inline">\(\beta_{0}\)</span>.</p>
+<p>Let <span class="math inline">\(\mathbb{E}_{\beta}\)</span> denote expectation under the density <span class="math inline">\(f_{\beta}\)</span>. The expectation of <span class="math inline">\(\boldsymbol{Y}\)</span> in this model is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}_{\beta}[\boldsymbol{Y}] &amp;=\int \boldsymbol{y} f_{\beta}(\boldsymbol{y}) d \boldsymbol{y}   
+&amp;=\int \boldsymbol{y} f(\boldsymbol{y}) d \boldsymbol{y}+\int \boldsymbol{y} \psi_{c}(\boldsymbol{y})^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta f_{\beta}(\boldsymbol{y}) d \boldsymbol{y}   
+&amp;=\mathbb{E}[\boldsymbol{Y}]+\mathbb{E}\left[\boldsymbol{Y} \psi_{c}(\boldsymbol{Y})^{\prime}\right] \Sigma_{c}^{-1} \boldsymbol{X} \beta   
+&amp;=\boldsymbol{X} \beta
+\end{aligned}
+\]</span></p>
+<p>because <span class="math inline">\(\mathbb{E}[\boldsymbol{Y}]=0\)</span> and <span class="math inline">\(\mathbb{E}\left[\boldsymbol{Y}_{c}(\boldsymbol{Y})^{\prime}\right]=\Sigma_{c}\)</span>. Thus, the model <span class="math inline">\(f_{\beta}\)</span> is a linear regression with regression coefficient <span class="math inline">\(\beta\)</span>.</p>
+<p>The bound (4.61) implies</p>
+<p><span class="math display">\[
+\mathbb{E}_{\beta}\left[\|\boldsymbol{Y}\|^{2}\right]=\int\|\boldsymbol{y}\|^{2} f_{\beta}(\boldsymbol{y}) d \boldsymbol{y} \leq 2 \int\|\boldsymbol{y}\|^{2} f(\boldsymbol{y}) d \boldsymbol{y}=2 \mathbb{E}\left[\|\boldsymbol{Y}\|^{2}\right]=2 \operatorname{tr}(\Sigma)&lt;\infty .
+\]</span></p>
+<p>This means that <span class="math inline">\(f_{\beta}\)</span> has a finite variance for all <span class="math inline">\(\beta \in B\)</span>.</p>
+<p>The likelihood score for <span class="math inline">\(f_{\beta}\)</span> is</p>
+<p><span class="math display">\[
+\begin{aligned}
+S &amp;=\left.\frac{\partial}{\partial \beta} \log f_{\beta}(\boldsymbol{Y})\right|_{\beta=0}   
+&amp;=\left.\frac{\partial}{\partial \beta} \log \left(1+\psi_{c}(\boldsymbol{Y})^{\prime} \Sigma_{c}^{-1} \boldsymbol{X} \beta\right)\right|_{\beta=0}   
+&amp;=\boldsymbol{X}^{\prime} \Sigma_{c}^{-1} \psi_{c}(\boldsymbol{Y}) .
+\end{aligned}
+\]</span></p>
+<p>The information matrix is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathscr{I}_{c} &amp;=\mathbb{E}\left[S S^{\prime}\right]   
+&amp;=\boldsymbol{X}^{\prime} \Sigma_{c}^{-1} \mathbb{E}\left[\psi_{c}(\boldsymbol{Y}) \psi_{c}(\boldsymbol{Y})^{\prime}\right] \Sigma_{c}^{-1} \boldsymbol{X}   
+&amp; \leq \boldsymbol{X}^{\prime} \Sigma_{c}^{-1} \boldsymbol{X},
+\end{aligned}
+\]</span></p>
+<p>where the inequality is</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\psi_{c}(\boldsymbol{Y}) \psi_{c}(\boldsymbol{Y})^{\prime}\right]=\Sigma_{c}-\mathbb{E}\left[\boldsymbol{Y} \mathbb{1}\left\{\left|\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{Y}\right| \leq c\right\}\right] \mathbb{E}\left[\boldsymbol{Y} \mathbb{1}\left\{\left|\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{Y}\right| \leq c\right\}\right]^{\prime} \leq \Sigma_{c} .
+\]</span></p>
+<p>By assumption, the estimator <span class="math inline">\(\widetilde{\beta}\)</span> is unbiased for <span class="math inline">\(\beta\)</span>. The model <span class="math inline">\(f_{\beta}\)</span> is regular (it is correctly specified as it contains the true density <span class="math inline">\(f\)</span>, the support of <span class="math inline">\(Y\)</span> does not depend on <span class="math inline">\(\beta\)</span>, and the true value <span class="math inline">\(\beta_{0}=0\)</span> lies in the interior of <span class="math inline">\(B\)</span> ). Thus by the Cramér-Rao Theorem (Theorem <span class="math inline">\(10.6\)</span> of Probability and Statistics for Economists)</p>
+<p><span class="math display">\[
+\operatorname{var}[\widetilde{\beta}] \geq \mathscr{I}_{c}^{-1} \geq\left(\boldsymbol{X}^{\prime} \Sigma_{c}^{-1} \boldsymbol{X}\right)^{-1}
+\]</span></p>
+<p>where the second inequality is (4.62). Since this holds for all <span class="math inline">\(c\)</span>, and <span class="math inline">\(\Sigma_{c} \rightarrow \Sigma\)</span> as <span class="math inline">\(c \rightarrow \infty\)</span>,</p>
+<p><span class="math display">\[
+\operatorname{var}[\widetilde{\beta}] \geq \limsup _{c \rightarrow \infty}\left(\boldsymbol{X}^{\prime} \Sigma_{c}^{-1} \boldsymbol{X}\right)^{-1}=\left(\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{X}\right)^{-1} .
+\]</span></p>
+<p>This is the variance lower bound.</p>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<p>Exercise 4.1 For some integer <span class="math inline">\(k\)</span>, set <span class="math inline">\(\mu_{k}=\mathbb{E}\left[Y^{k}\right]\)</span>.</p>
+<ol type="a">
+<li><p>Construct an estimator <span class="math inline">\(\widehat{\mu}_{k}\)</span> for <span class="math inline">\(\mu_{k}\)</span>.</p></li>
+<li><p>Show that <span class="math inline">\(\widehat{\mu}_{k}\)</span> is unbiased for <span class="math inline">\(\mu_{k}\)</span>.</p></li>
+<li><p>Calculate the variance of <span class="math inline">\(\widehat{\mu}_{k}\)</span>, say <span class="math inline">\(\operatorname{var}\left[\widehat{\mu}_{k}\right]\)</span>. What assumption is needed for <span class="math inline">\(\operatorname{var}\left[\widehat{\mu}_{k}\right]\)</span> to be finite?</p></li>
+<li><p>Propose an estimator of <span class="math inline">\(\operatorname{var}\left[\widehat{\mu}_{k}\right]\)</span></p></li>
+</ol>
+<p>Exercise 4.2 Calculate <span class="math inline">\(\mathbb{E}\left[(\bar{Y}-\mu)^{3}\right]\)</span>, the skewness of <span class="math inline">\(\bar{Y}\)</span>. Under what condition is it zero?</p>
+<p>Exercise 4.3 Explain the difference between <span class="math inline">\(\bar{Y}\)</span> and <span class="math inline">\(\mu\)</span>. Explain the difference between <span class="math inline">\(n^{-1} \sum_{i=1}^{n} X_{i} X_{i}^{\prime}\)</span> and <span class="math inline">\(\mathbb{E}\left[X_{i} X_{i}^{\prime}\right]\)</span></p>
+<p>Exercise 4.4 True or False. If <span class="math inline">\(Y=X^{\prime} \beta+e, X \in \mathbb{R}, \mathbb{E}[e \mid X]=0\)</span>, and <span class="math inline">\(\widehat{e}_{i}\)</span> is the OLS residual from the regression of <span class="math inline">\(Y_{i}\)</span> on <span class="math inline">\(X_{i}\)</span>, then <span class="math inline">\(\sum_{i=1}^{n} X_{i}^{2} \widehat{e}_{i}=0\)</span>.</p>
+<p>Exercise 4.5 Prove (4.20) and (4.21).</p>
+<p>Exercise 4.6 Prove Theorem <span class="math inline">\(4.5\)</span> under the restriction to linear estimators.</p>
+<p>Exercise 4.7 Let <span class="math inline">\(\widetilde{\beta}\)</span> be the GLS estimator (4.22) under the assumptions (4.18) and (4.19). Assume that <span class="math inline">\(\Sigma\)</span> is known and <span class="math inline">\(\sigma^{2}\)</span> is fdunknown. Define the residual vector <span class="math inline">\(\widetilde{\boldsymbol{e}}=\boldsymbol{Y}-\boldsymbol{X} \widetilde{\beta}\)</span>, and an estimator for <span class="math inline">\(\sigma^{2}\)</span></p>
+<p><span class="math display">\[
+\widetilde{\sigma}^{2}=\frac{1}{n-k} \widetilde{\boldsymbol{e}}^{\prime} \Sigma^{-1} \widetilde{\boldsymbol{e}}
+\]</span></p>
+<ol type="a">
+<li><p>Show (4.23).</p></li>
+<li><p>Show (4.24).</p></li>
+<li><p>Prove that <span class="math inline">\(\widetilde{\boldsymbol{e}}=\boldsymbol{M}_{1} \boldsymbol{e}\)</span>, where <span class="math inline">\(\boldsymbol{M}_{1}=\boldsymbol{I}-\boldsymbol{X}\left(\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \Sigma^{-1}\)</span>.</p></li>
+<li><p>Prove that <span class="math inline">\(\boldsymbol{M}_{1}^{\prime} \Sigma^{-1} \boldsymbol{M}_{1}=\Sigma^{-1}-\Sigma^{-1} \boldsymbol{X}\left(\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \Sigma^{-1}\)</span>. (e) Find <span class="math inline">\(\mathbb{E}\left[\widetilde{\sigma}^{2} \mid \boldsymbol{X}\right]\)</span>.</p></li>
+<li><p>Is <span class="math inline">\(\widetilde{\sigma}^{2}\)</span> a reasonable estimator for <span class="math inline">\(\sigma^{2}\)</span> ?</p></li>
+</ol>
+<p>Exercise 4.8 Let <span class="math inline">\(\left(Y_{i}, X_{i}\right)\)</span> be a random sample with <span class="math inline">\(\mathbb{E}[Y \mid X]=X^{\prime} \beta\)</span>. Consider the Weighted Least Squares (WLS) estimator <span class="math inline">\(\widetilde{\beta}_{\text {wls }}=\left(\boldsymbol{X}^{\prime} \boldsymbol{W} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{W} \boldsymbol{Y}\right)\)</span> where <span class="math inline">\(\boldsymbol{W}=\operatorname{diag}\left(w_{1}, \ldots, w_{n}\right)\)</span> and <span class="math inline">\(w_{i}=X_{j i}^{-2}\)</span>, where <span class="math inline">\(X_{j i}\)</span> is one of the <span class="math inline">\(X_{i}\)</span>.</p>
+<ol type="a">
+<li><p>In which contexts would <span class="math inline">\(\widetilde{\beta}_{\mathrm{wls}}\)</span> be a good estimator?</p></li>
+<li><p>Using your intuition, in which situations do you expect <span class="math inline">\(\widetilde{\beta}_{\text {wls }}\)</span> to perform better than OLS?</p></li>
+</ol>
+<p>Exercise 4.9 Show (4.32) in the homoskedastic regression model.</p>
+<p>Exercise 4.10 Prove (4.40).</p>
+<p>Exercise 4.11 Show (4.41) in the homoskedastic regression model.</p>
+<p>Exercise 4.12 Let <span class="math inline">\(\mu=\mathbb{E}[Y], \sigma^{2}=\mathbb{E}\left[(Y-\mu)^{2}\right]\)</span> and <span class="math inline">\(\mu_{3}=\mathbb{E}\left[(Y-\mu)^{3}\right]\)</span> and consider the sample mean <span class="math inline">\(\bar{Y}=\)</span> <span class="math inline">\(\frac{1}{n} \sum_{i=1}^{n} Y_{i}\)</span>. Find <span class="math inline">\(\mathbb{E}\left[(\bar{Y}-\mu)^{3}\right]\)</span> as a function of <span class="math inline">\(\mu, \sigma^{2}, \mu_{3}\)</span> and <span class="math inline">\(n\)</span>.</p>
+<p>Exercise 4.13 Take the simple regression model <span class="math inline">\(Y=X \beta+e, X \in \mathbb{R}, \mathbb{E}[e \mid X]=0\)</span>. Define <span class="math inline">\(\sigma_{i}^{2}=\mathbb{E}\left[e_{i}^{2} \mid X_{i}\right]\)</span> and <span class="math inline">\(\mu_{3 i}=\mathbb{E}\left[e_{i}^{3} \mid X_{i}\right]\)</span> and consider the OLS coefficient <span class="math inline">\(\widehat{\beta}\)</span>. Find <span class="math inline">\(\mathbb{E}\left[(\widehat{\beta}-\beta)^{3} \mid \boldsymbol{X}\right]\)</span>.</p>
+<p>Exercise 4.14 Take a regression model <span class="math inline">\(Y=X \beta+e\)</span> with <span class="math inline">\(\mathbb{E}[e \mid X]=0\)</span> and i.i.d. observations <span class="math inline">\(\left(Y_{i}, X_{i}\right)\)</span> and scalar <span class="math inline">\(X\)</span>. The parameter of interest is <span class="math inline">\(\theta=\beta^{2}\)</span>. Consider the OLS estimators <span class="math inline">\(\widehat{\beta}\)</span> and <span class="math inline">\(\widehat{\theta}=\widehat{\beta}^{2}\)</span>.</p>
+<ol type="a">
+<li><p>Find <span class="math inline">\(\mathbb{E}[\widehat{\theta} \mid \boldsymbol{X}]\)</span> using our knowledge of <span class="math inline">\(\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}]\)</span> and <span class="math inline">\(V_{\widehat{\beta}}=\operatorname{var}[\widehat{\beta} \mid \boldsymbol{X}]\)</span>. Is <span class="math inline">\(\widehat{\theta}\)</span> biased for <span class="math inline">\(\theta\)</span> ?</p></li>
+<li><p>Suggest an (approximate) biased-corrected estimator <span class="math inline">\(\widehat{\theta}^{*}\)</span> using an estimator <span class="math inline">\(\widehat{V}_{\widehat{\beta}}\)</span> for <span class="math inline">\(V_{\widehat{\beta}}\)</span>.</p></li>
+<li><p>For <span class="math inline">\(\widehat{\theta}^{*}\)</span> to be potentially unbiased, which estimator of <span class="math inline">\(V_{\widehat{\beta}}\)</span> is most appropriate?</p></li>
+</ol>
+<p>Under which conditions is <span class="math inline">\(\widehat{\theta}^{*}\)</span> unbiased?</p>
+<p>Exercise 4.15 Consider an i.i.d. sample <span class="math inline">\(\left\{Y_{i}, X_{i}\right\} i=1, \ldots, n\)</span> where <span class="math inline">\(X\)</span> is <span class="math inline">\(k \times 1\)</span>. Assume the linear conditional expectation model <span class="math inline">\(Y=X^{\prime} \beta+e\)</span> with <span class="math inline">\(\mathbb{E}[e \mid X]=0\)</span>. Assume that <span class="math inline">\(n^{-1} \boldsymbol{X}^{\prime} \boldsymbol{X}=\boldsymbol{I}_{k}\)</span> (orthonormal regressors). Consider the OLS estimator <span class="math inline">\(\widehat{\beta}\)</span>.</p>
+<ol type="a">
+<li><p>Find <span class="math inline">\(\boldsymbol{V}_{\widehat{\beta}}=\operatorname{var}[\widehat{\beta}]\)</span></p></li>
+<li><p>In general, are <span class="math inline">\(\widehat{\beta}_{j}\)</span> and <span class="math inline">\(\widehat{\beta}_{\ell}\)</span> for <span class="math inline">\(j \neq \ell\)</span> correlated or uncorrelated?</p></li>
+<li><p>Find a sufficient condition so that <span class="math inline">\(\widehat{\beta}_{j}\)</span> and <span class="math inline">\(\widehat{\beta}_{\ell}\)</span> for <span class="math inline">\(j \neq \ell\)</span> are uncorrelated.</p></li>
+</ol>
+<p>Exercise 4.16 Take the linear homoskedastic CEF</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y^{*} &amp;=X^{\prime} \beta+e   
+\mathbb{E}[e \mid X] &amp;=0   
+\mathbb{E}\left[e^{2} \mid X\right] &amp;=\sigma^{2}
+\end{aligned}
+\]</span></p>
+<p>and suppose that <span class="math inline">\(Y^{*}\)</span> is measured with error. Instead of <span class="math inline">\(Y^{*}\)</span>, we observe <span class="math inline">\(Y=Y^{*}+u\)</span> where <span class="math inline">\(u\)</span> is measurement error. Suppose that <span class="math inline">\(e\)</span> and <span class="math inline">\(u\)</span> are independent and</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}[u \mid X] &amp;=0   
+\mathbb{E}\left[u^{2} \mid X\right] &amp;=\sigma_{u}^{2}(X)
+\end{aligned}
+\]</span></p>
+<ol type="a">
+<li><p>Derive an equation for <span class="math inline">\(Y\)</span> as a function of <span class="math inline">\(X\)</span>. Be explicit to write the error term as a function of the structural errors <span class="math inline">\(e\)</span> and <span class="math inline">\(u\)</span>. What is the effect of this measurement error on the model (4.63)?</p></li>
+<li><p>Describe the effect of this measurement error on OLS estimation of <span class="math inline">\(\beta\)</span> in the feasible regression of the observed <span class="math inline">\(Y\)</span> on <span class="math inline">\(X\)</span>.</p></li>
+<li><p>Describe the effect (if any) of this measurement error on standard error calculation for <span class="math inline">\(\widehat{\beta}\)</span>.</p></li>
+</ol>
+<p>Exercise 4.17 Suppose that for the random variables <span class="math inline">\((Y, X)\)</span> with <span class="math inline">\(X&gt;0\)</span> an economic model implies</p>
+<p><span class="math display">\[
+\mathbb{E}[Y \mid X]=(\gamma+\theta X)^{1 / 2} .
+\]</span></p>
+<p>A friend suggests that you estimate <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(\theta\)</span> by the linear regression of <span class="math inline">\(Y^{2}\)</span> on <span class="math inline">\(X\)</span>, that is, to estimate the equation</p>
+<p><span class="math display">\[
+Y^{2}=\alpha+\beta X+e .
+\]</span></p>
+<ol type="a">
+<li><p>Investigate your friend’s suggestion. Define <span class="math inline">\(u=Y-(\gamma+\theta X)^{1 / 2}\)</span>. Show that <span class="math inline">\(\mathbb{E}[u \mid X]=0\)</span> is implied by (4.64).</p></li>
+<li><p>Use <span class="math inline">\(Y=(\gamma+\theta X)^{1 / 2}+u\)</span> to calculate <span class="math inline">\(\mathbb{E}\left[Y^{2} \mid X\right]\)</span>. What does this tell you about the implied equation (4.65)?</p></li>
+<li><p>Can you recover either <span class="math inline">\(\gamma\)</span> and/or <span class="math inline">\(\theta\)</span> from estimation of (4.65)? Are additional assumptions required?</p></li>
+<li><p>Is this a reasonable suggestion?</p></li>
+</ol>
+<p>Exercise 4.18 Take the model</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y &amp;=X_{1}^{\prime} \beta_{1}+X_{2}^{\prime} \beta_{2}+e   
+\mathbb{E}[e \mid X] &amp;=0   
+\mathbb{E}\left[e^{2} \mid X\right] &amp;=\sigma^{2}
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(X=\left(X_{1}, X_{2}\right)\)</span>, with <span class="math inline">\(X_{1} k_{1} \times 1\)</span> and <span class="math inline">\(X_{2} k_{2} \times 1\)</span>. Consider the short regression <span class="math inline">\(Y_{i}=X_{1 i}^{\prime} \widehat{\beta}_{1}+\widehat{e}_{i}\)</span> and define the error variance estimator <span class="math inline">\(s^{2}=\left(n-k_{1}\right)^{-1} \sum_{i=1}^{n} \widehat{e}_{i}^{2}\)</span>. Find <span class="math inline">\(\mathbb{E}\left[s^{2} \mid \boldsymbol{X}\right]\)</span>.</p>
+<p>Exercise 4.19 Let <span class="math inline">\(\boldsymbol{Y}\)</span> be <span class="math inline">\(n \times 1, \boldsymbol{X}\)</span> be <span class="math inline">\(n \times k\)</span>, and <span class="math inline">\(\boldsymbol{X}^{*}=\boldsymbol{X} \boldsymbol{C}\)</span> where <span class="math inline">\(\boldsymbol{C}\)</span> is <span class="math inline">\(k \times k\)</span> and full-rank. Let <span class="math inline">\(\widehat{\beta}\)</span> be the least squares estimator from the regression of <span class="math inline">\(Y\)</span> on <span class="math inline">\(X\)</span>, and let <span class="math inline">\(\widehat{V}\)</span> be the estimate of its asymptotic covariance matrix. Let <span class="math inline">\(\widehat{\beta}^{*}\)</span> and <span class="math inline">\(\widehat{\boldsymbol{V}}^{*}\)</span> be those from the regression of <span class="math inline">\(\boldsymbol{Y}\)</span> on <span class="math inline">\(\boldsymbol{X}^{*}\)</span>. Derive an expression for <span class="math inline">\(\widehat{\boldsymbol{V}}^{*}\)</span> as a function of <span class="math inline">\(\widehat{V}\)</span>.</p>
+<p>Exercise 4.20 Take the model in vector notation</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{Y} &amp;=\boldsymbol{X} \beta+\boldsymbol{e}   
+\mathbb{E}[\boldsymbol{e} \mid \boldsymbol{X}] &amp;=0   
+\mathbb{E}\left[\boldsymbol{e} \boldsymbol{e}^{\prime} \mid \boldsymbol{X}\right] &amp;=\Sigma .
+\end{aligned}
+\]</span></p>
+<p>Assume for simplicity that <span class="math inline">\(\Sigma\)</span> is known. Consider the OLS and GLS estimators <span class="math inline">\(\widehat{\beta}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{Y}\right)\)</span> and <span class="math inline">\(\widetilde{\beta}=\left(\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{Y}\right)\)</span>. Compute the (conditional) covariance between <span class="math inline">\(\widehat{\beta}\)</span> and <span class="math inline">\(\widetilde{\beta}\)</span> :</p>
+<p><span class="math display">\[
+\mathbb{E}\left[(\widehat{\beta}-\beta)(\widetilde{\beta}-\beta)^{\prime} \mid \boldsymbol{X}\right]
+\]</span></p>
+<p>Find the (conditional) covariance matrix for <span class="math inline">\(\widehat{\beta}-\widetilde{\beta}\)</span> :</p>
+<p><span class="math display">\[
+\mathbb{E}\left[(\widehat{\beta}-\widetilde{\beta})(\widehat{\beta}-\beta)^{\prime} \mid \boldsymbol{X}\right] .
+\]</span></p>
+<p>Exercise 4.21 The model is</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y_{i} &amp;=X_{i}^{\prime} \beta+e_{i}   
+\mathbb{E}\left[e_{i} \mid X_{i}\right] &amp;=0   
+\mathbb{E}\left[e_{i}^{2} \mid X_{i}\right] &amp;=\sigma_{i}^{2}   
+\Sigma &amp;=\operatorname{diag}\left\{\sigma_{1}^{2}, \ldots, \sigma_{n}^{2}\right\} .
+\end{aligned}
+\]</span></p>
+<p>The parameter <span class="math inline">\(\beta\)</span> is estimated by OLS <span class="math inline">\(\widehat{\beta}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{Y}\)</span> and GLS <span class="math inline">\(\widetilde{\beta}=\left(\boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \Sigma^{-1} \boldsymbol{Y}\)</span>. Let <span class="math inline">\(\widehat{\boldsymbol{e}}=\boldsymbol{Y}-\boldsymbol{X} \widehat{\beta}\)</span> and <span class="math inline">\(\widetilde{\boldsymbol{e}}=\boldsymbol{Y}-\boldsymbol{X} \widetilde{\beta}\)</span> denote the residuals. Let <span class="math inline">\(\widehat{R}^{2}=1-\widehat{\boldsymbol{e}}^{\prime} \widehat{\boldsymbol{e}} /\left(\boldsymbol{Y}^{* \prime} \boldsymbol{Y}^{*}\right)\)</span> and <span class="math inline">\(\widetilde{R}^{2}=1-\widetilde{\boldsymbol{e}}^{\prime} \widetilde{\boldsymbol{e}} /\left(\boldsymbol{Y}^{* \prime} \boldsymbol{Y}^{*}\right)\)</span> denote the equation <span class="math inline">\(R^{2}\)</span> where <span class="math inline">\(\boldsymbol{Y}^{*}=\boldsymbol{Y}-\bar{Y}\)</span>. If the error <span class="math inline">\(e_{i}\)</span> is truly heteroskedastic will <span class="math inline">\(\widehat{R}^{2}\)</span> or <span class="math inline">\(\widetilde{R}^{2}\)</span> be smaller?</p>
+<p>Exercise 4.22 An economist friend tells you that the assumption that the observations <span class="math inline">\(\left(Y_{i}, X_{i}\right)\)</span> are i.i.d. implies that the regression <span class="math inline">\(Y=X^{\prime} \beta+e\)</span> is homoskedastic. Do you agree with your friend? How would you explain your position?</p>
+<p>Exercise 4.23 Take the linear regression model with <span class="math inline">\(\mathbb{E}[\boldsymbol{Y} \mid \boldsymbol{X}]=\boldsymbol{X} \beta\)</span>. Define the ridge regression estimator</p>
+<p><span class="math display">\[
+\widehat{\beta}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}+\boldsymbol{I}_{k} \lambda\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{Y}
+\]</span></p>
+<p>where <span class="math inline">\(\lambda&gt;0\)</span> is a fixed constant. Find <span class="math inline">\(E[\widehat{\beta} \mid \boldsymbol{X}]\)</span>. Is <span class="math inline">\(\widehat{\beta}\)</span> biased for <span class="math inline">\(\beta\)</span> ?</p>
+<p>Exercise 4.24 Continue the empirical analysis in Exercise 3.24.</p>
+<ol type="a">
+<li><p>Calculate standard errors using the homoskedasticity formula and using the four covariance matrices from Section <span class="math inline">\(4.14 .\)</span></p></li>
+<li><p>Repeat in a second programming language. Are they identical?</p></li>
+</ol>
+<p>Exercise 4.25 Continue the empirical analysis in Exercise 3.26. Calculate standard errors using the HC3 method. Repeat in your second programming language. Are they identical?</p>
+<p>Exercise 4.26 Extend the empirical analysis reported in Section <span class="math inline">\(4.21\)</span> using the DDK2011 dataset on the textbook website.. Do a regression of standardized test score (totalscore normalized to have zero mean and variance 1) on tracking, age, gender, being assigned to the contract teacher, and student’s percentile in the initial distribution. (The sample size will be smaller as some observations have missing variables.) Calculate standard errors using both the conventional robust formula, and clustering based on the school.</p>
+<ol type="a">
+<li><p>Compare the two sets of standard errors. Which standard error changes the most by clustering? Which changes the least?</p></li>
+<li><p>How does the coefficient on tracking change by inclusion of the individual controls (in comparison to the results from (4.60))?</p></li>
+</ol>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

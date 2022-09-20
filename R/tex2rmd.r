@@ -229,8 +229,8 @@ tex2rmd <- function(infile, ext_out = ".Rmd",
     paired = "end",
     pos = "after")
 
-  # ---- Process tables
-  tex <- processTables(tex)
+  # ---- Process tabulars
+  tex <- processTabulars(tex,tabInbed = FALSE)
 
   # ---- Process includegraphics
   graphlines <- grep("\\includegraphics", tex)
@@ -274,7 +274,7 @@ tex2rmd <- function(infile, ext_out = ".Rmd",
               paste0('title: "',title,'"'),
               paste0('author: "',auth,'"'),
               paste0('date: "',dt,'"'),
-              "output: word_document",
+              "output: html_document",
               "---")
   # whether use the yml header
   if (isTRUE(keep_yml)){

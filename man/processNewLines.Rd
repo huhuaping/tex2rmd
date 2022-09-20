@@ -4,10 +4,12 @@
 \alias{processNewLines}
 \title{processNewLines - Process manual new lines}
 \usage{
-processNewLines(tex)
+processNewLines(tex, keep_slash = TRUE)
 }
 \arguments{
 \item{tex}{a vector of Latex file lines}
+
+\item{keep_slash}{logical default "keep_slash = TRUE"}
 }
 \value{
 a processed vector of Latex file lines with lists

@@ -4,23 +4,34 @@ renv::install("tmcd82070/tex2rmd")
 require("tex2rmd")
 require(here)
 
-input_md <- ("data-raw/chpt09-hypothesit-test/chpt09-hypothesit-test.tex"
-)
+input_md <- "data-raw/chpt04-lsr-eq.tex"
+
 dir.img <- "data-raw/images/"
 tex2rmd(infile = input_md, 
         ext_out = ".qmd",
         dir_img = dir.img, 
         ext_img = ".jpg", 
-        head2_only = TRUE, keep_yml =FALSE)
+        head2_only = TRUE, 
+        keep_yml = TRUE)
 
 # ---- Process Figures
-tex <- processFigures(x = tex)
+processTabulars(x = tex,tabInbed = FALSE )
+ 
+protbl <-x 
+b1 <- beginTable[1]
+e1 <- endTable[1]
+processOneTable(x = protbl,
+                begin = b1, 
+                end = e1, 
+                tabNum = tabNum,
+                split = "other")
 
+tex_eq <- tex
 
+eqbegin<- max(which(str_detect(tex_eq, "begin\\{aligned")))
+eqend<- max(which(str_detect(tex_eq, "end\\{aligned")))
 
-
-
-
+tex_eq[eqbegin:eqend]
 
 
 

@@ -1,6 +1,6 @@
 Package: tex2rmd
 Title: Latex to Rmd and qmd Conversion
-Version: 0.0.2
+Version: 0.0.21
 Authors@R: person("Trent", "McDonald", email = "tmcdonald@west-inc.com", role = c("aut", "cre"))
 Description: Converts a raw Latex file into markdown format (.Rmd) which can then be compiled into a Word document.
 Depends: R (>= 3.4.2)
