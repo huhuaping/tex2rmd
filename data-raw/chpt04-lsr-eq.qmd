@@ -1,11 +1,12 @@
 ---
 title: "Chapter 4 "
 author: "huhua"
-date: "20-9月-2022"
+date: "21-9月-2022"
 format: 
   html:
     toc: true
-    toc-depth: 2
+    self-contained: true
+    
 ---
 
 # Least Squares Regression
@@ -198,8 +199,7 @@ $$
 
 Regardless of the method we have shown that $\mathbb{E}[\widehat{\beta} \mid \boldsymbol{X}]=\beta$. We have shown the following theorem.
 
-## Theorem 4.1 Expectation of Least Squares Estimator
-
+Theorem 4.1 Expectation of Least Squares Estimator
 In the linear regression model (Assumption 4.2) with i.i.d. sampling (Assumption 4.1)
 
 $$
@@ -281,8 +281,7 @@ a weighted version of $\boldsymbol{X}^{\prime} \boldsymbol{X}$.
 
 In the special case of the linear homoskedastic regression model, $\boldsymbol{D}=\boldsymbol{I}_{n} \sigma^{2}$, so $\boldsymbol{X}^{\prime} \boldsymbol{D} \boldsymbol{X}=\boldsymbol{X}^{\prime} \boldsymbol{X} \sigma^{2}$, and the covariance matrix simplifies to $\boldsymbol{V}_{\widehat{\beta}}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^{2}$.
 
-## Theorem 4.2 Variance of Least Squares Estimator
-
+Theorem 4.2 Variance of Least Squares Estimator
 In the linear regression model (Assumption 4.2) with i.i.d. sampling (Assumption 4.1)
 
 $$
@@ -349,8 +348,7 @@ In this model we know that the least squares estimator is unbiased for $\beta$ a
 
 The following version of the theorem is due to B. E. Hansen (2021).
 
-## Theorem 4.4 Gauss-Markov
-
+Theorem 4.4 Gauss-Markov
 Take the homoskedastic linear regression model (4.11)-(4.13). If $\widetilde{\beta}$ is an unbiased estimator of $\beta$ then
 
 $$
@@ -739,8 +737,7 @@ $$
 
 This is the MSFE based on a sample of size $n-1$ rather than size $n$. The difference arises because the in-sample prediction errors $\widetilde{e}_{i}$ for $i \leq n$ are calculated using an effective sample size of $n-1$, while the out-of sample prediction error $\widetilde{e}_{n+1}$ is calculated from a sample with the full $n$ observations. Unless $n$ is very small we should expect $\operatorname{MSFE}_{n-1}$ (the MSFE based on $n-1$ observations) to be close to $\mathrm{MSFE}_{n}$ (the MSFE based on $n$ observations). Thus $\widetilde{\sigma}^{2}$ is a reasonable estimator for MSFE $n$.
 
-## Theorem 4.6 MSFE
-
+Theorem 4.6 MSFE
 In the linear regression model (Assumption 4.2) and i.i.d. sampling (Assumption 4.1)
 
 $$

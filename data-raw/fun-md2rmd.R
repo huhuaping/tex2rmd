@@ -4,7 +4,7 @@ renv::install("tmcd82070/tex2rmd")
 require("tex2rmd")
 require(here)
 
-input_md <- "data-raw/chpt04-lsr.tex"
+input_md <- "data-raw/chpt04-lsr-eq.tex"
 
 dir.img <- "data-raw/images/"
 tex2rmd(infile = input_md, 
@@ -18,13 +18,13 @@ tex2rmd(infile = input_md,
 processTabulars(x = tex,tabInbed = FALSE )
  
 protbl <-x 
+
 b1 <- beginTable[1]
 e1 <- endTable[1]
 processOneTable(x = protbl,
                 begin = b1, 
                 end = e1, 
-                tabNum = tabNum,
-                split = "other")
+                tabNum = tabNum)
 
 tex_eq <- tex
 

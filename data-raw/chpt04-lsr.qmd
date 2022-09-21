@@ -100,7 +100,7 @@ $$
 \boldsymbol{Q}_{X X}=\mathbb{E}\left[X X^{\prime}\right]>0 .
 $$
 
-We will consider both the general case of heteroskedastic regression where the conditional variance $\mathbb{E}\left[e^{2} \mid X\right]=\sigma^{2}(X)$ is unrestricted, and the specialized case of homoskedastic regression where the conditional variance is constant. In the latter case we add the following assumption.
+We will consider both the general case of heteroskedastic regression where the conditional variance $\mathbb{E}\left[e^{2} \mid X\right]=\sigma^{2}(X)$ is unrestricted, and the specialized case of homoskedastic regression where the conditional variance is constant. In the latter case we add the following assumption.d 
 
 ## Assumption 4.3 Homoskedastic Linear Regression Model
 

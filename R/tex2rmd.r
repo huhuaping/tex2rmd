@@ -54,7 +54,9 @@ tex2rmd <- function(infile, ext_out = ".Rmd",
   # For differencing text files, try online tools or suggestions here:
   #https://stackoverflow.com/questions/4078933/find-difference-between-two-text-files-with-one-item-per-line
 
-
+  isTex <- stringr::str_detect(infile,"\\.tex$")
+  if (!isTex) stop("The input is not a .tex file!")
+  
   fileRoot <- sub("\\..+$","",infile)
   tex <- readLines(infile)
 
@@ -147,7 +149,17 @@ tex2rmd <- function(infile, ext_out = ".Rmd",
   # ---- Fix up bibliography and citations
   #      Do this here so that textbf and texttt get changed below.
   tex <- processBibliography(tex, fileRoot)
-
+  
+  # ---- Fix up theorem----
+  ## mathpix error ocr with: \section{Theorem 4.6 MSFE}
+  theoremlines <- grep("\\\\section\\{Theorem|Assumption\\ \\d\\.\\d", tex)
+  theorems <- tex[theoremlines]
+  theorems <- stringr::str_extract_all(
+    theorems,
+    "(?<=\\\\section\\{)(.+)(?=\\}$)" ) |> 
+    unlist()
+  tex[theoremlines] <- theorems
+  
   # ---- Sections
   # Sections must be on a line by themselves.  Can't have "\section{A} more text"
   seclines <- grep("\\\\section\\*?\\{", tex)
@@ -274,7 +286,11 @@ tex2rmd <- function(infile, ext_out = ".Rmd",
               paste0('title: "',title,'"'),
               paste0('author: "',auth,'"'),
               paste0('date: "',dt,'"'),
-              "output: html_document",
+              if (ext_out == ".qmd"){
+                "format: html"
+              } else {
+                "output: html_document"
+              },
               "---")
   # whether use the yml header
   if (isTRUE(keep_yml)){

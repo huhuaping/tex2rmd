@@ -72,24 +72,17 @@ processOneTabular <- function(x, begin, end, tabNum){
     endLine <- max(other)
   }
   
-  
   x <- x[begLine:endLine]  # just the table cells
   x <- paste(x, collapse="") # one long string
   x <- strsplit(x, "\\\\\\\\")[[1]] # back to vector, this time one element per table row
 
-  # detect empty first row ??
-  isEmpty <- !stringr::str_detect(x[1],"[a-z0-9]")
-  if (isTRUE(isEmpty)) {
-    x <- x[-1]
-  }
-  
   # find header row for later
   hline <- which(regexpr("\\\\hline",x)>0)  #assume first hline marks header
   if(length(hline)>0){
     hline <- min(hline)
   } else {
     # set header after last line with any command like \multicolumn
-    # hline <- which(regexpr("\\\\\\w+\\{",x)>0)
+     hline <- which(regexpr("\\\\\\multicolumn\\{",x)>0)
     if(length(hline)>0){
       hline <- max(hline)+1 # but, maximum header is 3
     } else {
@@ -103,12 +96,19 @@ processOneTabular <- function(x, begin, end, tabNum){
   }
 
   x <- gsub("\\\\hline","",x) # remove all hlines
-  x <- gsub("\\\\cline.+\\{.+\\}","",x) # and clines
+  x <- gsub("\\\\cline.*?\\{.*?\\}","",x) # and clines
+  x <- gsub("\\\\multirow.*?\\{.*?\\}\\{.*?\\}","",x) # and multirow
   x <- gsub("\\\\thead\\{","",x)
   x <- gsub("\\}\\s+&"," &",x)
   x <- gsub("\\}$","",x)
   x <- gsub("\\}\\s+$","",x)
-  #x <- gsub("\\$","",x)  # remove dollar symbols
+  x <- gsub("^\\{","",x)  # remove "{" leading row
+  
+  # detect empty first row ??
+  emptyRows <- which(!stringr::str_detect(x,"[a-z0-9]"))
+  if (length(emptyRows)>0) {
+    x <- x[-c(emptyRows)]
+  }
 
   hasMultiCol <- which(regexpr("\\\\multicolumn\\{",x)>0)
   if(length(hasMultiCol)>0){
@@ -117,10 +117,9 @@ processOneTabular <- function(x, begin, end, tabNum){
     # show the row
     multicolRow <- x[hasMultiCol]
     # string replace
+    multicolRow <- gsub("\\\\multicolumn.*?\\{.*?\\}\\{.*?\\}","",multicolRow) 
     multicolRow <- stringr::str_replace(
-      multicolRow, "(.+)\\}","")
-    multicolRow <- stringr::str_replace(
-      multicolRow, "\\{","")
+      multicolRow, "^\\{","")
     # replace row and tidy it
     x[hasMultiCol] <- multicolRow
   }

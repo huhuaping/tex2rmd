@@ -11,3 +11,7 @@
 *.png
 *.jpg
 *.pdf
+data-raw/images/*
+data-raw/*.html$
+data-raw/*.tex$
+data-raw/*.qmd$
