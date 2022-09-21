@@ -156,6 +156,7 @@ tex2rmd <- function(infile, ext_out = ".Rmd",
     c("\\\\section\\{Theorem",
       "\\\\section\\{Assumption",
       "\\\\section\\{Proposition",
+      "\\\\section\\{Proof",
       "\\\\section\\{Stata Commands",
       "\\\\section\\{Stata do"),
     collapse = "|"
