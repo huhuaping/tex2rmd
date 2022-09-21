@@ -137,6 +137,7 @@ processOneTabular <- function(x, begin, end, tabNum){
   # print(just)
 
   rmdTab <- rep("|",nrow(rmdMat)+1)
+  # j <- 1
   for(j in 1:ncol(rmdMat)){
     if( !(just[j] %in% c("l","r","c") )){
       just[j] <- "none"

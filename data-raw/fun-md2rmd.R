@@ -4,9 +4,9 @@ renv::install("tmcd82070/tex2rmd")
 require("tex2rmd")
 require(here)
 
-input_md <- "data-raw/chpt04-lsr-eq.tex"
+input_md <- "data-raw/chpt13-gmm.tex"
 
-dir.img <- "data-raw/images/"
+dir.img <- "images/"
 tex2rmd(infile = input_md, 
         ext_out = ".qmd",
         dir_img = dir.img, 

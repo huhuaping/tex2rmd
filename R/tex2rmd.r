@@ -152,11 +152,24 @@ tex2rmd <- function(infile, ext_out = ".Rmd",
   
   # ---- Fix up theorem----
   ## mathpix error ocr with: \section{Theorem 4.6 MSFE}
-  theoremlines <- grep("\\\\section\\{Theorem|Assumption\\ \\d\\.\\d", tex)
+  myCases <- paste0(
+    c("\\\\section\\{Theorem",
+      "\\\\section\\{Assumption",
+      "\\\\section\\{Proposition",
+      "\\\\section\\{Stata Commands",
+      "\\\\section\\{Stata do"),
+    collapse = "|"
+    )
+  theoremlines <- grep(myCases, tex)
   theorems <- tex[theoremlines]
   theorems <- stringr::str_extract_all(
     theorems,
     "(?<=\\\\section\\{)(.+)(?=\\}$)" ) |> 
+    unlist()
+  # fix case: \section{Assumption $8.3$}
+  theorems <- stringr::str_replace_all(
+    theorems,
+    "\\$(?=\\d.\\d)|(?<=\\d{1,2}\\.\\d{1,2})\\$", "" ) |> 
     unlist()
   tex[theoremlines] <- theorems
   
@@ -184,7 +197,7 @@ tex2rmd <- function(infile, ext_out = ".Rmd",
   secs <- tex[seclines]
   ## subtitude
   secs <- sub("\\\\section\\*?\\{","",secs)
-  secs <- sub("\\}","", secs)  # add newline
+  secs <- sub("\\}$","", secs)  # add newline
   tex[seclines] <- paste("#", secs)
 
 
@@ -202,9 +215,9 @@ tex2rmd <- function(infile, ext_out = ".Rmd",
   secs <- tex[seclines]
   ## subtitude
   secs <- sub("\\\\subsection\\*?\\{","",secs)
-  secs <- sub("\\}","", secs) # add newline
+  secs <- sub("\\}$","", secs) # add newline
   ## clean subsection number "$9.2$ " dollar with blank space
-  secs <- stringr::str_replace_all(secs, "(\\$.+\\$\\s+)","") 
+  secs <- stringr::str_replace_all(secs, "(\\$\\d{1,2}\\.\\d{1,2}\\$\\s+)","") 
   ## clean subsection number "9 " with blank space
   secs <- stringr::str_replace_all(secs, "(^[\\d]\\s+)","") 
   tex[seclines] <- paste("##", secs)
