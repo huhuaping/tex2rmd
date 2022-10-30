@@ -16,7 +16,12 @@
 #' last row with a \\multicolumn command.  Only one-line headers are
 #' allowed in Markdown.
 #'
-#'
+#' @import dplyr
+#' @import tidyr
+#' @import stringr
+#' @import purrr 
+#' @importFrom dplyr mutate
+#'   
 #' @export
 processOneTabular <- function(x, begin, end, tabNum){
 
@@ -110,27 +115,69 @@ processOneTabular <- function(x, begin, end, tabNum){
     x <- x[-c(emptyRows)]
   }
 
+  # handle multiple columns
   hasMultiCol <- which(regexpr("\\\\multicolumn\\{",x)>0)
+  
   if(length(hasMultiCol)>0){
     warning(paste("multicolumns detected.", length(hasMultiCol), "row(s) in Table",
                   tabNum, "have been cleaned and kept."))
     # show the row
     multicolRow <- x[hasMultiCol]
-    # string replace
-    multicolRow <- gsub("\\\\multicolumn.*?\\{.*?\\}\\{.*?\\}","",multicolRow) 
-    multicolRow <- stringr::str_replace(
-      multicolRow, "^\\{","")
+    
+    ## first split
+    col_splits <- stringr::str_split(multicolRow, pattern = "\\&") |>
+      unlist()
+    ## extract text
+    text_splits <- col_splits |>
+      sapply(FUN =  function(x){
+        ifelse(
+          stringr::str_detect(x,"\\\\multicolumn"),
+          stringr::str_extract_all(x,
+                          "(?<=\\\\multicolumn\\{\\d{1}\\}\\{c\\}\\{)(.+)"),
+          x)}  ) |>
+      unname() |>
+      unlist()
+    ## get numbers of the real amps
+    num_splits <- col_splits |>
+      stringr::str_extract_all(
+        "(?<=\\\\multicolumn\\{)(\\d{1})(?=\\}\\{c\\}\\{)"
+      ) |>
+      sapply(
+        FUN = function(x) {
+        ifelse(length(x)==0,0, as.numeric(x)-1)}
+        )
+    ## construct real text and amps
+    amp_splits <- data.frame(string = text_splits, 
+                                 amp=num_splits) |>
+      mutate(amps = purrr::map(amp,~paste0(rep("& ", .x), collapse = " "))) |>
+      tidyr::unnest(cols = c(amps)) |>
+      dplyr::mutate(amps = stringr::str_c(string, amps, sep = " "))
+    ## paste all result
+    multicolRow_tidy <- amp_splits |>
+      dplyr::pull("amps") |>
+      paste0(collapse = " & ") 
+    
     # replace row and tidy it
-    x[hasMultiCol] <- multicolRow
+    x[hasMultiCol] <- multicolRow_tidy
   }
-
+  
   rmdMat <- NULL
+  #j <-1
   for(j in 1:length(x)){
     colCells <- strsplit(x[j], "\\&")[[1]]
     colCells <- gsub("^\\s+","",colCells)  # remove leading blanks
     colCells <- gsub("\\s+$","",colCells)  # remove trailing blanks
-    rmdMat <- rbind(rmdMat, matrix(colCells,1))
+    rmdMat <- rbind(rmdMat, matrix(colCells,1)) 
   }
+  
+  # remove empty column
+  not_all_empty <- function(x) any(x!=" ")
+  not_any_empty <- function(x) all(x!=" ")
+  rmdMat <- rmdMat |>
+    tibble::as_tibble() |>
+    dplyr::mutate_all(~ifelse(.x=="", " ", .x)) |>
+    dplyr::select(tidyselect::vars_select_helpers$where(not_all_empty)) |>
+    as.matrix()
 
 
   # put in the separators and header line. In markdown, header is only 1 row always

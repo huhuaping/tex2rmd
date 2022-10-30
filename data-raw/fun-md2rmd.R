@@ -4,7 +4,7 @@ renv::install("tmcd82070/tex2rmd")
 require("tex2rmd")
 require(here)
 
-input_md <- "data-raw/chpt13-gmm.tex"
+input_md <- "data-raw/chpt17-panel-data.tex"
 
 dir.img <- "images/"
 tex2rmd(infile = input_md, 
@@ -14,18 +14,18 @@ tex2rmd(infile = input_md,
         head2_only = TRUE, 
         keep_yml = TRUE)
 
-# ---- Process Figures
+# ---- Process tables
 processTabulars(x = tex,tabInbed = FALSE )
  
 protbl <-x 
 
 b1 <- beginTable[1]
 e1 <- endTable[1]
-processOneTable(x = protbl,
+
+processOneTabular(x = protbl,
                 begin = b1, 
                 end = e1, 
                 tabNum = tabNum)
-
 tex_eq <- tex
 
 eqbegin<- max(which(str_detect(tex_eq, "begin\\{aligned")))

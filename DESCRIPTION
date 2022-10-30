@@ -3,10 +3,16 @@ Title: Latex to Rmd and qmd Conversion
 Version: 0.0.21
 Authors@R: person("Trent", "McDonald","huhuaping", email = "tmcdonald@west-inc.com", role = c("aut", "cre"))
 Description: Converts a raw Latex file into markdown format (.Rmd) which can then be compiled into a Word document.
-Depends: R (>= 3.4.2)
+Depends: 
+    R (>= 3.4.2),
+    tidyverse
 License: GPL
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Imports:
-    stringr
+    stringr,
+    magrittr,
+    purrr,
+    tidyr,
+    tidyselect
