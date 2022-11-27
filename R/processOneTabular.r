@@ -119,10 +119,16 @@ processOneTabular <- function(x, begin, end, tabNum){
   hasMultiCol <- which(regexpr("\\\\multicolumn\\{",x)>0)
   
   if(length(hasMultiCol)>0){
-    warning(paste("multicolumns detected.", length(hasMultiCol), "row(s) in Table",
-                  tabNum, "have been cleaned and kept."))
+    cat(paste("multicolumns detected.", length(hasMultiCol), "row(s) in Table",
+                  tabNum, "have been cleaned and kept.\n"))
     # show the row
     multicolRow <- x[hasMultiCol]
+    ## parse the tex command argument
+    tex_arg <- parseTex(multicolRow,argNum = 2) |>
+      stringr::str_replace("\\|","\\\\|")
+    tex_ptn <- paste0("(?<=\\\\multicolumn\\{\\d{1}\\}\\{",
+                      tex_arg,
+                      "\\}\\{)(.+)")
     
     ## first split
     col_splits <- stringr::str_split(multicolRow, pattern = "\\&") |>
@@ -132,33 +138,37 @@ processOneTabular <- function(x, begin, end, tabNum){
       sapply(FUN =  function(x){
         ifelse(
           stringr::str_detect(x,"\\\\multicolumn"),
-          stringr::str_extract_all(x,
-                          "(?<=\\\\multicolumn\\{\\d{1}\\}\\{c\\}\\{)(.+)"),
+          stringr::str_extract_all(x, tex_ptn),
           x)}  ) |>
       unname() |>
       unlist()
-    ## get numbers of the real amps
-    num_splits <- col_splits |>
-      stringr::str_extract_all(
-        "(?<=\\\\multicolumn\\{)(\\d{1})(?=\\}\\{c\\}\\{)"
-      ) |>
-      sapply(
-        FUN = function(x) {
-        ifelse(length(x)==0,0, as.numeric(x)-1)}
-        )
-    ## construct real text and amps
-    amp_splits <- data.frame(string = text_splits, 
-                                 amp=num_splits) |>
-      mutate(amps = purrr::map(amp,~paste0(rep("& ", .x), collapse = " "))) |>
-      tidyr::unnest(cols = c(amps)) |>
-      dplyr::mutate(amps = stringr::str_c(string, amps, sep = " "))
-    ## paste all result
-    multicolRow_tidy <- amp_splits |>
-      dplyr::pull("amps") |>
-      paste0(collapse = " & ") 
     
-    # replace row and tidy it
-    x[hasMultiCol] <- multicolRow_tidy
+    has_amps <-stringr::str_detect(multicolRow,"\\&")
+    if (has_amps){ # case there exist amps
+      ## get numbers of the real amps
+      num_splits <- col_splits |>
+        stringr::str_extract_all(tex_ptn) |>
+        sapply(
+          FUN = function(x) {
+            ifelse(length(x)==0,0, as.numeric(x)-1)}
+        )
+      ## construct real text and amps
+      amp_splits <- data.frame(string = text_splits, 
+                               amp=num_splits) |>
+        dplyr::mutate(amps = purrr::map(amp,~paste0(rep("& ", .x), collapse = " "))) |>
+        tidyr::unnest(cols = c(amps)) |>
+        dplyr::mutate(amps = stringr::str_c(string, amps, sep = " "))
+      ## paste all result
+      multicolRow_tidy <- amp_splits |>
+        dplyr::pull("amps") |>
+        paste0(collapse = " & ") 
+      
+      # replace row and tidy it
+      x[hasMultiCol] <- multicolRow_tidy
+    } else { # case have no amps
+      x[hasMultiCol] <- text_splits
+    }
+    
   }
   
   rmdMat <- NULL

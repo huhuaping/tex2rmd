@@ -33,6 +33,7 @@ processTabulars <- function(x, tabInbed = TRUE){
     x <- c( x[1:(beginTable[1]-1)], 
             rmdTable, 
             x[(endTable[1]+1):length(x)])
+    cat(paste0("table ",tabNum, " was converted successfully! \n"))
     tabNum <- tabNum + 1
   }
 

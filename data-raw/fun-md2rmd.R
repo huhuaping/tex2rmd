@@ -1,7 +1,7 @@
 
 # 
-renv::install("tmcd82070/tex2rmd")
-require("tex2rmd")
+#renv::install("tmcd82070/tex2rmd")
+#require("tex2rmd")
 require(here)
 
 input_md <- "data-raw/chpt17-panel-data.tex"
